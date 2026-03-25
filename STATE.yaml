@@ -1,0 +1,353 @@
+# STATE.yaml - 主人团队任务协调文件
+
+# 项目信息
+project: 主人团队 (Master Team)
+updated: 2026-03-25T14:00:00+08:00
+owner: 年年 (Niannian)
+
+# 12 个 Agent 团队
+agents:
+  - id: main
+    name: 年年
+    role: 团队领导/协调员
+    status: active
+    workspace: ~/.openclaw/workspace
+
+  - id: chief_cute_officer
+    name: 岁岁
+    role: 首席可爱官/内容官
+    status: active
+    workspace: ~/.openclaw/workspace-cute
+
+  - id: product_manager
+    name: 娜尔
+    role: 产品经理
+    status: active
+    workspace: ~/.openclaw/workspace-product
+
+  - id: qa_engineer
+    name: 本尔
+    role: 测试工程师
+    status: active
+    workspace: ~/.openclaw/workspace-qa
+
+  - id: dev_engineer
+    name: 开发工程师
+    role: 后端开发
+    status: active
+    workspace: ~/.openclaw/workspace-dev
+
+  - id: frontend_dev
+    name: 夕尔
+    role: 前端开发
+    status: active
+    workspace: ~/.openclaw/workspace-frontend
+
+  - id: taiyi
+    name: 太一
+    role: 架构师
+    status: active
+    workspace: ~/.openclaw/workspace-taiyi
+
+  - id: lingxi
+    name: 灵犀
+    role: 策略顾问
+    status: active
+    workspace: ~/.openclaw/workspace-lingxi
+
+  - id: jinghong
+    name: 惊鸿
+    role: 文案/翰林
+    status: active
+    workspace: ~/.openclaw/workspace-jinghong
+
+  - id: tiangong
+    name: 天工
+    role: 首席架构师/工部
+    status: active
+    workspace: ~/.openclaw/workspace-tiangong
+
+  - id: zhiming
+    name: 执明
+    role: 协调员
+    status: active
+    workspace: ~/.openclaw/workspace-zhiming
+
+  - id: yueying
+    name: 月影
+    role: 映像/分析
+    status: active
+    workspace: ~/.openclaw/workspace-yueying
+
+  - id: shichen
+    name: 司辰
+    role: 时间管理
+    status: active
+    workspace: ~/.openclaw/workspace-shichen
+
+# 当前任务列表
+tasks:
+  # 任务 1: 创建 GOALS.md
+  - id: TASK-001
+    title: 创建 GOALS.md（主人目标文档）
+    status: done
+    owner: main
+    priority: P0
+    started: 2026-03-19T02:08:00+08:00
+    completed: 2026-03-19T02:10:00+08:00
+    output: /Users/narain/.openclaw/workspace/GOALS.md
+    notes: "已创建完成，包含主人职业目标、个人目标、多 Agent 协作目标"
+
+  # 任务 2: 升级 HEARTBEAT.md
+  - id: TASK-002
+    title: 升级 HEARTBEAT.md（日程化任务）
+    status: done
+    owner: main
+    priority: P0
+    started: 2026-03-19T02:08:00+08:00
+    completed: 2026-03-19T02:10:00+08:00
+    output: /Users/narain/.openclaw/workspace/HEARTBEAT.md
+    notes: "已添加 8 个日程化任务和隔夜应用构建机制"
+
+  # 任务 3: 创建 STATE.yaml
+  - id: TASK-003
+    title: 创建 STATE.yaml（任务协调文件）
+    status: done
+    owner: main
+    priority: P0
+    started: 2026-03-19T02:10:00+08:00
+    completed: 2026-03-20T09:24:00+08:00
+    output: /Users/narain/.openclaw/workspace/STATE.yaml
+    notes: "已创建完成，包含 12 个 Agent 信息和 13 个任务追踪"
+
+  # 任务 4: 内容工厂流水线
+  - id: TASK-004
+    title: 内容工厂流水线设计
+    status: done
+    owner: main
+    priority: P1
+    started: 2026-03-19T02:10:00+08:00
+    completed: 2026-03-19T02:50:00+08:00
+    output: /Users/narain/.openclaw/workspace/content-factory-plan.md
+    notes: "研究→写作→设计全自动流水线"
+
+  # 任务 5: 隔夜应用构建机制
+  - id: TASK-005
+    title: 隔夜应用构建机制设计
+    status: done
+    owner: main
+    priority: P1
+    started: 2026-03-19T02:10:00+08:00
+    completed: 2026-03-19T02:50:00+08:00
+    output: /Users/narain/.openclaw/workspace/overnight-app-plan.md
+    notes: "每天一个惊喜小工具"
+
+  # 任务 6: 飞书群机器人@配置
+  - id: TASK-006
+    title: 飞书群机器人@配置修正
+    status: done
+    owner: main
+    priority: P0
+    completed: 2026-03-19T01:32:00+08:00
+    notes: "requireMention 已改为 true，只有@才回复"
+
+  # 任务 7: Dashboard 运行
+  - id: TASK-007
+    title: Dashboard 多智能体管理界面
+    status: done
+    owner: main
+    priority: P0
+    started: 2026-03-19T01:03:00+08:00
+    completed: 2026-03-25T09:10:00+08:00
+    notes: "v3.0 重写完成。全新前端（暗色主题/Agent卡片/任务看板/直觉展示/GSD工作流），轻量后端不依赖旧模块，运行在 http://localhost:5175"
+
+  # 任务 8-13: 2026-03-20 隔夜应用构建任务
+  - id: TASK-008
+    title: OpenClaw 多 Agent 通信监控工具
+    status: todo
+    owner: dev_engineer
+    priority: P1
+    notes: "实时监控 Agent 消息传递状态、响应时间"
+  - id: TASK-009
+    title: 飞书知识库自动备份脚本
+    status: todo
+    owner: dev_engineer
+    priority: P1
+    notes: "自动导出飞书文档为 Markdown 并备份到 Git"
+  - id: TASK-010
+    title: 内容工厂 - 热点追踪 CLI 工具
+    status: todo
+    owner: dev_engineer
+    priority: P2
+    notes: "抓取小红书/抖音/微博热点话题"
+  - id: TASK-011
+    title: Agent 任务自动分配器
+    status: done
+    owner: dev_engineer
+    priority: P1
+    completed: 2026-03-20T14:00:00+08:00
+    output: /Users/narain/.openclaw/workspace/agents/dev_engineer/task_dispatcher.py
+    notes: "根据任务类型自动分发给最合适的 Agent，30 测试用例 100% 通过"
+  - id: TASK-012
+    title: Python 编程练习生成器
+    status: todo
+    owner: dev_engineer
+    priority: P2
+    notes: "生成 AI 相关的 Python 练习题"
+  - id: TASK-013
+    title: Git Commit Message 生成器（惊喜小工具）
+    status: todo
+    owner: dev_engineer
+    priority: P2
+    notes: "根据 git diff 自动生成 commit message"
+
+  # 任务 VOICE: local-whisper 技能安装
+  - id: TASK-VOICE
+    title: local-whisper 语音识别技能安装
+    status: done
+    owner: main
+    priority: P1
+    started: 2026-03-23T08:00:00+08:00
+    completed: 2026-03-23T08:35:00+08:00
+    output: /Users/narain/.openclaw/workspace/skills/local-whisper/
+    notes: "安装 ClawHub local-whisper 技能，配置 Python 3.12 虚拟环境，支持多语言识别"
+
+# 下一步行动
+next_actions:
+  - "main: Git 首次提交（P0 — 已拖延 6 天，无版本控制风险极高）"
+  - "main: 修复 Dashboard 离线状态（TASK-007，P1）"
+  - "dev_engineer: 推进 TASK-008/009（通信监控/飞书备份，已停滞 5 天）"
+  - "main: 创建 DECISIONS.md + PROJECT_STATUS.md（共享记忆文件缺失）"
+  - "main: 清理 todo 任务，评估 TASK-010/012/013 是否仍有价值"
+
+# 阻塞任务
+blocked_tasks: []
+
+# 本周优先级 (2026-03-24 ~ 2026-03-30)
+weekly_priorities:
+  - P0: 修复 Dashboard 离线状态（提升团队可视化能力）
+  - P1: 补全 03-21/22/23 每日复盘报告（保持记录完整性）
+  - P1: 内容工厂流水线实施（提升内容产出效率）
+  - P1: 推进隔夜应用构建机制（TASK-008/009）
+  - P2: 合理分配开发工程师任务（避免单点瓶颈）
+  - P3: 准备周度复盘（03-27 周五）
+
+# 关键指标
+metrics:
+  active_agents: 13
+  total_tasks: 18
+  completed: 13
+  in_progress: 0
+  todo: 5
+  success_rate: 100%
+  test_coverage: "30/30 (100% - TASK-011)"
+  git_status: "🔴 无初始提交（连续 7 天未解决 — 升级 P0-紧急）"
+  shared_docs_missing: "DECISIONS.md, PROJECT_STATUS.md 未创建"
+  stale_tasks_days: 5  # TASK-008~013 自 03-20 起无进展
+  gitignore_missing: true
+  ci_cd_configured: false
+  dashboard_v3_running: true  # PID 78068, port 5175
+  legacy_dashboard_running: true  # nannan-dashboard on port 5177 (资源浪费)
+  last_metrics_update: 2026-03-25T14:00:00+08:00
+
+# 共享记忆文件
+shared_memory:
+  - GOALS.md          # 主人目标（所有 Agent 必读）
+  - STATE.yaml        # 任务状态（所有 Agent 可读写）
+  - HEARTBEAT.md      # 日程任务（所有 Agent 遵循）
+  - DECISIONS.md      # 关键决策（追加模式）
+  - PROJECT_STATUS.md # 项目状态（所有 Agent 可更新）
+
+# 私有上下文目录
+private_context:
+  - agents/main/           # 年年的私人笔记
+  - agents/chief_cute_officer/  # 岁岁的私人笔记
+  - agents/product_manager/     # 娜尔的私人笔记
+  - agents/qa_engineer/         # 本尔的私人笔记
+  - agents/dev_engineer/        # 开发工程师的私人笔记
+  - agents/frontend_dev/        # 夕尔的私人笔记
+  # ... 其他 Agent
+
+# 追加日志（避免竞态条件）
+append_only_logs:
+  - memory/tasks-log.md   # 完成任务日志（只追加，不修改）
+
+# 最后更新信息
+last_updated_by: main (年年 - 14:00 代码开发时段)
+last_updated_at: 2026-03-25T14:00:00+08:00
+
+# 代码开发时段记录 (14:00 Slot)
+dev_session_2026-03-24_14:00:
+  executed_at: 2026-03-24T16:05:00+08:00
+  participants:
+    - dev_engineer (开发工程师)
+    - frontend_dev (夕尔)
+  completed_items:
+    - "CI/CD 状态检查：✅ 无 GitHub Actions 配置（待建立）"
+    - "测试覆盖率：✅ TASK-011 任务分配器 30/30 测试通过 (100%)"
+    - "技术债务：⚠️ Git 仓库尚未初始化 commit（首次提交待完成）"
+    - "Dashboard 状态：⚠️ 运行中但需修复离线状态显示（TASK-007）"
+  new_features:
+    - "任务分配器完整测试套件（qa_engineer 编写）"
+    - "9 个场景覆盖：产品/开发/测试/前端/可爱官/架构师/协调员/数据/时间"
+  next_priorities:
+    - "建立 GitHub Actions CI/CD 流水线"
+    - "完成 Git 首次提交（初始化仓库历史）"
+    - "修复 Dashboard 离线状态显示"
+    - "推进 TASK-008/009（通信监控/飞书备份）"
+
+dev_session_2026-03-25_14:00:
+  executed_at: 2026-03-25T14:00:00+08:00
+  participants:
+    - dev_engineer (开发工程师)
+    - frontend_dev (夕尔)
+  ci_cd_status:
+    - "❌ 无 .github/workflows 目录（CI/CD 尚未建立）"
+    - "❌ 无 .gitignore 文件（大量 node_modules 等将被跟踪）"
+    - "❌ 无 Git remote 配置（未连接 GitHub）"
+    - "❌ Git 仓库无任何 commit（连续 7 天未解决，升级为 P0-紧急）"
+  tests_status:
+    - "✅ TASK-011 任务分配器：30/30 测试全部通过 (100%)"
+    - "ℹ️ task_dispatcher.py：320 行代码，4 个文件"
+  dashboard_status:
+    - "✅ Dashboard v3 (server_v3.js) 运行中 — PID 78068, 端口 5175"
+    - "⚠️ 旧版 nannan-dashboard (Vite) 仍在端口 5177 运行（资源浪费）"
+  tech_debt_identified:
+    - "🔴 P0: Git 首次提交 — 连续 7 天无版本控制，高风险"
+    - "🔴 P0: 缺少 .gitignore — node_modules/备份/.env 等敏感文件将泄露"
+    - "🟡 P1: 无 CI/CD 流水线 — 无自动化质量门禁"
+    - "🟡 P1: 旧版 nannan-dashboard 进程仍在运行 — 浪费 CPU/内存"
+    - "🟡 P1: 前端开发目录空 — 夕尔无产出代码"
+    - "🟡 P1: TASK-008/009/010/012/013 停滞 5+ 天"
+    - "🟢 P2: workspace 根目录文件杂乱 — 需要整理归档"
+  new_features_developed: "无（本次时段聚焦技术债务审查）"
+  action_items:
+    - "🔴 立即: 创建 .gitignore 并完成 Git 首次提交"
+    - "🟡 本周: 建立基础 CI/CD（至少 lint + test）"
+    - "🟡 本周: 清理旧版 nannan-dashboard 进程"
+    - "🟡 本周: 评估并关闭过期任务（TASK-010/012/013）"
+
+  # 任务 14: GSD 工作流落地
+  - id: TASK-014
+    title: GSD + Superpowers 工作流落地
+    status: done
+    owner: main
+    priority: P0
+    started: 2026-03-25T07:37:00+08:00
+    completed: 2026-03-25T07:40:00+08:00
+    output: /Users/narain/.openclaw/workspace/WORKFLOW.md
+    notes: "三大改进落地：波次并行执行、TDD验收前置、6步标准化流程"
+
+  # 任务 15: P0+P1 三大改进
+  - id: TASK-015
+    title: "P0精简SOUL.md + P1持续学习 + P1模型路由"
+    status: done
+    owner: main
+    priority: P0
+    started: 2026-03-25T08:46:00+08:00
+    completed: 2026-03-25T08:50:00+08:00
+    output:
+      - /Users/narain/.openclaw/workspace/SOUL.md (7370→1180字节，-84%)
+      - /Users/narain/.openclaw/workspace/INSTINCTS.md (新建)
+      - /Users/narain/.openclaw/workspace/MODEL_ROUTING.md (新建)
+    notes: "ECC 方法论落地：SOUL精简、Instinct持续学习、模型路由策略"

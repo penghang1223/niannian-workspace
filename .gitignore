@@ -1,0 +1,62 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment & Secrets
+.env
+.env.*
+
+# Temporary files
+*.tmp
+temp_*
+bili_temp/
+videos/
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Binary & media files
+*.png
+*.jpg
+*.mp3
+*.mp4
+*.zip
+*.xmind
+
+# Build artifacts
+.backup_*/
+
+# Third party clones
+MediaCrawler/
+
+# Sensitive data
+bilibili_cookie.txt
+beta_users.json
+user_roles.json
+group_chat_config.json
+openclaw-collab-full.json
+openclaw-full-config.json
+openclaw-feishu-optimized.json
+openclaw-cute-officer.json
+openclaw_updated.json
+telegram-multi-bot-config.json
+
+# Whisper output files
+8q7temtC8v*
+
+# Old dashboard node_modules
+dashboard/node_modules/
+nannan-dashboard/node_modules/
+memory-app/node_modules/
+
+# Cache
+.brv/
+.claude-code-router/
+.clawdbot/
+.clawhub/
+.openclaw/
+.learnings/
+__pycache__/
+*.pyc

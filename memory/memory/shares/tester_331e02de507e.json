@@ -1,0 +1,19 @@
+{
+  "type": "knowledge_share",
+  "from": "nannan",
+  "to": "tester",
+  "knowledge": {
+    "id": "331e02de507e",
+    "topic": "Ch10 通信协议学习",
+    "category": "通信协议",
+    "summary": "\n学习了 hello-agents Ch10 通信协议，包括：\n1. MCP (Model Context Protocol) - 模型上下文协议\n2. A2A (Agent to Agent) - Agent 间通信协议\n3. ANP (Agent Network Protocol) - Agent 网络协议\n\n推荐方案：A2A + 自定义扩展，适合主人的 4 个 Agent 团队。\n\n已实现完...",
+    "file_path": "memory/Ch10 通信协议学习笔记.md",
+    "tags": [
+      "hello-agents",
+      "Ch10",
+      "A2A",
+      "MCP"
+    ]
+  },
+  "timestamp": "2026-03-03T02:04:19.874312"
+}

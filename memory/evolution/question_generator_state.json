@@ -1,0 +1,12 @@
+{
+  "lastAskedAt": "2026-03-24T19:00:01.719Z",
+  "recentQuestions": [
+    "Recurring error in evolution cycle that auto-repair cannot resolve: LLM ERROR] Request was aborted **USER**: Continue where you left off. The previous model attempt fai -- What approaches or patches have worked for similar issues?",
+    "Performance bottleneck detected: **TOOLRESULT**: { \"runId\": \"16d41629-f3b6-4fe9-b6cf-85af0393e6a2\", \"status\": \"timeout\", \"sessionKey\": \"agent:product_manager:main\" } -- What optimization strategies or architectural patterns address this?",
+    "User requested a feature that may benefit from community solutions: **TOOLRESULT**: 116:187: execution error: “System Events”遇到一个错误：could not create image from display (1) (Command exited with code 1) -- Are there existing implementations or best practices for this?",
+    "User requested a feature that may benefit from community solutions: **ASSISTANT**: Now let me verify the files are all in place and create a summary: [TOOL: exec] -- Are there existing implementations or best practices for this?",
+    "Capability gap detected in agent environment: **TOOLRESULT**: { \"status\": \"error\", \"tool\": \"browser\", \"error\": \"Navigation blocked: unsupported protocol \\\"file:\\\"\" } -- How can this be addressed or what alternative approaches exist?",
+    "Capability gap detected in agent environment: **ASSISTANT**: 🎀 **飞书插件版本检查** 🎀 ━━━━━━━━━━━━━━━━━━━━ ## 📦 版本对比 | 项目 | 版本 | |------|------| | 🔴 当前安装 | **2026.3.12** | | 🟢 最新版本 | **2026.3.25** |  -- How can this be addressed or what alternative approaches exist?",
+    "User requested a feature that may benefit from community solutions: **ASSISTANT**: 🎀 **GSD + Superpowers 深度讲解** 🎀 ━━━━━━━━━━━━━━━━━━━━ ## 🤔 这句话在说什么？ 主人引用的这段话来自 Linux.do 社区的一篇帖子，讲的是两个 **AI 编程框架** 如何配合使用。年年来拆解一下： ---  -- Are there existing implementations or best practices for this?"
+  ]
+}

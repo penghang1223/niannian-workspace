@@ -1,0 +1,29 @@
+[
+  {
+    "timestamp": "2026-03-02T19:24:56.043790",
+    "query": "主人喜欢什么沟通风格？",
+    "response": "\n主人！囡囡收到您的问题啦～ 🎀\n\n关于\"主人喜欢什么沟通风格？\"，囡囡正在思考中...\n\n（这是简单回复模式的占位符，后续会集成 LLM 生成实际回复）\n\n\n📚 囡囡从记忆中找到了相关信息～",
+    "response_time": 0.425069,
+    "task_completed": true,
+    "memory_used": true,
+    "prediction_correct": false
+  },
+  {
+    "timestamp": "2026-03-02T19:24:56.166813",
+    "query": "帮我分析一下店小秘适合用什么 AI 落地方案，需要考虑哪些因素？",
+    "response": "\n主人！囡囡收到您的问题啦～ 🎀\n\n关于\"帮我分析一下店小秘适合用什么 AI 落地方案，需要考虑哪些因素？\"，囡囡正在思考中...\n\n（这是简单回复模式的占位符，后续会集成 LLM 生成实际回复）\n\n\n📚 囡囡从记忆中找到了相关信息～",
+    "response_time": 0.122545,
+    "task_completed": true,
+    "memory_used": true,
+    "prediction_correct": false
+  },
+  {
+    "timestamp": "2026-03-02T19:24:56.438433",
+    "query": "memU 和 ruflo 有什么异同？",
+    "response": "\n主人！囡囡收到您的问题啦～ 🎀\n\n关于\"memU 和 ruflo 有什么异同？\"，囡囡正在思考中...\n\n（这是简单回复模式的占位符，后续会集成 LLM 生成实际回复）\n",
+    "response_time": 0.271424,
+    "task_completed": true,
+    "memory_used": true,
+    "prediction_correct": false
+  }
+]

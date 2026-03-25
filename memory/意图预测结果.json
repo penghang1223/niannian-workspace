@@ -1,0 +1,45 @@
+{
+  "timestamp": "2026-03-02T18:56:57.379631",
+  "patterns": {
+    "learning_style": "broad",
+    "execution_style": "theory_focused",
+    "focus_topic": "记忆系统重构",
+    "session_duration": 96,
+    "topic_count": 8
+  },
+  "predictions": [
+    {
+      "type": "summary_request",
+      "confidence": 0.7,
+      "reason": "主人学习了多个话题，可能需要总结回顾",
+      "suggestion_type": "summary"
+    },
+    {
+      "type": "resource_recommendation",
+      "confidence": 0.65,
+      "reason": "主人聚焦于\"记忆系统重构\"，可能需要相关资源",
+      "suggestion_type": "resource",
+      "topic": "记忆系统重构"
+    }
+  ],
+  "suggestions": [
+    {
+      "emoji": "📊",
+      "priority": "medium",
+      "text": "主人今天学习了8个话题，\n囡囡整理了学习路径和成果总结，需要查看吗？",
+      "actions": [
+        "查看总结",
+        "跳过"
+      ]
+    },
+    {
+      "emoji": "💡",
+      "priority": "low",
+      "text": "囡囡发现了一些关于\"记忆系统重构\"的优质资源，\n需要推荐吗？",
+      "actions": [
+        "查看",
+        "稍后"
+      ]
+    }
+  ]
+}

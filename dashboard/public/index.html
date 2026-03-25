@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎀 年年团队 Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh; color: #e0e0e0; padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header {
+            background: rgba(255,255,255,0.05); border-radius: 16px;
+            padding: 24px 32px; margin-bottom: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .header h1 { font-size: 24px; color: #fff; }
+        .header h1 span { color: #ff6b9d; }
+        .header .meta { font-size: 13px; color: #888; }
+        .stats-row {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px; margin-bottom: 24px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05); border-radius: 12px;
+            padding: 20px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-card .num { font-size: 36px; font-weight: 700; color: #fff; }
+        .stat-card .label { font-size: 13px; color: #888; margin-top: 4px; }
+        .stat-card.green .num { color: #4ade80; }
+        .stat-card.blue .num { color: #60a5fa; }
+        .stat-card.yellow .num { color: #fbbf24; }
+        .stat-card.pink .num { color: #ff6b9d; }
+        .stat-card.purple .num { color: #a78bfa; }
+
+        .section-title { font-size: 18px; font-weight: 600; margin: 24px 0 12px; color: #fff; }
+
+        .agents-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px; margin-bottom: 24px;
+        }
+        .agent-card {
+            background: rgba(255,255,255,0.05); border-radius: 12px;
+            padding: 20px; border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.2s;
+        }
+        .agent-card:hover {
+            border-color: rgba(255,107,157,0.3);
+            background: rgba(255,255,255,0.08);
+        }
+        .agent-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .agent-avatar {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+        }
+        .agent-name { font-weight: 600; color: #fff; font-size: 15px; }
+        .agent-role { font-size: 12px; color: #888; }
+        .agent-id { font-size: 11px; color: #666; font-family: monospace; }
+        .agent-model {
+            display: inline-block; padding: 2px 8px; border-radius: 4px;
+            font-size: 11px; margin-top: 8px;
+            background: rgba(96,165,250,0.15); color: #60a5fa;
+        }
+        .status-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            display: inline-block; margin-right: 6px;
+        }
+        .status-dot.active { background: #4ade80; box-shadow: 0 0 6px #4ade80; }
+        .status-dot.idle { background: #fbbf24; }
+
+        .tasks-table {
+            width: 100%; border-collapse: collapse;
+            background: rgba(255,255,255,0.05); border-radius: 12px;
+            overflow: hidden;
+        }
+        .tasks-table th {
+            background: rgba(255,255,255,0.08); padding: 12px 16px;
+            text-align: left; font-size: 13px; color: #888; font-weight: 500;
+        }
+        .tasks-table td { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+        .badge {
+            display: inline-block; padding: 2px 10px; border-radius: 12px;
+            font-size: 11px; font-weight: 600;
+        }
+        .badge.done { background: rgba(74,222,128,0.15); color: #4ade80; }
+        .badge.running { background: rgba(96,165,250,0.15); color: #60a5fa; }
+        .badge.todo { background: rgba(251,191,36,0.15); color: #fbbf24; }
+        .badge.p0 { background: rgba(239,68,68,0.15); color: #ef4444; }
+        .badge.p1 { background: rgba(251,191,36,0.15); color: #fbbf24; }
+        .badge.p2 { background: rgba(96,165,250,0.15); color: #60a5fa; }
+
+        .instincts-section { margin-top: 24px; }
+        .instinct-item {
+            background: rgba(255,255,255,0.05); border-radius: 8px;
+            padding: 12px 16px; margin-bottom: 8px;
+            border-left: 3px solid #a78bfa;
+            font-size: 13px;
+        }
+        .instinct-item .stars { color: #fbbf24; margin-right: 8px; }
+        .instinct-item .source { color: #666; font-size: 11px; }
+
+        .workflow-steps {
+            display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0;
+        }
+        .step {
+            background: rgba(255,255,255,0.08); border-radius: 8px;
+            padding: 8px 16px; font-size: 12px; position: relative;
+        }
+        .step .num { color: #ff6b9d; font-weight: 700; margin-right: 4px; }
+        .step-arrow { color: #444; font-size: 18px; display: flex; align-items: center; }
+
+        .refresh-btn {
+            background: rgba(255,107,157,0.15); color: #ff6b9d;
+            border: 1px solid rgba(255,107,157,0.3); padding: 8px 20px;
+            border-radius: 8px; cursor: pointer; font-size: 13px;
+        }
+        .refresh-btn:hover { background: rgba(255,107,157,0.25); }
+        #lastUpdate { color: #666; font-size: 12px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div>
+            <h1>🎀 <span>年年</span>团队 Dashboard</h1>
+            <div class="meta">OpenClaw Multi-Agent Management System</div>
+        </div>
+        <div style="text-align:right">
+            <button class="refresh-btn" onclick="loadData()">🔄 刷新</button>
+            <div id="lastUpdate" style="margin-top:6px"></div>
+        </div>
+    </div>
+
+    <div class="stats-row" id="statsRow"></div>
+
+    <div class="section-title">📋 GSD 工作流</div>
+    <div class="workflow-steps">
+        <div class="step"><span class="num">1</span> 需求理解</div>
+        <div class="step-arrow">→</div>
+        <div class="step"><span class="num">2</span> TDD 验收标准</div>
+        <div class="step-arrow">→</div>
+        <div class="step"><span class="num">3</span> 波次规划</div>
+        <div class="step-arrow">→</div>
+        <div class="step"><span class="num">4</span> 并行执行</div>
+        <div class="step-arrow">→</div>
+        <div class="step"><span class="num">5</span> 验收</div>
+        <div class="step-arrow">→</div>
+        <div class="step"><span class="num">6</span> 归档</div>
+    </div>
+
+    <div class="section-title">🤖 Agent 团队</div>
+    <div class="agents-grid" id="agentsGrid"></div>
+
+    <div class="section-title">📊 任务看板</div>
+    <table class="tasks-table" id="tasksTable">
+        <thead><tr><th>ID</th><th>任务</th><th>负责人</th><th>优先级</th><th>状态</th></tr></thead>
+        <tbody></tbody>
+    </table>
+
+    <div class="section-title instincts-section">🧠 最新直觉 (Instincts)</div>
+    <div id="instinctsList"></div>
+</div>
+
+<script>
+const DATA = {
+    metrics: { agents: 13, tasks: 16, completed: 10, running: 1, todo: 5, successRate: '100%' },
+    agents: [
+        { id: 'main', name: '年年', emoji: '🎀', role: '团队领导/协调员', model: 'Qwen3.5-Plus', status: 'active' },
+        { id: 'product_manager', name: '娜尔', emoji: '📋', role: '产品经理', model: 'Qwen3.5-Plus', status: 'active' },
+        { id: 'dev_engineer', name: '开发工程师', emoji: '⚙️', role: '后端开发', model: 'Qwen-Coder-Next', status: 'active' },
+        { id: 'qa_engineer', name: '本尔', emoji: '🛡️', role: '测试工程师', model: 'Qwen3.5-Plus', status: 'active' },
+        { id: 'frontend_dev', name: '夕尔', emoji: '🎨', role: '前端开发', model: 'Qwen-Coder-Next', status: 'active' },
+        { id: 'chief_cute_officer', name: '岁岁', emoji: '🌸', role: '内容官', model: 'GLM-4.5-Air', status: 'active' },
+        { id: 'taiyi', name: '太一', emoji: '🏛️', role: '架构师', model: 'Qwen3.5-Plus', status: 'active' },
+        { id: 'lingxi', name: '灵犀', emoji: '🦄', role: '策略顾问', model: 'Qwen3.5-Plus', status: 'active' },
+        { id: 'jinghong', name: '惊鸿', emoji: '✒️', role: '文案/翰林', model: 'Qwen3.5-Plus', status: 'active' },
+        { id: 'tiangong', name: '天工', emoji: '🔧', role: '首席架构师', model: 'Qwen3.5-Plus', status: 'active' },
+        { id: 'zhiming', name: '执明', emoji: '🔗', role: '协调员', model: 'GLM-4.5-Air', status: 'active' },
+        { id: 'yueying', name: '月影', emoji: '🌙', role: '映像/分析', model: 'Qwen3.5-Plus', status: 'active' },
+        { id: 'shichen', name: '司辰', emoji: '⏰', role: '时间管理', model: 'GLM-4.5-Air', status: 'active' },
+    ],
+    tasks: [
+        { id: 'TASK-007', title: 'Dashboard 多智能体管理界面', owner: 'main', priority: 'P2', status: 'running' },
+        { id: 'TASK-008', title: 'Multi Agent 通信监控工具', owner: 'dev_engineer', priority: 'P1', status: 'todo' },
+        { id: 'TASK-009', title: '飞书知识库自动备份脚本', owner: 'dev_engineer', priority: 'P1', status: 'todo' },
+        { id: 'TASK-010', title: '热点追踪 CLI 工具', owner: 'dev_engineer', priority: 'P2', status: 'todo' },
+        { id: 'TASK-012', title: 'Python 编程练习生成器', owner: 'dev_engineer', priority: 'P2', status: 'todo' },
+        { id: 'TASK-013', title: 'Git Commit Message 生成器', owner: 'dev_engineer', priority: 'P2', status: 'todo' },
+    ],
+    instincts: [
+        { text: '方法1失败不要汇报，继续尝试方法2、3...直到成功', stars: 5, source: '主人教导' },
+        { text: 'SOUL.md 核心指令要精简，超过2000 token AI会忽略一半', stars: 3, source: 'ECC 研究' },
+        { text: 'Gateway 重启会导致飞书连接中断，重启前应告知主人', stars: 5, source: '实战踩坑' },
+        { text: '给Agent下任务用业务目标描述，不用技术规范', stars: 3, source: 'ECC 经验' },
+        { text: '主人说"直接做"= 不要再问，立即执行', stars: 5, source: '多次验证' },
+    ]
+};
+
+function loadData() {
+    // Stats
+    const s = DATA.metrics;
+    document.getElementById('statsRow').innerHTML = `
+        <div class="stat-card green"><div class="num">${s.agents}</div><div class="label">活跃 Agent</div></div>
+        <div class="stat-card blue"><div class="num">${s.tasks}</div><div class="label">总任务</div></div>
+        <div class="stat-card pink"><div class="num">${s.completed}</div><div class="label">已完成</div></div>
+        <div class="stat-card yellow"><div class="num">${s.todo}</div><div class="label">待处理</div></div>
+        <div class="stat-card purple"><div class="num">${s.successRate}</div><div class="label">成功率</div></div>
+    `;
+
+    // Agents
+    document.getElementById('agentsGrid').innerHTML = DATA.agents.map(a => `
+        <div class="agent-card">
+            <div class="agent-header">
+                <div class="agent-avatar">${a.emoji}</div>
+                <div>
+                    <div class="agent-name"><span class="status-dot ${a.status}"></span>${a.name}</div>
+                    <div class="agent-role">${a.role}</div>
+                    <div class="agent-id">${a.id}</div>
+                </div>
+            </div>
+            <div class="agent-model">🤖 ${a.model}</div>
+        </div>
+    `).join('');
+
+    // Tasks
+    document.querySelector('#tasksTable tbody').innerHTML = DATA.tasks.map(t => `
+        <tr>
+            <td style="font-family:monospace;color:#888">${t.id}</td>
+            <td>${t.title}</td>
+            <td>${t.owner}</td>
+            <td><span class="badge ${t.priority.toLowerCase()}">${t.priority}</span></td>
+            <td><span class="badge ${t.status}">${t.status === 'done' ? '✅ 完成' : t.status === 'running' ? '🏃 进行中' : '⏳ 待处理'}</span></td>
+        </tr>
+    `).join('');
+
+    // Instincts
+    document.getElementById('instinctsList').innerHTML = DATA.instincts.map(i => `
+        <div class="instinct-item">
+            <span class="stars">${'⭐'.repeat(i.stars)}</span>
+            ${i.text}
+            <span class="source">— ${i.source}</span>
+        </div>
+    `).join('');
+
+    document.getElementById('lastUpdate').textContent = '更新于 ' + new Date().toLocaleTimeString('zh-CN');
+}
+
+loadData();
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+{
+  "version": "1.0",
+  "createdAt": "2026-03-09T01:04:24.288Z",
+  "updatedAt": "2026-03-09T01:15:24.246Z",
+  "memories": [
+    {
+      "id": "preferences/test/test_pref",
+      "category": "preferences",
+      "subcategory": "test",
+      "filename": "test_pref",
+      "filePath": "/Users/narain/.openclaw/workspace/memory/preferences/test/test_pref.md",
+      "metadata": {
+        "tags": [
+          "测试"
+        ],
+        "createdAt": "2026-03-09T01:04:48.404Z",
+        "updatedAt": "2026-03-09T01:04:48.404Z"
+      },
+      "tags": [
+        "测试"
+      ]
+    },
+    {
+      "id": "knowledge/ai_responses/ai_1773018924245",
+      "category": "knowledge",
+      "subcategory": "ai_responses",
+      "filename": "ai_1773018924245",
+      "filePath": "/Users/narain/.openclaw/workspace/memory/knowledge/ai_responses/ai_1773018924245.md",
+      "metadata": {
+        "userId": "test_user_001",
+        "type": "important_response",
+        "timestamp": "2026-03-09T01:15:24.245Z",
+        "createdAt": "2026-03-09T01:15:24.246Z",
+        "updatedAt": "2026-03-09T01:15:24.246Z"
+      },
+      "tags": []
+    }
+  ],
+  "links": []
+}

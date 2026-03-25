@@ -1,0 +1,292 @@
+{
+  "knowledge": {
+    "331e02de507e": {
+      "id": "331e02de507e",
+      "topic": "Ch10 通信协议学习",
+      "category": "通信协议",
+      "content": "\n学习了 hello-agents Ch10 通信协议，包括：\n1. MCP (Model Context Protocol) - 模型上下文协议\n2. A2A (Agent to Agent) - Agent 间通信协议\n3. ANP (Agent Network Protocol) - Agent 网络协议\n\n推荐方案：A2A + 自定义扩展，适合主人的 4 个 Agent 团队。\n\n已实现完整的消息格式、消息队列、4 个 Agent 角色。\n        ",
+      "author": "nannan",
+      "created_at": 1772474659.870672,
+      "updated_at": 1772474659.870673,
+      "tags": [
+        "hello-agents",
+        "Ch10",
+        "A2A",
+        "MCP"
+      ],
+      "access_count": 7,
+      "last_accessed": 1772474871.858968,
+      "usefulness_score": 0.0,
+      "related_topics": [],
+      "file_path": "memory/Ch10 通信协议学习笔记.md"
+    },
+    "44d612abe59e": {
+      "id": "44d612abe59e",
+      "topic": "ruvnet/ruflo 项目学习",
+      "category": "项目参考",
+      "content": "\nruvnet/ruflo (Claude-Flow) 是领先的 Agent 编排平台：\n- 66 个自学习 Agent\n- 213 个 MCP 工具\n- 分布式蜂群智能\n- 企业级架构\n\n囡囡可以学习：\n1. 蜂群拓扑（mesh/star/hierarchical）\n2. MCP 插件系统\n3. CLI 工具设计\n4. 分布式部署\n        ",
+      "author": "nannan",
+      "created_at": 1772474659.870847,
+      "updated_at": 1772474659.870847,
+      "tags": [
+        "ruflo",
+        "Claude-Flow",
+        "蜂群智能",
+        "MCP"
+      ],
+      "access_count": 1,
+      "last_accessed": 1772474871.8608499,
+      "usefulness_score": 0.0,
+      "related_topics": [],
+      "file_path": "memory/双项目深度学习报告.md"
+    },
+    "0f1a1d93eb0e": {
+      "id": "0f1a1d93eb0e",
+      "topic": "多 Agent 通信协议实现",
+      "category": "多 Agent 架构",
+      "content": "\n囡囡已实现完整的多 Agent 通信协议：\n- AgentMessage 类：完整消息格式\n- MessageQueue 类：消息队列管理\n- ProjectManagerAgent：项目经理协调器\n- DeveloperAgent：开发工程师\n- TesterAgent：测试工程师\n- NannanAgent：囡囡智能助手（意图预测 + 质量评估）\n\n测试通过，可以立即使用！\n        ",
+      "author": "nannan",
+      "created_at": 1772474659.871048,
+      "updated_at": 1772474659.871048,
+      "tags": [
+        "协议实现",
+        "Python",
+        "测试通过"
+      ],
+      "access_count": 3,
+      "last_accessed": 1772474871.85985,
+      "usefulness_score": 0.0,
+      "related_topics": [],
+      "file_path": "memory/multi_agent_protocol.py"
+    },
+    "86958bcf3bb2": {
+      "id": "86958bcf3bb2",
+      "topic": "飞书多机器人配置教程",
+      "category": "飞书集成",
+      "content": "\n囡囡编写了完整的飞书多机器人配置教程：\n1. 创建飞书应用（4 个）\n2. 配置机器人\n3. 配置事件订阅\n4. 配置权限\n5. 部署后端服务\n6. 添加应用到群\n7. 测试验证\n8. 故障排查\n\n包含完整的 Flask 后端代码和配置示例。\n        ",
+      "author": "nannan",
+      "created_at": 1772474659.8716989,
+      "updated_at": 1772474659.8716989,
+      "tags": [
+        "飞书",
+        "机器人",
+        "配置教程",
+        "Flask"
+      ],
+      "access_count": 0,
+      "last_accessed": null,
+      "usefulness_score": 0.0,
+      "related_topics": [],
+      "file_path": "memory/飞书多机器人配置教程.md"
+    },
+    "22602ad17638": {
+      "id": "22602ad17638",
+      "topic": "ReAct+Reflection 决策引擎",
+      "category": "记忆系统",
+      "content": "\n基于 hello-agents Ch4 经典范式：\n- ReAct (Reasoning + Acting)\n- Plan-and-Solve\n- Reflection (反思改进)\n\n囡囡可以优化当前决策逻辑：\n当前：主人问题 → 意图识别 → 工具调用 → 回复\n优化：主人问题 → ReAct 推理 → 工具调用 → 反思 → 回复\n\n预期决策质量提升 30%\n        ",
+      "author": "nannan",
+      "created_at": 1772474659.872144,
+      "updated_at": 1772474659.872144,
+      "tags": [
+        "ReAct",
+        "Reflection",
+        "决策优化"
+      ],
+      "access_count": 0,
+      "last_accessed": null,
+      "usefulness_score": 0.0,
+      "related_topics": [
+        "Ch10 通信协议学习",
+        "多 Agent 通信协议实现"
+      ],
+      "file_path": null
+    },
+    "565add8c1e5e": {
+      "id": "565add8c1e5e",
+      "topic": "Ch10 通信协议完整笔记",
+      "category": "通信协议",
+      "content": "# Ch10 通信协议学习笔记\n\n> 囡囡学习 hello-agents Chapter 10 | 创建：2026-03-02 22:45\n\n---\n\n## 📚 Ch10 通信协议核心内容\n\n### 为什么需要通信协议？\n\n**问题场景**：\n```\n项目经理 Agent → 开发工程师 Agent\n\"帮我写个登录功能\"\n\n❌ 没有协议：\n- 消息格式不统一\n- 任务描述不清晰\n- 结果无法自动化处理\n- 无法追踪进度\n\n✅ 有协议：\n- 标准化消息格式\n- 明确的任务定义\n- 可自动化的结果处理\n- 完整的追踪链路\n```\n\n---\n\n## 🔧 三大主流协议\n\n### 1. MCP (Model Context Protocol) 🔴\n\n**定位**：模型上下文协议，让 AI 模型与外部工具/数据源通信\n\n**核心概念**：\n```\n┌─────────────┐\n│   AI Model  │\n│  (LLM/Claude)│\n└──────┬──────┘\n       │ MCP\n       ▼\n┌─────────────┐\n│   Server    │\n│ (工具/数据...",
+      "author": "nannan",
+      "created_at": 1772474666.262764,
+      "updated_at": 1772474666.2627652,
+      "tags": [
+        "文件导入",
+        "Ch10 通信协议学习笔记"
+      ],
+      "access_count": 0,
+      "last_accessed": null,
+      "usefulness_score": 0.0,
+      "related_topics": [],
+      "file_path": "Ch10 通信协议学习笔记.md"
+    },
+    "af4cb3e4eeaa": {
+      "id": "af4cb3e4eeaa",
+      "topic": "ruflo+hello-agents 深度学习",
+      "category": "项目参考",
+      "content": "# 双项目深度学习报告\n\n> ruvnet/ruflo + datawhalechina/hello-agents 对比分析 | 囡囡自我提升计划  \n> 创建：2026-03-03 02:05 | 版本：v1.0\n\n---\n\n## 📊 项目信息对比\n\n| 维度 | ruvnet/ruflo (Claude-Flow) | datawhalechina/hello-agents |\n|------|---------------------------|----------------------------|\n| **定位** | Agent 编排平台（生产级） | 智能体学习教程（教育级） |\n| **Stars** | 17.6k+ | 12.2k+ |\n| **语言** | 英文 | 中文 |\n| **类型** | 产品/框架 | 教程/文档 |\n| **囡囡用途** | 架构参考、功能借鉴 | 理论学习、系统学习 |\n\n---\n\n## 🔥 ruvnet/ruflo 核心亮点\n\n### 1. 蜂群智能 (Swarm Intelligence) 🐝\n\n**特点**：\n```\n66...",
+      "author": "nannan",
+      "created_at": 1772474666.2636118,
+      "updated_at": 1772474666.2636118,
+      "tags": [
+        "文件导入",
+        "双项目深度学习报告"
+      ],
+      "access_count": 0,
+      "last_accessed": null,
+      "usefulness_score": 0.0,
+      "related_topics": [],
+      "file_path": "双项目深度学习报告.md"
+    },
+    "105b1a7d4be3": {
+      "id": "105b1a7d4be3",
+      "topic": "多 Agent 协议完整实现",
+      "category": "多 Agent 架构",
+      "content": "#!/usr/bin/env python3\n\"\"\"\n多 Agent 通信协议实现\n\n基于 hello-agents Ch10 + 囡囡扩展设计\n支持：项目经理、开发工程师、测试工程师、囡囡 四个 Agent 协同\n\n创建：2026-03-02 22:45\n作者：囡囡 🎀\n\"\"\"\n\nimport uuid\nimport json\nfrom datetime import datetime\nfrom typing import List, Dict, Any, Optional\nfrom dataclasses import dataclass, field, asdict\nfrom enum import Enum\nimport asyncio\n\n\n# ==================== 枚举定义 ====================\n\nclass MessageType(str, Enum):\n    \"\"\"消息类型枚举\"\"\"\n    \n    # 任务相关\n    TASK_ASSIGN = \"task_assign\"       # 分配任务\n    TASK_SUBM...",
+      "author": "nannan",
+      "created_at": 1772474666.264873,
+      "updated_at": 1772474666.264873,
+      "tags": [
+        "文件导入",
+        "multi_agent_protocol"
+      ],
+      "access_count": 0,
+      "last_accessed": null,
+      "usefulness_score": 0.0,
+      "related_topics": [],
+      "file_path": "multi_agent_protocol.py"
+    },
+    "6d54ac02ec9e": {
+      "id": "6d54ac02ec9e",
+      "topic": "飞书机器人配置完整教程",
+      "category": "飞书集成",
+      "content": "# 多机器人接入飞书配置教程\n\n> 囡囡编写 | 版本：v1.0 | 创建：2026-03-02 23:46  \n> 适用：项目经理、开发工程师、测试工程师、囡囡 四个 Agent\n\n---\n\n## 📋 教程目录\n\n1. [前置准备](#1-前置准备)\n2. [创建飞书应用](#2-创建飞书应用)\n3. [配置机器人](#3-配置机器人)\n4. [配置事件订阅](#4-配置事件订阅)\n5. [配置权限](#5-配置权限)\n6. [部署后端服务](#6-部署后端服务)\n7. [添加应用到群](#7-添加应用到群)\n8. [测试验证](#8-测试验证)\n9. [故障排查](#9-故障排查)\n\n---\n\n## 1. 前置准备\n\n### 1.1 需要的账号\n\n- ✅ 飞书企业账号（管理员权限最佳）\n- ✅ 飞书开放平台账号：https://open.feishu.cn/\n\n### 1.2 需要的工具\n\n| 工具 | 用途 | 安装 |\n|------|------|------|\n| **Python 3.9+** | 后端服务 | https://python.org |\n| **ngrok...",
+      "author": "nannan",
+      "created_at": 1772474666.266156,
+      "updated_at": 1772474666.266156,
+      "tags": [
+        "文件导入",
+        "飞书多机器人配置教程"
+      ],
+      "access_count": 0,
+      "last_accessed": null,
+      "usefulness_score": 0.0,
+      "related_topics": [],
+      "file_path": "飞书多机器人配置教程.md"
+    },
+    "02d15653bb3f": {
+      "id": "02d15653bb3f",
+      "topic": "ReAct 引擎集成报告",
+      "category": "记忆系统",
+      "content": "# ReAct 引擎集成完成报告\n\n> 囡囡对话处理器 v2.0 | 集成时间：2026-03-02 19:25\n\n---\n\n## 🎉 集成完成！\n\n### 创建的文件\n\n| 文件 | 作用 | 行数 |\n|------|------|------|\n| `nannan_conversation.py` | 对话处理器 v2.0（集成 ReAct+ 评估） | ~350 行 |\n| `react_engine.py` | ReAct 推理引擎 | ~200 行 |\n| `nannan_evaluator.py` | 质量评估器 | ~250 行 |\n\n---\n\n## 🔧 核心功能\n\n### 1. 智能复杂度分析\n\n```python\n问题分析 → 复杂度评分 (0-1)\n  ↓\n复杂度 >= 0.6 → 使用 ReAct 推理\n复杂度 < 0.6  → 快速回复\n```\n\n**复杂度因素**：\n- 问题长度（>50 字 +0.2，>100 字 +0.2）\n- 多子问题（多个问号/连接词 +0.2-0.3）\n- 需要推理（\"为什么\"/\"怎么\"/\"如何\" +0.2）\n- 多领域（涉及 2+...",
+      "author": "nannan",
+      "created_at": 1772474666.267174,
+      "updated_at": 1772474666.267174,
+      "tags": [
+        "文件导入",
+        "ReAct 集成完成报告"
+      ],
+      "access_count": 0,
+      "last_accessed": null,
+      "usefulness_score": 0.0,
+      "related_topics": [],
+      "file_path": "ReAct 集成完成报告.md"
+    },
+    "4c969d1c0c46": {
+      "id": "4c969d1c0c46",
+      "topic": "web_search/web_fetch 测试",
+      "category": "工具系统",
+      "content": "# web_search 和 web_fetch 工具测试报告\n\n> 完成时间：2026-03-02 20:10 | 状态：✅ 成功（简化版）\n\n---\n\n## 🎉 测试成功！\n\n### 测试结果\n\n| 工具 | 状态 | 说明 |\n|------|------|------|\n| **web_search** | ✅ 成功 | 网络搜索正常工作 |\n| **web_fetch** | ✅ 成功 | 网页获取正常工作 |\n| **memory_search** | ✅ 成功 | 记忆检索正常工作 |\n| **read** | ✅ 成功 | 文件读取正常工作 |\n| **generate_response** | ✅ 成功 | 回复生成正常工作 |\n\n**所有工具集成完成！** 🎉🎉🎉\n\n---\n\n## 📊 实际运行效果\n\n### 测试问题\n```\n🗣️  主人：\"2026 年 3 月 AI 领域有什么新动态？\"\n```\n\n### ReAct 推理过程\n\n```\n步骤 1/3:\n💭 Thought: \"核心需求：用户询问的是未来时间（2026 年 3 月）AI...\"\n🔧 Action:...",
+      "author": "nannan",
+      "created_at": 1772474666.2683961,
+      "updated_at": 1772474666.2683961,
+      "tags": [
+        "文件导入",
+        "web 工具测试报告"
+      ],
+      "access_count": 2,
+      "last_accessed": 1772474871.8604171,
+      "usefulness_score": 0.0,
+      "related_topics": [],
+      "file_path": "web 工具测试报告.md"
+    },
+    "7e7d23aaa396": {
+      "id": "7e7d23aaa396",
+      "topic": "Agent 蜂群拓扑学习",
+      "category": "多 Agent 架构",
+      "content": "\n学习了 ruflo 项目的蜂群智能拓扑：\n1. Mesh 拓扑 - 所有 Agent 互相连接\n2. Star 拓扑 - 中心节点协调\n3. Hierarchical 拓扑 - 层级结构\n4. Ring 拓扑 - 环形连接\n\n优势：\n- 动态扩展 Agent 数量\n- 灵活的通信路由\n- 容错性强\n        ",
+      "author": "nannan",
+      "created_at": 1772474803.501878,
+      "updated_at": 1772474803.501878,
+      "tags": [
+        "蜂群智能",
+        "拓扑",
+        "ruflo",
+        "架构"
+      ],
+      "access_count": 5,
+      "last_accessed": 1772474871.859414,
+      "usefulness_score": 0.0,
+      "related_topics": [],
+      "file_path": "memory/双项目深度学习报告.md"
+    }
+  },
+  "categories": {
+    "通信协议": {
+      "name": "通信协议",
+      "description": "MCP/A2A/ANP 等 Agent 通信协议知识",
+      "parent": null,
+      "subcategories": [],
+      "knowledge_count": 2
+    },
+    "多 Agent 架构": {
+      "name": "多 Agent 架构",
+      "description": "多 Agent 协同、蜂群智能等架构知识",
+      "parent": null,
+      "subcategories": [],
+      "knowledge_count": 3
+    },
+    "记忆系统": {
+      "name": "记忆系统",
+      "description": "记忆管理、RAG 检索、遗忘曲线等",
+      "parent": null,
+      "subcategories": [],
+      "knowledge_count": 2
+    },
+    "上下文工程": {
+      "name": "上下文工程",
+      "description": "上下文窗口管理、情境理解等",
+      "parent": null,
+      "subcategories": [],
+      "knowledge_count": 0
+    },
+    "性能评估": {
+      "name": "性能评估",
+      "description": "KPI 指标、质量评估体系等",
+      "parent": null,
+      "subcategories": [],
+      "knowledge_count": 0
+    },
+    "工具系统": {
+      "name": "工具系统",
+      "description": "MCP 工具、插件系统等",
+      "parent": null,
+      "subcategories": [],
+      "knowledge_count": 1
+    },
+    "飞书集成": {
+      "name": "飞书集成",
+      "description": "飞书机器人配置、事件订阅等",
+      "parent": null,
+      "subcategories": [],
+      "knowledge_count": 2
+    },
+    "项目参考": {
+      "name": "项目参考",
+      "description": "ruflo、hello-agents 等项目学习",
+      "parent": null,
+      "subcategories": [],
+      "knowledge_count": 2
+    }
+  },
+  "last_updated": "2026-03-03T02:07:51.861000"
+}

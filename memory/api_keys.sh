@@ -1,0 +1,3 @@
+export DEEPSEEK_API_KEY="sk-d7fc09a04bef4331a5284c56c8af31c7"
+export OPENAI_API_KEY="sk-d7fc09a04bef4331a5284c56c8af31c7"
+export LLM_API_KEY="sk-d7fc09a04bef4331a5284c56c8af31c7"

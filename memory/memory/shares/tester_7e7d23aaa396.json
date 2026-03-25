@@ -1,0 +1,19 @@
+{
+  "type": "knowledge_share",
+  "from": "nannan",
+  "to": "tester",
+  "knowledge": {
+    "id": "7e7d23aaa396",
+    "topic": "Agent 蜂群拓扑学习",
+    "category": "多 Agent 架构",
+    "summary": "\n学习了 ruflo 项目的蜂群智能拓扑：\n1. Mesh 拓扑 - 所有 Agent 互相连接\n2. Star 拓扑 - 中心节点协调\n3. Hierarchical 拓扑 - 层级结构\n4. Ring 拓扑 - 环形连接\n\n优势：\n- 动态扩展 Agent 数量\n- 灵活的通信路由\n- 容错性强\n        ",
+    "file_path": "memory/双项目深度学习报告.md",
+    "tags": [
+      "蜂群智能",
+      "拓扑",
+      "ruflo",
+      "架构"
+    ]
+  },
+  "timestamp": "2026-03-03T02:06:43.503797"
+}
