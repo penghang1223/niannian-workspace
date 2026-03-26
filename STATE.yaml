@@ -166,8 +166,8 @@ tasks:
     title: OpenClaw 多 Agent 通信监控工具
     status: todo
     owner: dev_engineer
-    priority: P1
-    notes: "实时监控 Agent 消息传递状态、响应时间"
+    priority: P2
+    notes: "实时监控 Agent 消息传递状态、响应时间（Dashboard v3 已部分覆盖，降级P2）"
   - id: TASK-009
     title: 飞书知识库自动备份脚本
     status: todo
@@ -176,10 +176,10 @@ tasks:
     notes: "自动导出飞书文档为 Markdown 并备份到 Git"
   - id: TASK-010
     title: 内容工厂 - 热点追踪 CLI 工具
-    status: todo
+    status: cancelled
     owner: dev_engineer
     priority: P2
-    notes: "抓取小红书/抖音/微博热点话题"
+    notes: "取消 - 2026-03-27 清理：无明确需求，价值不足"
   - id: TASK-011
     title: Agent 任务自动分配器
     status: done
@@ -190,16 +190,16 @@ tasks:
     notes: "根据任务类型自动分发给最合适的 Agent，30 测试用例 100% 通过"
   - id: TASK-012
     title: Python 编程练习生成器
-    status: todo
+    status: cancelled
     owner: dev_engineer
     priority: P2
-    notes: "生成 AI 相关的 Python 练习题"
+    notes: "取消 - 2026-03-27 清理：无明确需求"
   - id: TASK-013
     title: Git Commit Message 生成器（惊喜小工具）
     status: todo
     owner: dev_engineer
-    priority: P2
-    notes: "根据 git diff 自动生成 commit message"
+    priority: P3
+    notes: "根据 git diff 自动生成 commit message（降级P3，有空再做）"
 
   # 任务 VOICE: local-whisper 技能安装
   - id: TASK-VOICE
@@ -317,12 +317,13 @@ metrics_analysis_2026-03-26_09:00:
     total_tasks: 20
     completed: 15
     in_progress: 0
-    todo: 5
+    todo: 3
+    cancelled: 2
     success_rate: 100%
     completion_rate: 75%
-    git_commits: 1 (初始提交，03-25)
-    git_uncommitted_changes: 10+ files modified, 100+ untracked
-    dashboard_v3_status: "⚠️ 进程未运行 (端口 5175 无监听)"
+    git_commits: 5 (最近 03-27)
+    git_uncommitted_files: "0 (已提交)"
+    dashboard_v3_status: "✅ 运行中 (端口 5175)"
     dashboard_legacy_status: "⚠️ 仍在运行 (端口 5177, 4 个 Vite 进程)"
     stale_tasks_days: 6 (TASK-008~013 自 03-20 起无进展)
     shared_docs_missing: "DECISIONS.md, PROJECT_STATUS.md 未创建"
