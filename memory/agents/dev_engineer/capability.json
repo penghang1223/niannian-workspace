@@ -1,0 +1,30 @@
+{
+  "agent_id": "dev_engineer",
+  "name": "开发工程师",
+  "role": "backend_developer",
+  "version": "1.0",
+  "last_evaluated": "2026-03-27",
+  "capabilities": {
+    "code_implementation": {
+      "level": 3,
+      "evidence": ["能完成基础功能开发"],
+      "weaknesses": ["复杂业务逻辑处理不足", "性能优化经验少"],
+      "improvement_plan": "建立代码模式库，学习设计模式"
+    },
+    "architecture_design": {
+      "level": 2,
+      "evidence": ["能完成简单架构设计"],
+      "weaknesses": ["大规模系统设计经验不足"],
+      "improvement_plan": "学习微服务/分布式架构"
+    },
+    "code_review": {
+      "level": 2,
+      "evidence": ["能进行基础代码审查"],
+      "weaknesses": ["缺乏系统化审查方法"],
+      "improvement_plan": "建立代码审查清单"
+    }
+  },
+  "total_tasks_completed": 0,
+  "success_rate": 0.0,
+  "avg_quality_score": 0.0
+}

@@ -1,42 +1,38 @@
 {
   "last_run": {
-    "run_id": "run_1774443603026",
-    "created_at": "2026-03-25T13:00:03.110Z",
+    "run_id": "run_1774566002398",
+    "created_at": "2026-03-26T23:00:02.464Z",
     "parent_event_id": "evt_1773665576530",
-    "selected_gene_id": "gene_gep_innovate_from_opportunity",
-    "selected_capsule_id": "capsule_1773665576530",
+    "selected_gene_id": "gene_gep_repair_from_errors",
+    "selected_capsule_id": "capsule_1770477654236",
     "selector": {
-      "selected": "gene_gep_innovate_from_opportunity",
+      "selected": "gene_gep_repair_from_errors",
       "reason": [
         "signals match gene.signals_match",
         "capsule trigger matches signals",
-        "signals: user_improvement_suggestion:- Dashboard 重构：🔥🔥, high_tool_usage:exec, repeated_tool_usage:exec, high_tool_usage:edit",
-        "memory_graph: memory_prefer:gene_gep_innovate_from_opportunity | memory_ban:gene_gep_repair_from_errors | gene_prior:0.571",
+        "signals: log_error, repeated_tool_usage:exec",
+        "memory_graph: memory_prefer:gene_gep_repair_from_errors | memory_ban:gene_gep_innovate_from_opportunity | gene_prior:0.100",
         "drift_intensity: 0.577"
       ],
       "alternatives": []
     },
     "signals": [
-      "user_improvement_suggestion:- Dashboard 重构：🔥🔥",
-      "high_tool_usage:exec",
-      "repeated_tool_usage:exec",
-      "high_tool_usage:edit"
+      "log_error",
+      "repeated_tool_usage:exec"
     ],
     "mutation": {
       "type": "Mutation",
-      "id": "mut_1774443603024",
-      "category": "innovate",
+      "id": "mut_1774566002397",
+      "category": "repair",
       "trigger_signals": [
-        "user_improvement_suggestion:- Dashboard 重构：🔥🔥",
-        "high_tool_usage:exec",
-        "repeated_tool_usage:exec",
-        "high_tool_usage:edit"
+        "log_error",
+        "repeated_tool_usage:exec"
       ],
-      "target": "gene:gene_gep_innovate_from_opportunity",
-      "expected_effect": "explore new strategy combinations to escape local optimum",
-      "risk_level": "medium"
+      "target": "gene:gene_gep_repair_from_errors",
+      "expected_effect": "reduce runtime errors, increase stability, and lower failure rate",
+      "risk_level": "low"
     },
-    "mutation_id": "mut_1774443603024",
+    "mutation_id": "mut_1774566002397",
     "personality_state": {
       "type": "PersonalityState",
       "rigor": 0.7,
@@ -149,8 +145,8 @@
     ],
     "baseline_git_head": null,
     "blast_radius_estimate": {
-      "files": 25,
-      "lines": 2000
+      "files": 20,
+      "lines": 1600
     },
     "active_task_id": null,
     "active_task_title": null,

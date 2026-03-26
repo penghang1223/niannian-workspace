@@ -1,0 +1,30 @@
+{
+  "agent_id": "frontend_dev",
+  "name": "夕尔",
+  "role": "frontend_developer",
+  "version": "1.0",
+  "last_evaluated": "2026-03-27",
+  "capabilities": {
+    "ui_implementation": {
+      "level": 3,
+      "evidence": ["能完成基础UI开发"],
+      "weaknesses": ["复杂交互实现不足", "性能优化经验少"],
+      "improvement_plan": "建立UI模式库，学习现代前端框架"
+    },
+    "component_design": {
+      "level": 2,
+      "evidence": ["能设计简单组件"],
+      "weaknesses": ["缺乏组件化思维", "可复用性考虑不足"],
+      "improvement_plan": "学习组件设计原则，建立组件库"
+    },
+    "responsive_design": {
+      "level": 2,
+      "evidence": ["能实现基础响应式"],
+      "weaknesses": ["复杂布局处理不足"],
+      "improvement_plan": "学习CSS Grid/Flexbox高级用法"
+    }
+  },
+  "total_tasks_completed": 0,
+  "success_rate": 0.0,
+  "avg_quality_score": 0.0
+}

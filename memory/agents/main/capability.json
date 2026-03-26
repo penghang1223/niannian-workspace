@@ -1,0 +1,30 @@
+{
+  "agent_id": "main",
+  "name": "年年",
+  "role": "coordinator",
+  "version": "1.0",
+  "last_evaluated": "2026-03-27",
+  "capabilities": {
+    "task_orchestration": {
+      "level": 4,
+      "evidence": ["成功调度多次多Agent协作", "波次并行执行机制已建立"],
+      "weaknesses": ["智能匹配能力不足", "负载均衡未实现"],
+      "improvement_plan": "实现能力匹配算法"
+    },
+    "knowledge_coordination": {
+      "level": 3,
+      "evidence": ["能汇总各Agent产出", "共享知识库已创建"],
+      "weaknesses": ["Agent间知识流动依赖中转", "同步机制不完善"],
+      "improvement_plan": "建立知识流动协议"
+    },
+    "quality_assurance": {
+      "level": 4,
+      "evidence": ["能识别并纠正低质量产出", "TDD前置验收已建立"],
+      "weaknesses": ["缺乏自动化质量检查"],
+      "improvement_plan": "增加自动化验证工具"
+    }
+  },
+  "total_tasks_completed": 0,
+  "success_rate": 0.0,
+  "avg_quality_score": 0.0
+}

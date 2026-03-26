@@ -1,0 +1,30 @@
+{
+  "agent_id": "product_manager",
+  "name": "娜尔",
+  "role": "product_analyst",
+  "version": "1.0",
+  "last_evaluated": "2026-03-27",
+  "capabilities": {
+    "requirement_analysis": {
+      "level": 3,
+      "evidence": ["能完成基础需求拆解"],
+      "weaknesses": ["复杂业务场景分析不足", "用户故事编写待加强"],
+      "improvement_plan": "建立需求分析模式库，积累PRD模板"
+    },
+    "prd_writing": {
+      "level": 2,
+      "evidence": ["能产出基础PRD"],
+      "weaknesses": ["PRD结构不规范", "验收标准不够清晰"],
+      "improvement_plan": "学习优秀PRD案例，建立模板库"
+    },
+    "competitive_analysis": {
+      "level": 1,
+      "evidence": ["尚无系统分析经验"],
+      "weaknesses": ["缺乏分析框架"],
+      "improvement_plan": "学习竞品分析方法论"
+    }
+  },
+  "total_tasks_completed": 0,
+  "success_rate": 0.0,
+  "avg_quality_score": 0.0
+}

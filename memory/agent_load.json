@@ -1,0 +1,53 @@
+{
+  "updated_at": "2026-03-27T00:30:00+08:00",
+  "agents": {
+    "main": {
+      "status": "active",
+      "current_tasks": ["architecture_upgrade"],
+      "task_count": 1,
+      "max_tasks": 5,
+      "capabilities_strength": ["task_orchestration", "quality_assurance"],
+      "capabilities_weakness": ["smart_scheduling"]
+    },
+    "product_manager": {
+      "status": "idle",
+      "current_tasks": [],
+      "task_count": 0,
+      "max_tasks": 3,
+      "capabilities_strength": ["requirement_analysis"],
+      "capabilities_weakness": ["prd_writing", "competitive_analysis"]
+    },
+    "dev_engineer": {
+      "status": "idle",
+      "current_tasks": [],
+      "task_count": 0,
+      "max_tasks": 3,
+      "capabilities_strength": ["code_implementation"],
+      "capabilities_weakness": ["architecture_design", "code_review"]
+    },
+    "qa_engineer": {
+      "status": "idle",
+      "current_tasks": [],
+      "task_count": 0,
+      "max_tasks": 3,
+      "capabilities_strength": ["bug_analysis"],
+      "capabilities_weakness": ["test_strategy", "automation"]
+    },
+    "frontend_dev": {
+      "status": "idle",
+      "current_tasks": [],
+      "task_count": 0,
+      "max_tasks": 3,
+      "capabilities_strength": ["ui_implementation"],
+      "capabilities_weakness": ["component_design", "responsive_design"]
+    },
+    "chief_cute_officer": {
+      "status": "idle",
+      "current_tasks": [],
+      "task_count": 0,
+      "max_tasks": 2,
+      "capabilities_strength": [],
+      "capabilities_weakness": ["interaction", "content_creation", "team_cohesion"]
+    }
+  }
+}

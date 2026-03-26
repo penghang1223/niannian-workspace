@@ -60,3 +60,48 @@ memory-app/node_modules/
 .learnings/
 __pycache__/
 *.pyc
+
+# Evolution prompt cycles (generated data)
+memory/evolution/gep_prompt_*
+
+# Old experimental scripts (root dir)
+boss-*.js
+boss-*.html
+lazada-*.js
+lazada-*.html
+send_*.js
+multi_role_*.js
+openclaw_multi_role*.js
+openclaw-wrapper.js
+openclaw-nannan-integration.js
+load_user_context.js
+test_*.js
+permission_manager.js
+privacy_filter.js
+preload_multi_role.js
+user_config_manager.js
+user_context_injector.js
+invite_beta_user.js
+ai-learning-log.txt
+memory-app/
+
+# Temp HTML exports (specific files)
+boss-job-*.html
+lazada-*.html
+lazada-result.html
+nannan-dashboard/
+skills/capability-evolver/
+skills/xiaohongshu-ops/
+
+# Temp/project directories
+yunmengze/
+feishu-webhook-server/
+products/
+projects/
+tools/
+hooks/
+skills/local-voice/
+skills/openai-whisper/
+skills/xiaohongshu-mcp/
+*.tar.gz
+小红书笔记内容.txt

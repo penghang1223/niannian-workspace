@@ -1,0 +1,36 @@
+{
+  "agent_id": "qa_engineer",
+  "name": "本尔",
+  "role": "quality_assurance",
+  "version": "1.0",
+  "last_evaluated": "2026-03-27",
+  "capabilities": {
+    "test_design": {
+      "level": 3,
+      "evidence": ["能设计基础测试用例", "理解测试分层"],
+      "weaknesses": ["复杂场景覆盖不足", "自动化测试经验少"],
+      "improvement_plan": "建立测试模式库，学习pytest/playwright"
+    },
+    "bug_analysis": {
+      "level": 4,
+      "evidence": ["能准确定位根因", "分类逻辑清晰"],
+      "weaknesses": ["性能类bug分析较弱"],
+      "improvement_plan": "补充性能分析模板"
+    },
+    "test_strategy": {
+      "level": 2,
+      "evidence": ["能制定基础测试计划"],
+      "weaknesses": ["缺乏系统化策略框架"],
+      "improvement_plan": "学习测试金字塔/测试四象限"
+    },
+    "automation": {
+      "level": 2,
+      "evidence": ["能写简单测试脚本"],
+      "weaknesses": ["自动化框架搭建不熟"],
+      "improvement_plan": "学习pytest/playwright/Jest"
+    }
+  },
+  "total_tasks_completed": 0,
+  "success_rate": 0.0,
+  "avg_quality_score": 0.0
+}

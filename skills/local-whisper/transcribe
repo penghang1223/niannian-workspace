@@ -1,0 +1,8 @@
+#!/bin/bash
+# Local Whisper STT wrapper script
+# Usage: ./transcribe audio.wav [--model base] [--language zh] [--json]
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PYTHON="${SCRIPT_DIR}/.venv/bin/python"
+
+exec "$PYTHON" "${SCRIPT_DIR}/scripts/transcribe.py" "$@"

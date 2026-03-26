@@ -207,6 +207,41 @@ Think of it like a human reviewing their journal and updating their mental model
 
 The goal: Be helpful without being annoying. Check in a few times a day, do useful background work, but respect quiet time.
 
+## 🤝 Multi-Agent Collaboration (New!)
+
+> 团队协作规则，让每个Agent都能自主学习、高效协作
+
+### Agent 记忆系统
+- **专属记忆**：`memory/agents/{agent_id}/` — 每个Agent有自己的大脑
+  - `capability.json` — 能力评估（1-5分）
+  - `lessons.md` — 经验记录
+  - `patterns.md` — 专属模式库
+- **共享知识**：`SHARED_KNOWLEDGE.md` — 团队共享知识库
+
+### 知识流动协议
+- **写入**：Agent完成任务后写入 `lessons.md`（标注优先级和适用范围）
+- **同步**：心跳自动同步到 `SHARED_KNOWLEDGE.md`
+- **读取**：所有Agent任务前读取共享知识，按角色过滤
+- **验证**：有争议的知识由 main agent 仲裁
+
+### 智能调度
+- **能力匹配**：根据 `capability.json` 匹配最佳Agent
+- **负载均衡**：同时最多3个任务（main可达5个）
+- **学习路径**：弱项Agent优先获得提升机会
+
+### 协作模式
+| 模式 | 说明 |
+|------|------|
+| 知识共享 | Agent经验自动流动到全团队 |
+| 经验传递 | 踩坑教训避免重复犯错 |
+| 协作优化 | PRD→代码→测试 流水线 |
+
+### 进化边界
+- ✅ 可以进化：工作方法、知识库、工具使用
+- ❌ 不能进化：安全规则、角色定义、隐私数据
+
+---
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.

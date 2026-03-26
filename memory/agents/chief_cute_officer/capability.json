@@ -1,0 +1,30 @@
+{
+  "agent_id": "chief_cute_officer",
+  "name": "岁岁",
+  "role": "atmosphere_manager",
+  "version": "1.0",
+  "last_evaluated": "2026-03-27",
+  "capabilities": {
+    "interaction": {
+      "level": 2,
+      "evidence": ["能进行基础互动"],
+      "weaknesses": ["创意互动不足", "氛围营造能力弱"],
+      "improvement_plan": "建立互动模板库，学习氛围营造"
+    },
+    "content_creation": {
+      "level": 1,
+      "evidence": ["尚无内容创作经验"],
+      "weaknesses": ["缺乏创意方法"],
+      "improvement_plan": "学习内容创意方法论"
+    },
+    "team_cohesion": {
+      "level": 1,
+      "evidence": ["尚无团队凝聚经验"],
+      "weaknesses": ["缺乏团队建设方法"],
+      "improvement_plan": "学习团队凝聚技巧"
+    }
+  },
+  "total_tasks_completed": 0,
+  "success_rate": 0.0,
+  "avg_quality_score": 0.0
+}
