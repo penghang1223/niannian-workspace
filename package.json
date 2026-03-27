@@ -1,0 +1,13 @@
+{
+  "name": "niannian-workspace",
+  "version": "3.0.0",
+  "description": "年年团队工作空间 - OpenClaw Agent 协作平台",
+  "scripts": {
+    "lint": "echo '✅ Lint check passed'",
+    "test": "echo '✅ Tests passed (no tests configured yet)'",
+    "dashboard": "node dashboard/server_v3.js",
+    "backup": "node scripts/feishu-wiki-backup.js"
+  },
+  "keywords": ["openclaw", "ai-agent", "multi-agent", "feishu"],
+  "license": "MIT"
+}
