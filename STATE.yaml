@@ -170,10 +170,13 @@ tasks:
     notes: "实时监控 Agent 消息传递状态、响应时间（Dashboard v3 已部分覆盖，降级P2）"
   - id: TASK-009
     title: 飞书知识库自动备份脚本
-    status: todo
-    owner: dev_engineer
+    status: done
+    owner: main
     priority: P1
-    notes: "自动导出飞书文档为 Markdown 并备份到 Git"
+    started: 2026-03-27T07:56:00+08:00
+    completed: 2026-03-27T08:09:00+08:00
+    output: /Users/narain/.openclaw/workspace/feishu-wiki-backup/
+    notes: "首次完整备份：云梦泽AIGC 14 个文档节点，Markdown + Git 版本控制"
   - id: TASK-010
     title: 内容工厂 - 热点追踪 CLI 工具
     status: cancelled
