@@ -21,24 +21,30 @@ function App() {
     setWsConnected(isConnected)
   }, [isConnected, setWsConnected])
 
-  // 初始化加载 mock 数据（后端未连接时使用）
+  // 初始化加载数据（尝试 API，失败用 mock）
   useEffect(() => {
-    // 尝试从 API 加载，失败则用 mock
     fetch('/api/agents')
       .then((r) => r.json())
-      .then((data) => {
-        setAgents(data)
+      .then((res) => {
+        setAgents(res.data || res)
         return fetch('/api/tasks')
       })
       .then((r) => r.json())
-      .then((data) => {
-        setTasks(data)
+      .then((res) => {
+        setTasks(res.data || res)
         return fetch('/api/tasks/stats')
       })
       .then((r) => r.json())
-      .then((data) => setTaskStats(data))
-      .catch(() => {
-        console.log('[Init] Backend not available, using mock data')
+      .then((res) => {
+        setTaskStats(res.data || res)
+        return fetch('/api/metrics/overview')
+      })
+      .then((r) => r.json())
+      .then((res) => {
+        setOverview(res.data || res)
+      })
+      .catch((e) => {
+        console.log('[Init] API error, using mock data:', e.message)
         setAgents(MOCK_AGENTS)
         setTasks(MOCK_TASKS)
         setTaskStats(MOCK_TASK_STATS)

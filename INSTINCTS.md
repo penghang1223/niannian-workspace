@@ -28,6 +28,10 @@
 | T-002 | 飞书互动卡片在引用回复时，旧版插件只传 `[Interactive Card]` 标记；通过 `feishu_im_user_get_messages` API 可以读取完整内容 | ⭐⭐⭐⭐⭐ | 2026-03-25 卡片问题排查 |
 | T-003 | 旧版 feishu 插件和新版 openclaw-lark 冲突时，需要 `openclaw config set plugins.entries.feishu.enabled false --json` 禁用旧版 | ⭐⭐⭐⭐⭐ | 2026-03-25 插件冲突 |
 | T-004 | web_fetch 抓不到的内容，用 browser 工具可以抓到（微信文章等需要 JS 渲染的页面） | ⭐⭐⭐⭐⭐ | 2026-03-19 微信文章事件 |
+| T-005 | Vercel Serverless Function 不支持 native C++ 模块（better-sqlite3、sharp 等），会报 `FUNCTION_INVOCATION_FAILED`；替代方案：纯 JS 内存数据或 WASM | ⭐⭐⭐⭐⭐ | 2026-03-27 Dashboard 部署 |
+| T-006 | Vercel 的 `[...path].js` catch-all API 路由不可靠，用具体文件名（agents.js、tasks.js）更稳定 | ⭐⭐⭐⭐ | 2026-03-27 Dashboard 部署 |
+| T-007 | package.json 有 `"type": "module"` 时，.js 文件是 ES module，`module.exports` 会报错；Vercel 也不认 .cjs 扩展名 | ⭐⭐⭐⭐ | 2026-03-27 Dashboard 部署 |
+| T-008 | 前后端联调最大坑是字段不一致，开发前应先定义 API schema 契约（OpenAPI/Swagger）| ⭐⭐⭐⭐ | 2026-03-27 本尔测试发现 |
 
 ## 📋 工作流直觉
 
@@ -38,6 +42,9 @@
 | W-003 | SOUL.md 等核心指令文件要精简，超过 2000 token AI 会忽略一半规则（ECC 经验） | ⭐⭐⭐ | 2026-03-25 ECC 研究 |
 | W-004 | Agent 团队控制在 3-4 个协作最高效，太多协调开销反而吃效率（ECC 经验） | ⭐⭐⭐ | 2026-03-25 ECC 研究 |
 | W-005 | 给 Agent 下达任务时用业务目标描述，不用技术规范（让 Agent 自己想实现） | ⭐⭐⭐ | 2026-03-25 ECC 经验 |
+| W-006 | 多 Agent 调度需要先配权限：`tools.agentToAgent.allow` + `subagents.allowAgents` 两个都要配，缺一不可 | ⭐⭐⭐⭐⭐ | 2026-03-27 Dashboard 项目 |
+| W-007 | `sessions_spawn(agentId=xxx)` 是真正的多 Agent 调度，子会话在目标 Agent 的 workspace 中执行；不带 agentId 则是自己的子会话 | ⭐⭐⭐⭐⭐ | 2026-03-27 Dashboard 项目 |
+| W-008 | GSD 波次并行效果显著：Wave 1(设计) → Wave 2(开发) → Wave 3(测试)，3 波 5 个 Agent 约 17 分钟完成 | ⭐⭐⭐⭐ | 2026-03-27 Dashboard 项目 |
 
 ## 🤝 主人偏好直觉
 
@@ -59,12 +66,12 @@
 
 ## 📊 统计
 
-- 总直觉数：12
-- 技术直觉：4
-- 工作流直觉：5
+- 总直觉数：18（+6 新增）
+- 技术直觉：8（+4）
+- 工作流直觉：8（+3）
 - 主人偏好：4
 - 安全直觉：2
-- 平均置信度：4.1
+- 平均置信度：4.3（+0.2）
 
 ---
 
