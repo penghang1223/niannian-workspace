@@ -2,7 +2,6 @@
   "name": "dashboard-v4-client",
   "private": true,
   "version": "4.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
