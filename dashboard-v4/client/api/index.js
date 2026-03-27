@@ -1,6 +1,3 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-
-// === 内存数据存储 ===
 const agents = [
   { id: 'main', name: '年年', role: '团队领导/协调员', emoji: '🎀', status: 'online', tasks_completed: 15, tasks_in_progress: 1, success_rate: 100 },
   { id: 'product_manager', name: '娜尔', role: '产品经理', emoji: '📋', status: 'online', tasks_completed: 8, tasks_in_progress: 0, success_rate: 100 },
@@ -36,84 +33,62 @@ const events = [
   { id: 3, type: 'deploy', source: 'dev_engineer', target: null, data: '{"platform":"vercel"}', created_at: new Date().toISOString() },
 ];
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
+module.exports = (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const path = (req.query.path as string[]) || [];
-  const route = '/' + path.join('/');
-  const method = req.method || 'GET';
+  const url = new URL(req.url, 'http://localhost');
+  const path = url.pathname.replace('/api', '');
+  const method = req.method;
 
   try {
-    // Health
-    if (route === '/health') return res.json({ status: 'ok', version: '1.0.0', timestamp: new Date().toISOString() });
+    if (path === '/health' || path === '/') return res.json({ status: 'ok', version: '1.0.0', timestamp: new Date().toISOString() });
+    if (path === '/agents') return res.json({ data: agents });
+    if (path === '/agents/stats') return res.json({ data: { total: 13, online: 6, busy: 0, idle: 7, offline: 0 } });
 
-    // Agents
-    if (route === '/agents') return res.json({ data: agents });
-    if (route === '/agents/stats') return res.json({ data: { total: 13, online: 6, busy: 0, idle: 7, offline: 0 } });
+    const am = path.match(/^\/agents\/([^/]+)$/);
+    if (am) { const a = agents.find(x => x.id === am[1]); return a ? res.json({ data: a }) : res.status(404).json({ error: 'Not found' }); }
 
-    const agentMatch = route.match(/^\/agents\/([^/]+)$/);
-    if (agentMatch) {
-      const a = agents.find(a => a.id === agentMatch[1]);
-      if (!a) return res.status(404).json({ error: 'Agent not found' });
-      return res.json({ data: a });
+    const atm = path.match(/^\/agents\/([^/]+)\/tasks$/);
+    if (atm) return res.json({ data: tasks.filter(t => t.assignee_id === atm[1]) });
+
+    if (path === '/tasks' && method === 'GET') {
+      const st = url.searchParams.get('status');
+      return res.json({ data: st ? tasks.filter(t => t.status === st) : tasks });
+    }
+    if (path === '/tasks/stats') return res.json({ data: { total: tasks.length, todo: tasks.filter(t=>t.status==='todo').length, in_progress: tasks.filter(t=>t.status==='in_progress').length, done: tasks.filter(t=>t.status==='done').length } });
+
+    if (path === '/tasks' && method === 'POST') {
+      let body = ''; req.on('data', c => body += c); req.on('end', () => {
+        const b = JSON.parse(body || '{}');
+        const ag = agents.find(a => a.id === b.assignee_id);
+        const nt = { id: 'TASK-' + Date.now(), title: b.title, description: b.description || '', status: b.status || 'todo', priority: b.priority || 'P2', assignee_id: b.assignee_id, assignee_name: ag?.name || '', assignee_emoji: ag?.emoji || '', wave: b.wave || 1 };
+        tasks.push(nt); return res.json({ data: nt });
+      }); return;
     }
 
-    const agentTasksMatch = route.match(/^\/agents\/([^/]+)\/tasks$/);
-    if (agentTasksMatch) {
-      return res.json({ data: tasks.filter(t => t.assignee_id === agentTasksMatch[1]) });
+    const tm = path.match(/^\/tasks\/([^/]+)$/);
+    if (tm && method === 'PATCH') {
+      let body = ''; req.on('data', c => body += c); req.on('end', () => {
+        const b = JSON.parse(body || '{}');
+        const idx = tasks.findIndex(t => t.id === tm[1]);
+        if (idx === -1) return res.status(404).json({ error: 'Not found' });
+        if (b.status) tasks[idx].status = b.status;
+        if (b.title) tasks[idx].title = b.title;
+        return res.json({ data: tasks[idx] });
+      }); return;
     }
+    if (tm && method === 'DELETE') { tasks = tasks.filter(t => t.id !== tm[1]); return res.json({ success: true }); }
 
-    // Tasks
-    if (route === '/tasks' && method === 'GET') {
-      const status = req.query.status as string;
-      return res.json({ data: status ? tasks.filter(t => t.status === status) : tasks });
-    }
-    if (route === '/tasks/stats') return res.json({ data: { total: tasks.length, todo: tasks.filter(t=>t.status==='todo').length, in_progress: tasks.filter(t=>t.status==='in_progress').length, done: tasks.filter(t=>t.status==='done').length } });
+    if (path === '/metrics/overview') return res.json({ data: { agents: { total: 13, online: 6 }, tasks: { total: tasks.length, done: tasks.filter(t=>t.status==='done').length }, uptime: 999, memoryMB: 42 } });
+    if (path === '/metrics/system') return res.json({ data: { memoryMB: 42, uptime: 999 } });
+    if (path === '/metrics') return res.json({ data: [] });
 
-    if (route === '/tasks' && method === 'POST') {
-      const body = req.body || {};
-      const agent = agents.find(a => a.id === body.assignee_id);
-      const newTask = { id: `TASK-${Date.now()}`, title: body.title, description: body.description || '', status: body.status || 'todo', priority: body.priority || 'P2', assignee_id: body.assignee_id, assignee_name: agent?.name || '', assignee_emoji: agent?.emoji || '', wave: body.wave || 1 };
-      tasks.push(newTask);
-      return res.json({ data: newTask });
-    }
+    if (path === '/events' && method === 'GET') return res.json({ data: events });
+    if (path === '/config') return res.json({ data: { name: 'Dashboard v4.0', version: '1.0.0', agents: 13 } });
 
-    const taskMatch = route.match(/^\/tasks\/([^/]+)$/);
-    if (taskMatch && method === 'PATCH') {
-      const body = req.body || {};
-      const idx = tasks.findIndex(t => t.id === taskMatch[1]);
-      if (idx === -1) return res.status(404).json({ error: 'Task not found' });
-      if (body.status) tasks[idx].status = body.status;
-      if (body.title) tasks[idx].title = body.title;
-      if (body.priority) tasks[idx].priority = body.priority;
-      return res.json({ data: tasks[idx] });
-    }
-    if (taskMatch && method === 'DELETE') {
-      tasks = tasks.filter(t => t.id !== taskMatch[1]);
-      return res.json({ success: true });
-    }
-
-    // Metrics
-    if (route === '/metrics/overview') return res.json({ data: { agents: { total: 13, online: 6 }, tasks: { total: tasks.length, done: tasks.filter(t=>t.status==='done').length }, uptime: 999, memoryMB: 42 } });
-    if (route === '/metrics/system') return res.json({ data: { memoryMB: 42, uptime: 999, nodeVersion: 'serverless' } });
-    if (route === '/metrics') return res.json({ data: [] });
-
-    // Events
-    if (route === '/events' && method === 'GET') return res.json({ data: events });
-    if (route === '/events' && method === 'POST') {
-      events.unshift({ id: events.length + 1, type: req.body?.type || 'unknown', source: req.body?.source, target: req.body?.target, data: JSON.stringify(req.body?.data || {}), created_at: new Date().toISOString() });
-      return res.json({ success: true });
-    }
-
-    // Config
-    if (route === '/config') return res.json({ data: { name: 'Dashboard v4.0', version: '1.0.0', agents: 13 } });
-
-    return res.status(404).json({ error: 'Not found', route });
-  } catch (err: any) {
-    return res.status(500).json({ error: err.message });
-  }
-}
+    return res.status(404).json({ error: 'Not found', path });
+  } catch (err) { return res.status(500).json({ error: err.message }); }
+};

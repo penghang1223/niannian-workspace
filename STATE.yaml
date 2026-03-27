@@ -250,9 +250,9 @@ metrics:
   shared_docs_missing: "DECISIONS.md, PROJECT_STATUS.md 未创建"
   stale_tasks_days: 6  # TASK-008~013 自 03-20 起无进展
   gitignore_missing: false  # ✅ 已创建
-  ci_cd_configured: false
-  dashboard_v3_running: false  # 🔴 进程未运行 (端口 5175 无监听)
-  legacy_dashboard_running: true  # 🔴 4 个 Vite 进程在端口 5177 (资源浪费)
+  ci_cd_configured: true  # ✅ GitHub Actions 已配置
+  dashboard_v3_running: true  # ✅ 进程运行中 (端口 5175)
+  legacy_dashboard_running: false  # ✅ 已清理
   last_metrics_update: 2026-03-26T09:00:00+08:00
 
 # 共享记忆文件
