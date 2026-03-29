@@ -582,7 +582,7 @@ class AgentFactory:
         "developer": {
             "role": "developer",
             "capabilities": ["coding", "debugging", "documentation"],
-            "description": "开发工程师"
+            "description": "玄机"
         },
         "tester": {
             "role": "tester",

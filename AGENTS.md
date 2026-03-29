@@ -52,6 +52,50 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - `trash` > `rm` (recoverable beats gone forever)
 - When in doubt, ask.
 
+## 搜索降级规则（子 Agent 适用）
+
+当 `web_search` 工具不可用时，按以下顺序降级：
+1. `exec` + `curl` 调搜索引擎 API（Brave/Google/Bing）
+2. `exec` + `curl` 抓取搜索结果页 HTML，提取链接
+3. `web_fetch` 抓取目标网页内容
+4. 向年年（main agent）发 `sessions_send` 请求代为搜索
+
+**禁止**：直接说"搜索工具不可用"就放弃，必须尝试以上方法。
+
+## 学习反馈闭环（2026-03-28 主人命令）
+
+**所有 Agent 每次心跳必须执行四步闭环：**
+
+```
+学 → 评 → 用 → 反馈
+```
+
+1. **学**：不限网站/领域/方式，无所不用其极地学习
+2. **评**：诚实评估——真的有用吗？在哪能用？是增量还是重复？
+3. **用**：立即想具体场景，写"我要这样做"，不要写"以后有机会"
+4. **反馈**：记录到 lessons.md，下次心跳回填实际效果
+
+**进化规则：**
+- 连续3次学到的知识都没用 → 换学习方向
+- 连续3次都用了且有效 → 深挖这个方向
+- 学了不用 = 白学，不要自欺欺人
+
+## 年年的审查+双向学习职责（2026-03-28 主人命令）
+
+年年对每个Agent的学习汇报同时做两件事：
+1. **审查**：检查Agent优化自己的改动是否合理，发现问题立即指出
+2. **反向学习**：从Agent的产出中提取有价值的知识，写入自己的lessons.md或SHARED_KNOWLEDGE.md
+
+年年不只是汇总者，也是学习者——全团队的知识应该双向流动。
+
+## 浏览器规则（2026-03-28 主人命令）
+
+**所有 Agent 必须遵守：**
+- 默认使用 sandbox（隔离）浏览器
+- ❌ 禁止主动使用 `profile="user"`（主人的浏览器）
+- ✅ 只有主人明确说"用我的浏览器"才用 host 浏览器
+- 写入位置：SHARED_KNOWLEDGE.md → 🌐 浏览器使用规则
+
 ## External vs Internal
 
 **Safe to do freely:**
@@ -245,3 +289,13 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
+
+## 搜索降级规则（所有Agent适用）
+
+当 `web_search` 工具不可用时，按以下顺序降级：
+1. `web_fetch` 抓取 Google 搜索结果页（https://www.google.com/search?q=xxx）
+2. `web_fetch` 抓取 Bing 搜索结果页
+3. `exec` + `curl` 调搜索引擎网页
+4. 向年年（main agent）发 `sessions_send` 请求代为搜索
+
+**禁止**：直接说"搜索工具不可用"就放弃，必须尝试以上方法。

@@ -1,0 +1,150 @@
+{
+  "name": "agents-api",
+  "version": "1.0.0",
+  "description": "Agent Dashboard API — 智能体管理接口",
+  "baseUrl": "/api/v1",
+  "endpoints": {
+    "listAgents": {
+      "method": "GET",
+      "path": "/agents",
+      "description": "获取所有 Agent 列表",
+      "response": {
+        "type": "object",
+        "description": "Agent 列表响应",
+        "required": ["agents", "total"],
+        "properties": {
+          "agents": {
+            "type": "array",
+            "description": "Agent 列表",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string", "description": "Agent 唯一标识" },
+                "name": { "type": "string", "description": "Agent 名称" },
+                "model": { "type": "string", "description": "使用的 AI 模型" },
+                "status": {
+                  "type": "string",
+                  "enum": ["online", "offline", "busy", "error"],
+                  "description": "Agent 状态"
+                },
+                "tags": {
+                  "type": "array",
+                  "description": "标签列表",
+                  "items": { "type": "string" }
+                },
+                "tasks_completed": { "type": "integer", "description": "已完成任务数", "minimum": 0 },
+                "last_heartbeat": {
+                  "type": "string",
+                  "description": "最后心跳时间 (ISO 8601)",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}T"
+                },
+                "last_active": {
+                  "type": "string",
+                  "description": "最后活跃时间 (ISO 8601)",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}T"
+                }
+              },
+              "required": ["id", "name", "status"]
+            }
+          },
+          "total": { "type": "integer", "description": "Agent 总数" }
+        }
+      }
+    },
+
+    "getAgent": {
+      "method": "GET",
+      "path": "/agents/:id",
+      "description": "获取单个 Agent 详情",
+      "response": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "model": { "type": "string" },
+          "status": { "type": "string", "enum": ["online", "offline", "busy", "error"] },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "tasks_completed": { "type": "integer", "minimum": 0 },
+          "last_heartbeat": { "type": "string" },
+          "last_active": { "type": "string" },
+          "config": {
+            "type": "object",
+            "properties": {
+              "max_concurrent_tasks": { "type": "integer", "minimum": 1 },
+              "timeout_seconds": { "type": "integer", "minimum": 0 },
+              "auto_restart": { "type": "boolean" }
+            }
+          }
+        },
+        "required": ["id", "name", "status"]
+      }
+    },
+
+    "createAgent": {
+      "method": "POST",
+      "path": "/agents",
+      "description": "创建新 Agent",
+      "request": {
+        "type": "object",
+        "required": ["name", "model"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "model": { "type": "string", "description": "AI 模型标识" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "config": {
+            "type": "object",
+            "properties": {
+              "max_concurrent_tasks": { "type": "integer", "minimum": 1, "default": 5 },
+              "timeout_seconds": { "type": "integer", "minimum": 0, "default": 300 },
+              "auto_restart": { "type": "boolean", "default": true }
+            }
+          }
+        }
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "model": { "type": "string" },
+          "status": { "type": "string" },
+          "created_at": { "type": "string" }
+        },
+        "required": ["id", "name", "status"]
+      }
+    },
+
+    "updateAgent": {
+      "method": "PATCH",
+      "path": "/agents/:id",
+      "description": "更新 Agent 配置",
+      "request": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "model": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "config": {
+            "type": "object",
+            "properties": {
+              "max_concurrent_tasks": { "type": "integer", "minimum": 1 },
+              "timeout_seconds": { "type": "integer", "minimum": 0 },
+              "auto_restart": { "type": "boolean" }
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "status": { "type": "string" },
+          "updated_at": { "type": "string" }
+        },
+        "required": ["id", "status"]
+      }
+    }
+  }
+}

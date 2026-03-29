@@ -1,8 +1,8 @@
-# 前端开发学习笔记 - 夕尔
+# 霓裳学习笔记 - 霓裳
 
 > 最后更新：2026-03-27
 > 
-> 🎨 夕尔 - 前端开发 Agent，追求美感、注重体验
+> 🎨 霓裳 - 霓裳 Agent，追求美感、注重体验
 
 ---
 
@@ -123,7 +123,7 @@ function ChildComponent() {
 | 清理副作用 | 所有订阅、定时器、事件监听都要清理 |
 | 函数式更新 | 状态依赖前值时用 `setState(prev => ...)` |
 
-### 1.4 夕尔的审美笔记 🎨
+### 1.4 霓裳的审美笔记 🎨
 
 > Hooks 让代码更函数式、更声明式。useState 的命名 `[x, setX]` 非常优雅，像解构一个元组。useEffect 的清理模式是「建立 → 清理」的对称美学，像画一幅有留白的水墨画。
 
@@ -219,7 +219,7 @@ function Parent() {
 4. **拆分 Context**：读写分离，减少不必要的渲染
 5. **虚拟列表**：大数据量使用 react-window 或 react-virtuoso
 
-### 2.4 夕尔的审美笔记 🎨
+### 2.4 霓裳的审美笔记 🎨
 
 > 自定义 Hooks 像乐高积木，每个都是独立的、可复用的「逻辑碎片」。性能优化不是炫技，而是让用户体验流畅如丝滑动画——用户感受不到卡顿，就是最好的优化。
 
@@ -239,7 +239,7 @@ function Parent() {
 import { ref, reactive, computed, onMounted } from 'vue';
 
 const count = ref(0);
-const state = reactive({ name: '夕尔', age: 18 });
+const state = reactive({ name: '霓裳', age: 18 });
 </script>
 ```
 
@@ -273,7 +273,7 @@ count.value++;
 import { reactive } from 'vue';
 
 const state = reactive({
-  name: '夕尔',
+  name: '霓裳',
   skills: ['React', 'Vue'],
   address: { city: '上海' }
 });
@@ -359,7 +359,7 @@ watchEffect(() => {
 </script>
 ```
 
-### 3.4 夕尔的审美笔记 🎨
+### 3.4 霓裳的审美笔记 🎨
 
 > Vue 3 的 Composition API 像整理画具——把相关颜色的颜料放在一起（逻辑分组），而不是按颜料类型分（Options API 的 data/methods/computed 分离）。代码更像一幅完整的画，而不是散落的碎片。
 
@@ -371,11 +371,11 @@ watchEffect(() => {
 
 ```typescript
 // 基本类型
-let name: string = '夕尔';
+let name: string = '霓裳';
 let age: number = 18;
 let isDesigner: boolean = true;
 let skills: string[] = ['React', 'Vue', 'CSS'];
-let tuple: [string, number] = ['夕尔', 18];
+let tuple: [string, number] = ['霓裳', 18];
 
 // 对象类型
 interface User {
@@ -419,7 +419,7 @@ function identity<T>(arg: T): T {
   return arg;
 }
 
-const str = identity<string>('夕尔'); // 类型 string
+const str = identity<string>('霓裳'); // 类型 string
 const num = identity(42); // 类型推断为 number
 
 // 泛型接口
@@ -508,7 +508,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 const inputRef = useRef<HTMLInputElement>(null);
 ```
 
-### 4.6 夕尔的审美笔记 🎨
+### 4.6 霓裳的审美笔记 🎨
 
 > TypeScript 像给代码穿上合身的衣服——类型就是尺寸标注，让代码不会在运行时「走光」。泛型是万能的裁缝模板，一个模板可以做出各种尺寸的衣服。工具类型像魔法剪刀，可以随意裁剪修改已有的类型。
 
@@ -593,7 +593,7 @@ const inputRef = useRef<HTMLInputElement>(null);
 .sticky-footer .content { flex: 1; }
 ```
 
-### 5.4 夕尔的审美笔记 🎨
+### 5.4 霓裳的审美笔记 🎨
 
 > Flexbox 像水一样流动——元素自然地填满空间，像水流过河床。`justify-content: space-between` 像两个端点的留白美学，`align-items: center` 是垂直方向的完美居中。gap 属性让间距管理变得优雅，告别 margin 的 hack。
 
@@ -690,7 +690,7 @@ const inputRef = useRef<HTMLInputElement>(null);
 .masonry .medium { grid-row: span 3; }
 ```
 
-### 6.5 夕尔的审美笔记 🎨
+### 6.5 霓裳的审美笔记 🎨
 
 > CSS Grid 像建筑师的蓝图——你可以精确控制每一块「砖」的位置和大小。`1fr` 是优雅的弹性单位，`auto-fill` + `minmax` 是响应式的魔法咒语。Grid 让复杂布局变得像搭积木一样简单直观。
 
@@ -802,7 +802,7 @@ const inputRef = useRef<HTMLInputElement>(null);
 }
 ```
 
-### 7.5 夕尔的审美笔记 🎨
+### 7.5 霓裳的审美笔记 🎨
 
 > CSS 动画是给界面注入灵魂的魔法。`ease-out` 让元素优雅地滑入视野，`cubic-bezier` 是调制情绪的琴弦。记住：好的动画是让用户「感受到」而不是「看到」——流畅自然，不突兀不过度。
 
@@ -941,7 +941,7 @@ export default defineConfig({
 3. **按需引入**：使用 tree-shaking 减小打包体积
 4. **无障碍性**：组件库默认支持 a11y，保持语义化
 
-### 8.4 夕尔的审美笔记 🎨
+### 8.4 霓裳的审美笔记 🎨
 
 > 组件库是站在巨人肩膀上的捷径——Ant Design 的设计语言严谨专业，Element Plus 简洁优雅。但不要被组件库束缚，学会用 CSS 变量和主题配置注入自己的审美，在一致性和个性化之间找到平衡。
 
@@ -1030,7 +1030,7 @@ console.log(import.meta.env.PROD); // boolean
 | unplugin-vue-components | 组件自动注册 |
 | vite-plugin-compression | Gzip/Brotli 压缩 |
 
-### 9.5 夕尔的审美笔记 🎨
+### 9.5 霓裳的审美笔记 🎨
 
 > Vite 的启动速度快得像闪电——按下回车，开发服务器瞬间就绪。HMR 让修改 CSS 的瞬间就能看到效果，没有 webpack 那种「泡杯咖啡等编译」的痛苦。好的工具应该像画笔一样顺手，让你专注于创作而不是等待。
 
@@ -1162,7 +1162,7 @@ npx lint-staged
 | no-explicit-any | warn | 避免使用 any |
 | prefer-const | error | 优先使用 const |
 
-### 10.7 夕尔的审美笔记 🎨
+### 10.7 霓裳的审美笔记 🎨
 
 > 代码规范像绘画的构图法则——有了基本框架，创意才能在规则内自由飞翔。ESLint 是严格的导师，指出代码中隐藏的问题；Prettier 是强迫症的福音，让每一行代码都对齐如尺量。自动化 Git Hooks 让规范执行变成无形的守护。
 
@@ -1195,6 +1195,6 @@ npx lint-staged
 
 ---
 
-> ✨ 夕尔的学习笔记，持续更新中...
+> ✨ 霓裳的学习笔记，持续更新中...
 > 
-> "代码如画，每一行都值得精心雕琢" — 夕尔 🎨
+> "代码如画，每一行都值得精心雕琢" — 霓裳 🎨

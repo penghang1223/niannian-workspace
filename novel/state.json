@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "title": "混沌天道",
+    "author": "AI生成",
+    "genre": "东方玄幻",
+    "total_chapters": 50,
+    "completed_chapters": 46,
+    "current_chapter": 46,
+    "words_per_chapter_target": 4000,
+    "last_updated": "2026-03-28T22:55:00+08:00"
+  },
+  "chapters": {
+    "42": {
+      "title": "绝境突围",
+      "status": "completed",
+      "word_count": 4500,
+      "file": "drafts/ch42-46.md"
+    },
+    "43": {
+      "title": "疗伤与突破",
+      "status": "completed",
+      "word_count": 4800,
+      "file": "drafts/ch42-46.md"
+    },
+    "44": {
+      "title": "意外同盟",
+      "status": "completed",
+      "word_count": 4200,
+      "file": "drafts/ch42-46.md"
+    },
+    "45": {
+      "title": "师尊之谜",
+      "status": "completed",
+      "word_count": 4600,
+      "file": "drafts/ch42-46.md"
+    },
+    "46": {
+      "title": "制定反击",
+      "status": "completed",
+      "word_count": 4400,
+      "file": "drafts/ch42-46.md"
+    }
+  },
+  "characters": {
+    "林墨": {
+      "current_realm": "金丹巅峰",
+      "status": "准备营救师尊"
+    },
+    "苏清雪": {
+      "current_realm": "元婴初期",
+      "status": "与林墨同盟"
+    },
+    "玄机子": {
+      "status": "被困万魔窟"
+    }
+  },
+  "plot": {
+    "current_arc": "营救行动",
+    "next_arc": "万魔窟探险"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "lastAskedAt": "2026-03-26T13:00:01.056Z",
+  "lastAskedAt": "2026-03-28T05:00:01.088Z",
   "recentQuestions": [
     "Recurring error in evolution cycle that auto-repair cannot resolve: LLM ERROR] Request was aborted **USER**: Continue where you left off. The previous model attempt fai -- What approaches or patches have worked for similar issues?",
     "Performance bottleneck detected: **TOOLRESULT**: { \"runId\": \"16d41629-f3b6-4fe9-b6cf-85af0393e6a2\", \"status\": \"timeout\", \"sessionKey\": \"agent:product_manager:main\" } -- What optimization strategies or architectural patterns address this?",
@@ -9,6 +9,12 @@
     "Capability gap detected in agent environment: **ASSISTANT**: 🎀 **飞书插件版本检查** 🎀 ━━━━━━━━━━━━━━━━━━━━ ## 📦 版本对比 | 项目 | 版本 | |------|------| | 🔴 当前安装 | **2026.3.12** | | 🟢 最新版本 | **2026.3.25** |  -- How can this be addressed or what alternative approaches exist?",
     "User requested a feature that may benefit from community solutions: **ASSISTANT**: 🎀 **GSD + Superpowers 深度讲解** 🎀 ━━━━━━━━━━━━━━━━━━━━ ## 🤔 这句话在说什么？ 主人引用的这段话来自 Linux.do 社区的一篇帖子，讲的是两个 **AI 编程框架** 如何配合使用。年年来拆解一下： ---  -- Are there existing implementations or best practices for this?",
     "Recurring error in evolution cycle that auto-repair cannot resolve: \"status\": \"error\", \"tool\": \"browser\", \"error\": \"timed out. Restart the OpenClaw gateway (OpenClaw.ap -- What approaches or patches have worked for similar issues?",
-    "Capability gap detected in agent environment: **TOOLRESULT**: [plugins] openclaw-lark failed to load from /Users/narain/.openclaw/extensions/openclaw-lark/index.js: Error: Cannot find module '/opt -- How can this be addressed or what alternative approaches exist?"
+    "Capability gap detected in agent environment: **TOOLRESULT**: [plugins] openclaw-lark failed to load from /Users/narain/.openclaw/extensions/openclaw-lark/index.js: Error: Cannot find module '/opt -- How can this be addressed or what alternative approaches exist?",
+    "User requested a feature that may benefit from community solutions: **TOOLRESULT**: [acpx] session cwd (b7e19c8f-3869-4ec1-bd9a-a8f9a8c96542) · /Users/narain/.openclaw/workspace · agent needs reconnect [client] initial -- Are there existing implementations or best practices for this?",
+    "User requested a feature that may benefit from community solutions: **TOOLRESULT**: --- name: feishu-create-doc description: | 创建飞书云文档。从 Lark-flavored Markdown 内容创建新的飞书云文档，支持指定创建位置（文件夹/知识库/知识空间）。 --- # feishu_mcp_creat -- Are there existing implementations or best practices for this?",
+    "Recurring error in evolution cycle that auto-repair cannot resolve: \"error\": \"fetch failed\" -- What approaches or patches have worked for similar issues?",
+    "Capability gap detected in agent environment: **ASSISTANT**: It appears that the Feishu API is currently inaccessible due to connectivity issues. Both the update and fetch operations are failing w -- How can this be addressed or what alternative approaches exist?",
+    "User requested a feature that may benefit from community solutions: **ASSISTANT**: The ideas collection already has extensive coverage. Let me check if there's anything new to add from today's fresh pulls. [TOOL: read] -- Are there existing implementations or best practices for this?",
+    "User requested a feature that may benefit from community solutions: **USER**: [Sat 2026-03-28 12:57 GMT+8] [学习汇报] 领域：Python工具链-uv包管理器 | 价值：🔴 | 核心收获：uv已安装(v0.9.21)但从未用过，pip仍是默认习惯，每次pip install浪费10-20倍时间 | 用在哪：新项目一律uv i -- Are there existing implementations or best practices for this?"
   ]
 }

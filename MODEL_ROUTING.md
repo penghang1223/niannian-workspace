@@ -23,10 +23,10 @@
 | Agent | 模型 | 理由 |
 |-------|------|------|
 | 年年 (main) | Qwen3.5-Plus | 协调需要平衡能力 |
-| 娜尔 (product_manager) | Qwen3.5-Plus | 需求分析需要理解力 |
-| 开发工程师 (dev_engineer) | Qwen-Coder-Next | 代码专精 |
-| 本尔 (qa_engineer) | Qwen3.5-Plus | 测试逻辑分析 |
-| 夕尔 (frontend_dev) | Qwen-Coder-Next | 前端代码 |
+| 望舒 (product_manager) | Qwen3.5-Plus | 需求分析需要理解力 |
+| 玄机 (dev_engineer) | Qwen-Coder-Next | 代码专精 |
+| 鉴微 (qa_engineer) | Qwen3.5-Plus | 测试逻辑分析 |
+| 霓裳 (frontend_dev) | Qwen-Coder-Next | 前端代码 |
 | 岁岁 (chief_cute_officer) | GLM-4.5-Air | 简单互动，省钱 |
 
 ## 降级策略

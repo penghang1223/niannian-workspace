@@ -130,7 +130,7 @@
 | 需求分析 | product_manager | main | requirement_analysis |
 | PRD撰写 | product_manager | main | prd_writing |
 | 后端开发 | dev_engineer | main | code_implementation |
-| 前端开发 | frontend_dev | dev_engineer | ui_implementation |
+| 霓裳 | frontend_dev | dev_engineer | ui_implementation |
 | 测试设计 | qa_engineer | main | test_design |
 | Bug分析 | qa_engineer | dev_engineer | bug_analysis |
 | 代码审查 | dev_engineer | qa_engineer | code_review |
@@ -163,13 +163,13 @@
 
 ### 示例
 ```
-本尔的 automation 能力只有 2 分
+鉴微的 automation 能力只有 2 分
     ↓
 发现一个"编写自动化测试脚本"的任务（非紧急）
     ↓
-分配给本尔，同时提供学习资源
+分配给鉴微，同时提供学习资源
     ↓
-本尔完成后，automation 提升到 3 分
+鉴微完成后，automation 提升到 3 分
 ```
 
 ---

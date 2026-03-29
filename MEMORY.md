@@ -56,10 +56,10 @@
 | Agent ID | 名称 | 职责 |
 |----------|------|------|
 | `main` | 年年 | 协调员 + 主人专属助理 |
-| `frontend_dev` | 夕尔 | 前端开发 |
-| `product_manager` | 产品经理 | 需求分析/PRD |
-| `dev_engineer` | 开发工程师 | 技术实现 |
-| `qa_engineer` | 测试工程师 | 测试/质量保障 |
+| `frontend_dev` | 霓裳 | 霓裳 |
+| `product_manager` | 望舒 | 需求分析/PRD |
+| `dev_engineer` | 玄机 | 技术实现 |
+| `qa_engineer` | 鉴微 | 测试/质量保障 |
 | `chief_cute_officer` | 可爱官 | 活跃气氛 |
 
 ---

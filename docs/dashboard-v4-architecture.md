@@ -145,7 +145,7 @@ interface WSCommands {
 ```sql
 CREATE TABLE agents (
   id            TEXT PRIMARY KEY,           -- 'main', 'dev_engineer', etc.
-  name          TEXT NOT NULL,              -- '年年', '开发工程师'
+  name          TEXT NOT NULL,              -- '年年', '玄机'
   role          TEXT NOT NULL,              -- '团队领导/协调员'
   model         TEXT DEFAULT 'default',     -- 使用的模型
   workspace     TEXT,                       -- workspace 路径

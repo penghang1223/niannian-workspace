@@ -31,7 +31,7 @@
 | T-005 | Vercel Serverless Function 不支持 native C++ 模块（better-sqlite3、sharp 等），会报 `FUNCTION_INVOCATION_FAILED`；替代方案：纯 JS 内存数据或 WASM | ⭐⭐⭐⭐⭐ | 2026-03-27 Dashboard 部署 |
 | T-006 | Vercel 的 `[...path].js` catch-all API 路由不可靠，用具体文件名（agents.js、tasks.js）更稳定 | ⭐⭐⭐⭐ | 2026-03-27 Dashboard 部署 |
 | T-007 | package.json 有 `"type": "module"` 时，.js 文件是 ES module，`module.exports` 会报错；Vercel 也不认 .cjs 扩展名 | ⭐⭐⭐⭐ | 2026-03-27 Dashboard 部署 |
-| T-008 | 前后端联调最大坑是字段不一致，开发前应先定义 API schema 契约（OpenAPI/Swagger）| ⭐⭐⭐⭐ | 2026-03-27 本尔测试发现 |
+| T-008 | 前后端联调最大坑是字段不一致，开发前应先定义 API schema 契约（OpenAPI/Swagger）| ⭐⭐⭐⭐ | 2026-03-27 鉴微测试发现 |
 
 ## 📋 工作流直觉
 
