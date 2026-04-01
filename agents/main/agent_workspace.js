@@ -6,11 +6,71 @@
  * 
  * @author 年年 🎀
  * @created 2026-03-21 01:52
+ * @security 2026-03-31 天工：exec→execFile 消除命令注入（OWASP A05）
  */
 
+const { execFile } = require('child_process');
 const { worktreeManager } = require('./git_worktree_manager');
 const fs = require('fs');
 const path = require('path');
+
+/**
+ * 安全执行命令
+ * Why: execFile 不经过 shell 解释，参数作为数组传递，消除命令注入风险。
+ * 对比：exec(command) 会将整个字符串传给 /bin/sh -c，攻击者可通过
+ *       "git commit -m \"legit\"; rm -rf /" 注入任意命令。
+ * @param {string} file - 可执行文件路径
+ * @param {string[]} args - 参数数组（每个参数独立传递，不被 shell 解释）
+ * @param {string} cwd - 工作目录
+ * @returns {Promise<string>} stdout
+ */
+function safeExec(file, args, cwd) {
+  return new Promise((resolve, reject) => {
+    execFile(file, args, { cwd }, (error, stdout, stderr) => {
+      if (error) {
+        reject(new Error(stderr || error.message));
+        return;
+      }
+      resolve(stdout.trim());
+    });
+  });
+}
+
+/**
+ * 校验分支名（防命令注入 + 防非法 git 引用）
+ * Why: 分支名可能来自外部输入，必须限制为安全字符集。
+ */
+function validateBranchName(name) {
+  if (typeof name !== 'string' || !/^[a-zA-Z0-9_\-./]+$/.test(name)) {
+    throw new Error(`非法分支名: "${name}"。只允许字母、数字、下划线、连字符、点和斜杠。`);
+  }
+  return name;
+}
+
+/**
+ * 校验提交消息（防注入 + 防空消息）
+ */
+function validateCommitMessage(msg) {
+  if (typeof msg !== 'string' || msg.trim().length === 0) {
+    throw new Error('提交消息不能为空');
+  }
+  // 限制长度，防超长输入
+  if (msg.length > 1000) {
+    throw new Error('提交消息过长（最大 1000 字符）');
+  }
+  return msg.trim();
+}
+
+/**
+ * 校验数字参数
+ */
+function validateNumber(n, name) {
+  const num = Number(n);
+  if (!Number.isInteger(num) || num < 1 || num > 1000) {
+    throw new Error(`${name} 必须是 1-1000 的整数，收到: "${n}"`);
+  }
+  return num;
+}
 
 /**
  * Agent 工作区管理器
@@ -61,90 +121,76 @@ class AgentWorkspaceManager {
   }
   
   /**
-   * 在工作区执行命令
+   * 在工作区安全执行 git 命令
+   * @param {string[]} args - git 子命令和参数数组，如 ['add', '-A']
    */
-  async executeInWorktree(command) {
+  async execGit(args) {
     if (!this.initialized) {
       throw new Error('工作区未初始化，请先调用 initialize()');
     }
-    
-    const { exec } = require('child_process');
-    
-    return new Promise((resolve, reject) => {
-      exec(command, { cwd: this.worktreePath }, (error, stdout, stderr) => {
-        if (error) {
-          reject(new Error(stderr || error.message));
-          return;
-        }
-        resolve(stdout.trim());
-      });
-    });
+    return safeExec('git', args, this.worktreePath);
   }
   
   /**
-   * Git 提交
+   * Git 提交（安全版）
    */
   async commit(message) {
-    console.log(`💾 Git 提交：${message}`);
+    const safeMsg = validateCommitMessage(message);
+    console.log(`💾 Git 提交：${safeMsg}`);
     
     try {
-      // 添加所有更改
-      await this.executeInWorktree('git add -A');
-      
-      // 提交
-      await this.executeInWorktree(`git commit -m "${message}"`);
+      await this.execGit(['add', '-A']);
+      await this.execGit(['commit', '-m', safeMsg]);
       
       console.log(`✅ 提交成功`);
-      
-      return { success: true, message };
+      return { success: true, message: safeMsg };
       
     } catch (error) {
       if (error.message.includes('nothing to commit')) {
         console.log(`⚠️ 没有更改需要提交`);
         return { success: false, error: 'nothing_to_commit' };
       }
-      
       console.error(`❌ 提交失败：${error.message}`);
       throw error;
     }
   }
   
   /**
-   * 创建分支
+   * 创建分支（安全版）
    */
   async createBranch(branchName) {
-    console.log(`🌿 创建分支：${branchName}`);
+    const safeName = validateBranchName(branchName);
+    console.log(`🌿 创建分支：${safeName}`);
     
-    await this.executeInWorktree(`git checkout -b ${branchName}`);
+    await this.execGit(['checkout', '-b', safeName]);
     
     console.log(`✅ 分支创建成功`);
-    
-    return { success: true, branch: branchName };
+    return { success: true, branch: safeName };
   }
   
   /**
-   * 切换分支
+   * 切换分支（安全版）
    */
   async checkoutBranch(branchName) {
-    console.log(`🔄 切换分支：${branchName}`);
+    const safeName = validateBranchName(branchName);
+    console.log(`🔄 切换分支：${safeName}`);
     
-    await this.executeInWorktree(`git checkout ${branchName}`);
+    await this.execGit(['checkout', safeName]);
     
     console.log(`✅ 分支切换成功`);
-    
-    return { success: true, branch: branchName };
+    return { success: true, branch: safeName };
   }
   
   /**
-   * 合并分支
+   * 合并分支（安全版）
    */
   async mergeBranch(branchName) {
-    console.log(`🔀 合并分支：${branchName}`);
+    const safeName = validateBranchName(branchName);
+    console.log(`🔀 合并分支：${safeName}`);
     
-    await this.executeInWorktree(`git merge ${branchName}`);
+    await this.execGit(['merge', safeName]);
     
     console.log(`✅ 分支合并成功`);
-    
     return { success: true };
   }
   
@@ -152,24 +198,25 @@ class AgentWorkspaceManager {
    * 获取当前分支
    */
   async getCurrentBranch() {
-    const branch = await this.executeInWorktree('git rev-parse --abbrev-ref HEAD');
-    return branch;
+    return this.execGit(['rev-parse', '--abbrev-ref', 'HEAD']);
   }
   
   /**
-   * 获取提交历史
+   * 获取提交历史（安全版）
    */
   async getCommitHistory(limit = 10) {
-    const log = await this.executeInWorktree(`git log --oneline -${limit}`);
+    const safeLimit = validateNumber(limit, 'limit');
+    const log = await this.execGit(['log', '--oneline', `-${safeLimit}`]);
     return log.split('\n');
   }
   
   /**
-   * 获取文件差异
+   * 获取文件差异（安全版）
    */
   async getDiff(branch1, branch2) {
-    const diff = await this.executeInWorktree(`git diff ${branch1}..${branch2}`);
-    return diff;
+    const b1 = validateBranchName(branch1);
+    const b2 = validateBranchName(branch2);
+    return this.execGit(['diff', `${b1}..${b2}`]);
   }
   
   /**
@@ -205,17 +252,10 @@ async function runInWorkspace(agentId, taskId, code) {
   
   try {
     await workspace.initialize(taskId);
-    
-    // 执行代码（这里可以是任何操作）
     const result = await code(workspace);
-    
-    // 自动提交
     await workspace.commit(`Auto-commit: ${taskId}`);
-    
     return result;
-    
   } finally {
-    // 可选：清理或保留工作区
     // await workspace.cleanup();
   }
 }

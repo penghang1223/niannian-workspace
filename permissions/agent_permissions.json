@@ -1,0 +1,105 @@
+{
+  "_comment": "年年权限系统 - Agent权限配置 v1.0",
+  "_updated": "2026-04-01",
+
+  "agentProfiles": {
+    "main": {
+      "description": "囡囡 - 年年主Agent，最高权限",
+      "allowedTools": ["*"],
+      "deniedTools": [],
+      "maxConcurrentCalls": 5,
+      "requireApproval": false
+    },
+    "frontend_dev": {
+      "description": "霓裳 - 前端/UI Agent",
+      "allowedTools": ["read", "write", "edit", "exec", "browser", "web_fetch", "web_search", "image"],
+      "deniedTools": ["feishu_im_user_message", "feishu_oauth", "feishu_oauth_batch_auth"],
+      "maxConcurrentCalls": 3,
+      "requireApproval": ["exec:git push *", "exec:npm publish *"]
+    },
+    "dev_engineer": {
+      "description": "玄机 - 后端技术实现",
+      "allowedTools": ["read", "write", "edit", "exec", "web_fetch", "web_search"],
+      "deniedTools": ["feishu_im_user_message", "feishu_oauth", "feishu_oauth_batch_auth"],
+      "maxConcurrentCalls": 3,
+      "requireApproval": ["exec:git push *", "exec:npm publish *"]
+    },
+    "qa_engineer": {
+      "description": "鉴微 - 测试/质量",
+      "allowedTools": ["read", "exec", "web_search", "web_fetch", "browser"],
+      "deniedTools": ["feishu_*", "write", "edit", "delete"],
+      "maxConcurrentCalls": 3,
+      "requireApproval": []
+    },
+    "product_manager": {
+      "description": "望舒 - 产品/PRD",
+      "allowedTools": ["read", "write", "edit", "web_search", "web_fetch", "feishu_search_doc_wiki", "feishu_fetch_doc", "feishu_create_doc", "feishu_update_doc"],
+      "deniedTools": ["exec", "feishu_im_user_message", "feishu_oauth"],
+      "maxConcurrentCalls": 2,
+      "requireApproval": []
+    },
+    "chief_cute_officer": {
+      "description": "岁岁 - 内容/气氛",
+      "allowedTools": ["read", "web_search", "web_fetch"],
+      "deniedTools": ["exec", "write", "edit", "delete", "feishu_*"],
+      "maxConcurrentCalls": 2,
+      "requireApproval": []
+    },
+    "taiyi": {
+      "description": "太一 - 学习研究",
+      "allowedTools": ["read", "web_search", "web_fetch", "write"],
+      "deniedTools": ["exec", "feishu_im_user_message", "feishu_oauth"],
+      "maxConcurrentCalls": 2,
+      "requireApproval": []
+    },
+    "lingxi": {
+      "description": "灵犀 - 创意内容",
+      "allowedTools": ["read", "write", "web_search", "web_fetch"],
+      "deniedTools": ["exec", "feishu_*", "delete"],
+      "maxConcurrentCalls": 2,
+      "requireApproval": []
+    },
+    "jinghong": {
+      "description": "惊鸿 - 小说创作",
+      "allowedTools": ["read", "write", "web_search", "web_fetch"],
+      "deniedTools": ["exec", "feishu_*", "delete"],
+      "maxConcurrentCalls": 2,
+      "requireApproval": []
+    },
+    "tiangong": {
+      "description": "天工 - 技术架构",
+      "allowedTools": ["read", "write", "edit", "exec", "web_search", "web_fetch"],
+      "deniedTools": ["feishu_im_user_message", "feishu_oauth"],
+      "maxConcurrentCalls": 3,
+      "requireApproval": ["exec:git push *"]
+    },
+    "shichen": {
+      "description": "司辰 - 内容创作",
+      "allowedTools": ["read", "write", "web_search", "web_fetch"],
+      "deniedTools": ["exec", "feishu_*", "delete"],
+      "maxConcurrentCalls": 2,
+      "requireApproval": []
+    },
+    "yueying": {
+      "description": "月影 - 数据分析",
+      "allowedTools": ["read", "exec", "web_search", "web_fetch"],
+      "deniedTools": ["write", "edit", "delete", "feishu_*"],
+      "maxConcurrentCalls": 2,
+      "requireApproval": []
+    },
+    "zhiming": {
+      "description": "执明 - 安全/审查",
+      "allowedTools": ["read", "exec", "web_search", "web_fetch"],
+      "deniedTools": ["write", "edit", "delete", "feishu_*"],
+      "maxConcurrentCalls": 2,
+      "requireApproval": []
+    },
+    "default": {
+      "description": "未配置Agent的默认权限（最严格）",
+      "allowedTools": ["read", "web_search", "web_fetch"],
+      "deniedTools": ["exec", "write", "edit", "delete", "feishu_*"],
+      "maxConcurrentCalls": 1,
+      "requireApproval": ["*"]
+    }
+  }
+}

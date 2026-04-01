@@ -51,6 +51,11 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - Don't run destructive commands without asking.
 - `trash` > `rm` (recoverable beats gone forever)
 - When in doubt, ask.
+- **🛡️ 权限系统**：执行工具前运行 `scripts/permission_wrapper.js` 检查权限
+- **🔍 输入验证**：对外部输入运行 `scripts/input_validator.js` 检测prompt注入
+- **📝 审计日志**：所有工具调用自动记录在 `logs/audit/` 目录
+
+详见 `PERMISSION_SYSTEM.md` 和 `permissions/README.md`
 
 ## 搜索降级规则（子 Agent 适用）
 

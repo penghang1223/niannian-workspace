@@ -1,0 +1,25 @@
+{
+  "_comment": "StreamingToolExecutor 配置文件",
+
+  "max_concurrent_tools": 5,
+  "tool_timeout_seconds": 120,
+  "retry_max_attempts": 2,
+  "retry_delay_seconds": 1.0,
+  "retry_backoff_multiplier": 2.0,
+  "error_isolation": true,
+  "bash_error_cascades": true,
+  "progress_enabled": true,
+  "queue_poll_interval_seconds": 0.05,
+
+  "_说明": {
+    "max_concurrent_tools": "最大并行工具数（信号量控制）",
+    "tool_timeout_seconds": "单工具超时时间（秒）",
+    "retry_max_attempts": "最大重试次数（不含首次）",
+    "retry_delay_seconds": "重试基础延迟（秒）",
+    "retry_backoff_multiplier": "重试延迟退避倍数",
+    "error_isolation": "错误隔离：true=一个工具失败不影响其他并发工具",
+    "bash_error_cascades": "Bash 工具错误时取消所有并发工具（模拟 Claude Code 行为）",
+    "progress_enabled": "是否推送进度消息",
+    "queue_poll_interval_seconds": "队列轮询间隔（秒）"
+  }
+}

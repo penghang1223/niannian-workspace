@@ -1,0 +1,23 @@
+{
+  "id": "task-YYYYMMDD-NNN",
+  "from": "agent_id",
+  "to": "main",
+  "type": "task_completed|task_failed|request|notification",
+  "timestamp": "ISO-8601",
+  "status": "completed|failed|pending",
+  "task": {
+    "name": "任务名称",
+    "wave": 1,
+    "acceptance_criteria": ["AC-1"]
+  },
+  "result": {
+    "summary": "完成摘要",
+    "files": ["相关文件路径"],
+    "test_status": "all_passed|partial|failed"
+  },
+  "metadata": {
+    "session_key": "agent:main:subagent:xxx",
+    "duration_seconds": 180,
+    "tokens_used": 45000
+  }
+}

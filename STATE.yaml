@@ -2,7 +2,7 @@
 
 # 项目信息
 project: 主人团队 (Master Team)
-updated: 2026-03-27T09:00:00+08:00
+updated: 2026-04-01T09:00:00+08:00
 owner: 年年 (Niannian)
 
 # 12 个 Agent 团队
@@ -217,22 +217,29 @@ tasks:
 
 # 下一步行动
 next_actions:
-  - "main: Git 提交所有未跟踪变更（19+ 文件含新Agent目录）"
-  - "main: 配置 Git remote + 推送到 GitHub（触发 CI/CD）"
-  - "main: 评估 TASK-008/013 是否取消（闲置 8 天）"
-  - "main: 优化 cron 超时问题（3 个 cron 仍有错误）"
+  - "main: Git 立即批量提交64个变更文件（21 modified + 43 untracked）— P0紧急"
+  - "main: 修复08晨会+23休息cron的Feishu delivery配置（400错误，第5天）— P0紧急"
+  - "main: 修复10:00内容创意cron投递（连续4天错误）— P1"
+  - "main: 修复17:00质量验证cron超时 + 22:00执明知识整合错误 — P1"
+  - "main: 决定 TASK-008/013 取消（闲置12天，无明确需求）"
+  - "main: Dashboard v4 去留决策（连续7天未运行，建议永久下线）"
 
 # 阻塞任务
-blocked_tasks: []
+blocked_tasks:
+  - id: NOVEL-STATE
+    title: 惊鸿小说state.json回退处理（61→50章）
+    reason: "cron重写小说导致completed_chapters回退，等待主人指示是否恢复"
+    blocked_since: 2026-03-30
+    note: "惊鸿小说cron已禁用，小说已完成309章（3卷全），state.json问题可标记为低优先级"
 
-# 本周优先级 (2026-03-24 ~ 2026-03-30)
+# 本周优先级 (2026-03-30 ~ 2026-04-05)
 weekly_priorities:
-  - P0: 修复 Dashboard 离线状态（提升团队可视化能力）
-  - P1: 补全 03-21/22/23 每日复盘报告（保持记录完整性）
-  - P1: 内容工厂流水线实施（提升内容产出效率）
-  - P1: 推进隔夜应用构建机制（TASK-008/009）
-  - P2: 合理分配开发工程师任务（避免单点瓶颈）
-  - P3: 准备周度复盘（03-27 周五）
+  - P0: Git 立即批量提交64个变更文件（21 modified + 43 untracked）
+  - P0: 修复08晨会+23休息cron的Feishu delivery配置（400错误，第5天复发）
+  - P1: 修复10:00内容创意cron投递（连续4天错误）
+  - P1: 修复17:00质量验证cron超时 + 22:00执明知识整合错误
+  - P1: 决定并执行 TASK-008/013 取消（闲置12天）
+  - P1: Dashboard v4 去留决策（连续7天未运行，建议下线）
 
 # 关键指标
 metrics:
@@ -244,18 +251,19 @@ metrics:
   success_rate: 100%
   completion_rate: 75%
   test_coverage: "30/30 (100% - TASK-011)"
-  git_status: "✅ 5 次提交 (03-25~28)，19+ 未提交文件（新Agent目录）"
-  git_uncommitted_files: "13 (🟡 改善中，从111降至13)"
+  git_status: "✅ 6 次提交 (03-25~29)，🔴 64 未提交文件"
+  git_uncommitted_files: "64 (🔴 21 modified + 43 untracked，较昨日+38)"
   shared_docs_missing: "无（DECISIONS.md + PROJECT_STATUS.md 已创建 ✅）"
-  stale_tasks_days: 9  # TASK-008/013 自 03-20 起无进展
+  stale_tasks_days: 12  # TASK-008/013 自 03-20 起无进展（建议取消）
   gitignore_missing: false  # ✅ 已创建
-  ci_cd_configured: true  # ✅ GitHub Actions 已配置
-  dashboard_v4_running: true  # ✅ Dashboard v4 运行中 (server + client)
+  ci_cd_configured: true  # ✅ GitHub Actions 已配置（lint/test/build/docs 4 jobs）
+  dashboard_v4_running: false  # 🔴 未运行（端口 5175 无监听，连续7天）
   dashboard_v3_running: false  # ✅ 已升级为 v4
   legacy_dashboard_running: false  # ✅ 已清理
-  cron_jobs_total: 31  # 含太一/执明 7×24 学习计划
-  cron_jobs_errors: 3  # 09:00指标/14:00开发/太一爬虫 超时
-  last_metrics_update: 2026-03-27T09:00:00+08:00
+  cron_jobs_total: 23
+  cron_jobs_disabled: 3  # 岁岁学习(8超时已禁用) + 惊鸿小说 + 惊鸿学习
+  cron_jobs_errors: 6  # 09指标×1 + 10内容×4 + 17质量×1 + 22执明×1 + 23休息×5 + 08晨会×4 — 较昨日2→6(+200%)
+  last_metrics_update: 2026-04-01T09:00:00+08:00
 
 # 共享记忆文件
 shared_memory:
@@ -314,6 +322,111 @@ morning_session_2026-03-26_08:00:
   message_sent: "✅ 飞书私信已发送 (om_x100b5373cb393ca4b257d30a337dfb4)"
 
 # 指标分析记录 (09:00 Slot) — 最新
+metrics_analysis_2026-04-01_09:00:
+  executed_at: 2026-04-01T09:00:00+08:00
+  owner: main (年年)
+  key_metrics:
+    active_agents: 13
+    total_tasks: 20
+    completed: 15
+    in_progress: 0
+    todo: 3
+    cancelled: 2
+    success_rate: 100%
+    completion_rate: 75%
+    git_commits: 6
+    git_uncommitted_files: "64 (🔴 21 modified + 43 untracked，严重恶化 +146%)"
+    dashboard_status: "🔴 Dashboard v4 未运行（端口 5175 无监听，连续7天）"
+    cron_jobs_total: 23
+    cron_jobs_disabled: 3 (岁岁学习×8超时已禁用 + 惊鸿小说 + 惊鸿学习)
+    cron_jobs_with_errors: 6 (09指标×1 + 10内容×4 + 17质量×1 + 22执明×1 + 23休息×5 + 08晨会×4)
+    stale_tasks_days: 12 (TASK-008/013 自 03-20 起无进展)
+    agent_learning_reports_today: 0
+  trend_vs_previous:
+    git_uncommitted: "26 → 64 (🔴 严重恶化 +146%，43个untracked文件大量新增)"
+    git_commits: "6 → 6 (无新提交，连续3天)"
+    dashboard: "未运行 → 未运行 (🔴 连续7天缺失)"
+    stale_tasks: "11天 → 12天"
+    cron_errors: "2 → 6 (🔴 恶化 +200%，新增17质量超时/22执明错误/09指标错误)"
+    cron_disabled: "3 → 3 (持平)"
+  operational_progress:
+    - "隔夜Agent活动：✅ 06:00隔夜成果汇总正常执行（84s完成）"
+    - "AI热点推送：✅ 岁岁早间版正常投递（151s完成）"
+    - "执明会话归档：✅ 正常运行（41s完成）"
+    - "灵犀自学习：✅ 正常运行（107s完成）"
+    - "太一学习体系：✅ 全部正常（技术扫描/代码实战/AI工具/深度学习/知识沉淀/Prompt工程）"
+  risks_identified:
+    - "🔴 P0: Git 64个未提交文件 — 较昨日+38（+146%），workspace变更完全无版本保护"
+    - "🔴 P0: 连续3天无Git提交 — 6c8ba07 仍是最新提交"
+    - "🔴 P0: 08晨会cron连续4次投递失败（Feishu 400错误）— 修复后复发"
+    - "🔴 P0: 23休息cron连续5次投递失败 — 历史最高连续错误数"
+    - "🟡 P1: 10:00内容创意cron连续4次投递失败 — 延续昨日问题"
+    - "🟡 P1: Cron系统健康度恶化 — 错误数从2→6（+200%），新增3个错误cron"
+    - "🟡 P1: 17:00质量验证cron超时 — 300s不够用"
+    - "🟡 P1: 22:00执明知识整合报错 — Provider error"
+    - "🟡 P1: Dashboard v4 连续7天未运行 — 建议永久下线"
+    - "🟡 P1: TASK-008/013 闲置12天 — 需立即决定取消"
+    - "🟢 P2: 太一学习体系全部正常运行（6个cron 0错误）"
+    - "🟢 P2: 岁岁AI热点推送3个时段全部正常"
+  action_items:
+    - "🔴 紧急：Git 立即批量提交64个变更文件（21 modified + 43 untracked）"
+    - "🔴 紧急：修复08晨会+23休息cron的Feishu delivery配置（400错误，第5天复发）"
+    - "🟡 今日：修复10:00内容创意cron投递（连续4天错误）"
+    - "🟡 今日：修复17:00质量验证cron超时（增加timeout或精简任务）"
+    - "🟡 今日：修复22:00执明知识整合cron"
+    - "🟡 今日：决定TASK-008/013取消（闲置12天）"
+    - "🟡 本周：Dashboard v4永久下线决策（连续7天未运行）"
+metrics_analysis_2026-03-30_09:00:
+  executed_at: 2026-03-30T09:00:00+08:00
+  owner: main (年年)
+  key_metrics:
+    active_agents: 13
+    total_tasks: 20
+    completed: 15
+    in_progress: 0
+    todo: 3
+    cancelled: 2
+    success_rate: 100%
+    completion_rate: 75%
+    git_commits: 6
+    git_uncommitted_files: "15 (🟡 回弹：上次13→本次15，基本持平)"
+    dashboard_status: "🔴 Dashboard v4 未运行（端口 5175/5177 均无监听）"
+    cron_jobs_total: 34
+    cron_jobs_with_errors: 9 (09:00指标×2, 10:00内容×2, 23:00休息×3, 岁岁学习×7, 灵犀学习×1, 太一代码×2, 太一爬虫×1, 太一AI工具×1, 晨会总结×2)
+    stale_tasks_days: 10 (TASK-008/013 自 03-20 起无进展)
+    agent_learning_reports_today: 3
+    entropy_agent_created: true
+  trend_vs_previous:
+    git_uncommitted: "13 → 15 (🟡 基本持平，+2文件)"
+    git_commits: "6 → 6 (无新提交，连续1天)"
+    dashboard: "未运行 → 未运行 (🔴 持续缺失)"
+    stale_tasks: "9天 → 10天"
+    agent_learning: "3 → 3 (持平，维持良好)"
+    cron_errors: "3个连续错误 → 9个连续错误 (🔴 恶化)"
+  operational_progress:
+    - "Agent学习体系：✅ 今天已有3份学习报告（反馈循环/Context Engineering/回填完成）"
+    - "熵管员Agent：✅ 今日创建（workspace-entropy/），3个cron已配置"
+    - "惊鸿小说事件：⚠️ cron重写小说问题已处理，cron已禁用，state.json待主人指示"
+    - "Harness Engineering：✅ 已研究，三大支柱可借鉴"
+    - "飞书惊鸿同步：⚠️ 发现文档不完整（只有1-10章，书名不一致）"
+  risks_identified:
+    - "🔴 P0: Cron 连续错误从3个增至9个 — 系统健康度严重下滑"
+    - "🔴 P0: 岁岁学习cron连续7次超时 — 需立即修复或暂停"
+    - "🟡 P1: Dashboard v4 持续未运行 — 团队可视化能力缺失（连续2天）"
+    - "🟡 P1: TASK-008/013 闲置 10 天 — 需立即决定取消"
+    - "🟡 P1: 晨会总结连续2次投递失败 — Feishu target配置问题"
+    - "🟡 P1: 23:00休息提醒连续3次消息投递失败"
+    - "🟢 P2: Agent学习运转正常 — 3份报告质量良好"
+    - "🟢 P2: Git未提交文件基本稳定(13→15)"
+  action_items:
+    - "🔴 紧急：修复9个连续错误的cron任务（重点：岁岁学习×7、晨会×2）"
+    - "🔴 紧急：修复Feishu消息投递配置（晨会+休息提醒的target问题）"
+    - "🟡 今日：决定 TASK-008/013 取消（闲置10天）"
+    - "🟡 今日：处理惊鸿小说state.json回退问题（待主人指示）"
+    - "🟡 本周：启动或永久下线 Dashboard v4"
+    - "🟢 本周：Git提交15个变更文件"
+
+# 指标分析记录 (09:00 Slot) — 历史
 metrics_analysis_2026-03-29_09:00:
   executed_at: 2026-03-29T09:00:00+08:00
   owner: main (年年)
@@ -400,7 +513,7 @@ metrics_analysis_2026-03-27_09:00:
 
 # 最后更新信息
 last_updated_by: main (年年 - 09:00 指标分析)
-last_updated_at: 2026-03-29T09:00:00+08:00
+last_updated_at: 2026-04-01T09:00:00+08:00
 
 # 代码开发时段记录 (14:00 Slot)
 dev_session_2026-03-24_14:00:
@@ -543,3 +656,100 @@ dev_session_2026-03-29_14:00:
       - /Users/narain/.openclaw/workspace/INSTINCTS.md (新建)
       - /Users/narain/.openclaw/workspace/MODEL_ROUTING.md (新建)
     notes: "ECC 方法论落地：SOUL精简、Instinct持续学习、模型路由策略"
+
+# 代码开发时段记录 (14:00 Slot)
+dev_session_2026-03-30_14:00:
+  executed_at: 2026-03-30T14:00:00+08:00
+  participants:
+    - dev_engineer (玄机)
+    - frontend_dev (霓裳)
+  ci_cd_status:
+    - "✅ GitHub Actions ci.yml 配置完善（lint/test/build/docs 4个job，Node 22）"
+    - "✅ .gitignore 已存在"
+    - "✅ Git 已有 6 次提交（6c8ba07 最新）"
+    - "🟡 仍有 17 个文件未提交（13 modified + 4 untracked）"
+  git_status:
+    modified: 13
+    untracked: 4
+    last_commit: "6c8ba07 🕐 14:00 代码开发时段：CI/CD就绪, Git 111→13改善, Dashboard未运行"
+    commits_total: 6
+    files_detail: "MEMORY.md, SHARED_KNOWLEDGE.md, STATE.yaml, TOOLS.md, memory/evolution/* 等"
+  dashboard_status:
+    - "🔴 Dashboard v4 未运行（端口 5175 无监听，连续3天未运行）"
+    - "⚠️ 建议：决定永久下线或修复重启"
+  tech_debt_status:
+    - "🟡 P1: 17 文件未提交 — 主要是 memory/evolution/ 和文档变更"
+    - "🟡 P1: Dashboard v4 连续3天未运行 — 需要决定去留"
+    - "🟡 P1: TASK-008（通信监控）/ TASK-013（commit生成器）闲置 11 天 — 建议取消"
+    - "🟢 P2: CI/CD 已就绪 — 4 个 job 配置完善，等待 remote push 触发"
+    - "🟢 P2: Git 稳定在 6 提交，未提交文件维持 17 个（无恶化）"
+  cron_health:
+    total_jobs: 34
+    healthy: 27
+    with_errors: 7
+    error_details:
+      - "岁岁学习: 5 consecutive errors (timeout 120s → 需增加到180s或降低任务复杂度)"
+      - "太一-代码实战: 3 consecutive errors (timeout 180s)"
+      - "太一-知识沉淀: 1 error (timeout 120s)"
+      - "23:00休息提醒: 3 consecutive errors (message投递失败 — Feishu target配置)"
+      - "08:00晨会总结: 2 consecutive errors (Feishu delivery target缺失)"
+      - "10:00内容创意: 3 consecutive errors (message投递失败)"
+      - "太一-爬虫实战: 1 error (timeout 180s)"
+  action_items:
+    - "🔴 紧急：修复 7 个错误 cron（重点：Feishu投递配置 + 超时时间调整）"
+    - "🟡 今日：Git 提交 17 个变更文件"
+    - "🟡 今日：决定 TASK-008/013 取消（闲置11天）"
+    - "🟡 今日：Dashboard v4 去留决策（连续3天未运行）"
+    - "🟢 本周：配置 Git remote 推送（触发远程 CI/CD）"
+
+dev_session_2026-03-31_14:00:
+  executed_at: 2026-03-31T14:02:00+08:00
+  participants:
+    - dev_engineer (玄机)
+    - frontend_dev (霓裳)
+  ci_cd_status:
+    - "✅ GitHub Actions ci.yml 配置完善（lint/test/build/docs 4个job，Node 22）"
+    - "✅ .gitignore 已存在"
+    - "✅ Git 已有 6 次提交（6c8ba07 最新）"
+    - "🟡 仍有 26 个文件未提交（18 modified + 8 untracked）"
+  git_status:
+    modified: 18
+    untracked: 8
+    last_commit: "6c8ba07 🕐 14:00 代码开发时段：CI/CD就绪, Git 111→13改善, Dashboard未运行"
+    commits_total: 6
+    trend: "17→26 未提交文件（🟡 较昨日+9，memory/和新skills目录新增）"
+    key_untracked:
+      - "agents/dev_engineer/capability.json + lessons.md"
+      - "memory/2026-03-29-ai-personhood-grant.md"
+      - "memory/2026-03-30.md / 2026-03-31.md"
+      - "skills/web-content-fetcher-hanya/"
+      - "skills/xiaohongshu-search-summarizer/"
+  dashboard_status:
+    - "🔴 Dashboard v4 未运行（端口 5175 无监听，连续6天未运行）"
+    - "⚠️ 建议：永久下线 — 连续6天无使用，释放端口和资源"
+  tech_debt_status:
+    - "🟡 P1: 26 文件未提交 — memory/ 和新 skills 目录持续增长"
+    - "🟡 P1: Dashboard v4 连续6天未运行 — 建议清理代码或标记废弃"
+    - "🟡 P1: TASK-008/013 闲置 11 天 — 建议取消"
+    - "🟢 P2: CI/CD 已就绪 — 4 个 job 配置完善"
+    - "🟢 P2: Git 提交节奏稳定（最近一次 03-29），但需补提交"
+  cron_health:
+    total_jobs: 36
+    disabled: 3
+    healthy: 31
+    with_errors: 2
+    error_details:
+      - "23:00休息提醒: 连续4次投递失败（Feishu delivery 400）"
+      - "08:00晨会总结: 连续3次投递失败（Feishu delivery 400）"
+      - "10:00内容创意: 连续3次投递失败"
+    improvement: "从7个错误cron降至2个（🟢 -71%）"
+  action_items:
+    - "🔴 紧急：修复3个错误cron（23休息/08晨会/10内容 — Feishu delivery配置）"
+    - "🟡 今日：Git 提交 26 个变更文件（分批提交）"
+    - "🟡 今日：决定 TASK-008/013 取消（闲置11天）"
+    - "🟡 今日：Dashboard v4 永久下线决策（连续6天未运行）"
+    - "🟢 本周：配置 Git remote 推送（触发远程 CI/CD）"
+
+# 最后更新信息
+last_updated_by: main (年年 - 14:00 代码开发时段)
+last_updated_at: 2026-03-31T14:02:00+08:00

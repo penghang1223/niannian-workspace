@@ -7,9 +7,10 @@
  * 
  * @author 年年 🎀
  * @created 2026-03-21 01:45
+ * @security 2026-03-31 天工：exec→execFile 消除命令注入（OWASP A05）
  */
 
-const { exec, spawn } = require('child_process');
+const { execFile } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -21,6 +22,56 @@ const LOG_FILE = path.join(WORKSPACE_ROOT, 'logs', 'git-worktree.log');
 const WORKTREES_RECORD = path.join(WORKTREES_DIR, 'worktrees.jsonl');
 
 /**
+ * 安全执行命令
+ * Why: execFile 不经过 shell，参数作为数组传递，消除命令注入。
+ * @param {string} file - 可执行文件
+ * @param {string[]} args - 参数数组
+ * @param {string} cwd - 工作目录
+ */
+function safeExec(file, args, cwd) {
+  return new Promise((resolve, reject) => {
+    execFile(file, args, { cwd }, (error, stdout, stderr) => {
+      if (error) {
+        reject(new Error(stderr || error.message));
+        return;
+      }
+      resolve(stdout.trim());
+    });
+  });
+}
+
+/**
+ * 校验 agentId / taskId（只允许安全字符）
+ */
+function validateId(id, name) {
+  if (typeof id !== 'string' || !/^[a-zA-Z0-9_-]+$/.test(id)) {
+    throw new Error(`非法 ${name}: "${id}"。只允许字母、数字、下划线和连字符。`);
+  }
+  return id;
+}
+
+/**
+ * 校验分支名
+ */
+function validateBranchName(name) {
+  if (typeof name !== 'string' || !/^[a-zA-Z0-9_\-./]+$/.test(name)) {
+    throw new Error(`非法分支名: "${name}"`);
+  }
+  return name;
+}
+
+/**
+ * 校验天数参数
+ */
+function validateDays(days) {
+  const num = Number(days);
+  if (!Number.isInteger(num) || num < 1 || num > 365) {
+    throw new Error(`days 必须是 1-365 的整数，收到: "${days}"`);
+  }
+  return num;
+}
+
+/**
  * Git Worktree 管理器类
  */
 class GitWorktreeManager {
@@ -30,27 +81,19 @@ class GitWorktreeManager {
     this.logFile = LOG_FILE;
     this.recordFile = WORKTREES_RECORD;
     
-    // 确保目录存在
     this.ensureDirectories();
   }
   
-  /**
-   * 确保目录存在
-   */
   ensureDirectories() {
     if (!fs.existsSync(this.worktreesDir)) {
       fs.mkdirSync(this.worktreesDir, { recursive: true });
     }
-    
     const logDir = path.dirname(this.logFile);
     if (!fs.existsSync(logDir)) {
       fs.mkdirSync(logDir, { recursive: true });
     }
   }
   
-  /**
-   * 日志记录
-   */
   log(level, message) {
     const timestamp = new Date().toISOString();
     const logLine = `[${timestamp}] [${level}] ${message}\n`;
@@ -59,84 +102,69 @@ class GitWorktreeManager {
   }
   
   /**
-   * 执行 shell 命令
+   * 安全执行 git 命令
+   * @param {string[]} args - git 参数数组，如 ['worktree', 'add', '-b', branch, path]
    */
-  execCommand(command, options = {}) {
-    return new Promise((resolve, reject) => {
-      const cwd = options.cwd || this.workspaceRoot;
-      
-      exec(command, { cwd }, (error, stdout, stderr) => {
-        if (error) {
-          this.log('ERROR', `命令执行失败：${command}`);
-          this.log('ERROR', stderr);
-          reject(new Error(stderr || error.message));
-          return;
-        }
-        
-        this.log('INFO', `命令执行成功：${command}`);
-        resolve(stdout.trim());
-      });
-    });
+  async execGit(args) {
+    try {
+      const result = await safeExec('git', args, this.workspaceRoot);
+      this.log('INFO', `git ${args[0]} 成功`);
+      return result;
+    } catch (error) {
+      this.log('ERROR', `git ${args[0]} 失败: ${error.message}`);
+      throw error;
+    }
   }
   
-  /**
-   * 检查是否在 Git 仓库中
-   */
   async isInGitRepo() {
     try {
-      await this.execCommand('git rev-parse --git-dir');
+      await this.execGit(['rev-parse', '--git-dir']);
       return true;
-    } catch (error) {
+    } catch {
       return false;
     }
   }
   
-  /**
-   * 为 Agent 创建 worktree
-   */
   async createWorktree(agentId, taskId) {
-    this.log('INFO', `为 Agent '${agentId}' 任务 '${taskId}' 创建 worktree...`);
+    const safeAgent = validateId(agentId, 'agentId');
+    const safeTask = validateId(taskId, 'taskId');
+    
+    this.log('INFO', `为 Agent '${safeAgent}' 任务 '${safeTask}' 创建 worktree...`);
     
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const branchName = `${agentId}-${taskId}-${timestamp}`;
-    const worktreePath = path.join(this.worktreesDir, agentId, taskId);
+    const branchName = `${safeAgent}-${safeTask}-${timestamp}`;
+    const worktreePath = path.join(this.worktreesDir, safeAgent, safeTask);
     
-    // 检查是否已存在
     if (fs.existsSync(worktreePath)) {
       this.log('WARNING', `Worktree 已存在：${worktreePath}`);
       throw new Error(`Worktree 已存在：${worktreePath}`);
     }
     
-    // 创建 branch 和 worktree
     try {
-      await this.execCommand(`git worktree add -b ${branchName} ${worktreePath}`);
+      await this.execGit(['worktree', 'add', '-b', branchName, worktreePath]);
       
       this.log('SUCCESS', 'Worktree 创建成功');
       this.log('INFO', `路径：${worktreePath}`);
       this.log('INFO', `分支：${branchName}`);
       
-      // 记录 worktree 信息
       const record = {
-        agent: agentId,
-        task: taskId,
+        agent: safeAgent,
+        task: safeTask,
         branch: branchName,
         path: worktreePath,
         created: new Date().toISOString()
       };
-      
       fs.appendFileSync(this.recordFile, JSON.stringify(record) + '\n');
       
       // 创建 Agent 配置文件
-      const configPath = path.join(worktreePath, 'agents', agentId, 'workspace_config.json');
+      const configPath = path.join(worktreePath, 'agents', safeAgent, 'workspace_config.json');
       const configDir = path.dirname(configPath);
-      
       if (!fs.existsSync(configDir)) {
         fs.mkdirSync(configDir, { recursive: true });
       }
-      
       fs.writeFileSync(configPath, JSON.stringify({
-        agentId,
-        taskId,
+        agentId: safeAgent,
+        taskId: safeTask,
         worktreePath,
         branch: branchName,
         createdAt: new Date().toISOString(),
@@ -145,8 +173,8 @@ class GitWorktreeManager {
       
       return {
         success: true,
-        agentId,
-        taskId,
+        agentId: safeAgent,
+        taskId: safeTask,
         branch: branchName,
         path: worktreePath
       };
@@ -157,13 +185,13 @@ class GitWorktreeManager {
     }
   }
   
-  /**
-   * 删除 worktree
-   */
   async removeWorktree(agentId, taskId) {
-    this.log('INFO', `删除 worktree: Agent=${agentId}, Task=${taskId}`);
+    const safeAgent = validateId(agentId, 'agentId');
+    const safeTask = validateId(taskId, 'taskId');
     
-    const worktreePath = path.join(this.worktreesDir, agentId, taskId);
+    this.log('INFO', `删除 worktree: Agent=${safeAgent}, Task=${safeTask}`);
+    
+    const worktreePath = path.join(this.worktreesDir, safeAgent, safeTask);
     
     if (!fs.existsSync(worktreePath)) {
       this.log('WARNING', `Worktree 不存在：${worktreePath}`);
@@ -171,19 +199,16 @@ class GitWorktreeManager {
     }
     
     try {
-      // 获取分支名
-      const branchName = await this.execCommand(
-        `cd ${worktreePath} && git rev-parse --abbrev-ref HEAD`
-      );
+      // 获取分支名（在 worktree 目录内执行）
+      const branchName = await safeExec('git', ['rev-parse', '--abbrev-ref', 'HEAD'], worktreePath);
       
-      // 删除 worktree
-      await this.execCommand(`git worktree remove ${worktreePath}`);
+      // 删除 worktree（在主仓库执行）
+      await this.execGit(['worktree', 'remove', worktreePath]);
       
       // 删除分支
-      await this.execCommand(`git branch -D ${branchName}`);
+      await this.execGit(['branch', '-D', validateBranchName(branchName)]);
       
       this.log('SUCCESS', 'Worktree 删除成功');
-      
       return { success: true };
       
     } catch (error) {
@@ -192,9 +217,6 @@ class GitWorktreeManager {
     }
   }
   
-  /**
-   * 列出所有 worktrees
-   */
   async listWorktrees() {
     this.log('INFO', '列出所有 worktrees...');
     
@@ -202,33 +224,25 @@ class GitWorktreeManager {
     
     if (fs.existsSync(this.recordFile)) {
       const lines = fs.readFileSync(this.recordFile, 'utf-8').split('\n');
-      
       for (const line of lines) {
         if (line.trim()) {
           try {
-            const record = JSON.parse(line);
-            worktrees.push(record);
-          } catch (error) {
+            worktrees.push(JSON.parse(line));
+          } catch {
             this.log('WARNING', `解析记录失败：${line}`);
           }
         }
       }
     }
     
-    // 获取 git worktree 列表
-    const gitList = await this.execCommand('git worktree list');
+    const gitList = await this.execGit(['worktree', 'list']);
     
-    return {
-      records: worktrees,
-      gitList
-    };
+    return { records: worktrees, gitList };
   }
   
-  /**
-   * 清理旧的 worktrees
-   */
   async cleanupOldWorktrees(days = 7) {
-    this.log('INFO', `清理 ${days} 天前的 worktrees...`);
+    const safeDays = validateDays(days);
+    this.log('INFO', `清理 ${safeDays} 天前的 worktrees...`);
     
     if (!fs.existsSync(this.recordFile)) {
       this.log('INFO', '没有 worktrees 记录');
@@ -236,8 +250,7 @@ class GitWorktreeManager {
     }
     
     const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - days);
-    const cutoffTime = cutoffDate.getTime();
+    cutoffDate.setDate(cutoffDate.getDate() - safeDays);
     
     const lines = fs.readFileSync(this.recordFile, 'utf-8').split('\n');
     const keptRecords = [];
@@ -248,12 +261,8 @@ class GitWorktreeManager {
       
       try {
         const record = JSON.parse(line);
-        const createdTime = new Date(record.created).getTime();
-        
-        if (createdTime < cutoffTime) {
-          // 清理
+        if (new Date(record.created).getTime() < cutoffDate.getTime()) {
           this.log('INFO', `清理：Agent=${record.agent}, Task=${record.task}`);
-          
           try {
             await this.removeWorktree(record.agent, record.task);
             cleaned++;
@@ -261,73 +270,47 @@ class GitWorktreeManager {
             this.log('ERROR', `清理失败：${error.message}`);
           }
         } else {
-          // 保留
           keptRecords.push(line);
         }
-      } catch (error) {
+      } catch {
         this.log('WARNING', `解析记录失败：${line}`);
       }
     }
     
-    // 更新记录文件
     fs.writeFileSync(this.recordFile, keptRecords.join('\n') + '\n');
-    
     this.log('SUCCESS', `清理完成，共清理 ${cleaned} 个 worktrees`);
-    
     return { cleaned };
   }
   
-  /**
-   * 为所有 Agent 创建默认 worktrees
-   */
   async createAllAgentWorktrees() {
     this.log('INFO', '为所有 Agent 创建默认 worktrees...');
     
     const agents = [
-      'main',
-      'product_manager',
-      'dev_engineer',
-      'qa_engineer',
-      'frontend_dev',
-      'chief_cute_officer'
+      'main', 'product_manager', 'dev_engineer',
+      'qa_engineer', 'frontend_dev', 'chief_cute_officer'
     ];
     
     const results = [];
-    
     for (const agent of agents) {
       try {
-        const result = await this.createWorktree(agent, 'default');
-        results.push(result);
+        results.push(await this.createWorktree(agent, 'default'));
       } catch (error) {
         this.log('ERROR', `Agent ${agent} 创建失败：${error.message}`);
-        results.push({
-          agent,
-          success: false,
-          error: error.message
-        });
+        results.push({ agent, success: false, error: error.message });
       }
     }
-    
     return results;
   }
   
-  /**
-   * 获取 Agent 的 worktree 路径
-   */
   getAgentWorktreePath(agentId, taskId = 'default') {
     return path.join(this.worktreesDir, agentId, taskId);
   }
   
-  /**
-   * 检查 worktree 是否存在
-   */
   worktreeExists(agentId, taskId) {
-    const worktreePath = this.getAgentWorktreePath(agentId, taskId);
-    return fs.existsSync(worktreePath);
+    return fs.existsSync(this.getAgentWorktreePath(agentId, taskId));
   }
 }
 
-// 导出单例
 const worktreeManager = new GitWorktreeManager();
 
 module.exports = {

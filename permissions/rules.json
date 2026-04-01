@@ -1,0 +1,194 @@
+{
+  "_comment": "年年权限系统 - 规则配置 v1.0",
+  "_updated": "2026-04-01",
+
+  "alwaysAllowRules": [
+    {
+      "name": "workspace读取",
+      "tool": "read",
+      "pathPattern": "/Users/narain/.openclaw/workspace/**"
+    },
+    {
+      "name": "网页搜索",
+      "tool": "web_search"
+    },
+    {
+      "name": "网页抓取",
+      "tool": "web_fetch"
+    },
+    {
+      "name": "飞书文档搜索",
+      "tool": "feishu_search_doc_wiki",
+      "action": "search"
+    },
+    {
+      "name": "飞书文档读取",
+      "tool": "feishu_fetch_doc"
+    },
+    {
+      "name": "天气查询",
+      "tool": "weather"
+    },
+    {
+      "name": "日历查看",
+      "tool": "feishu_calendar_calendar",
+      "action": ["list", "get", "primary"]
+    },
+    {
+      "name": "日程查看",
+      "tool": "feishu_calendar_event",
+      "action": ["list", "get", "search"]
+    },
+    {
+      "name": "任务查看",
+      "tool": "feishu_task_task",
+      "action": ["list", "get"]
+    },
+    {
+      "name": "用户信息查看",
+      "tool": "feishu_get_user"
+    },
+    {
+      "name": "飞书搜索用户",
+      "tool": "feishu_search_user"
+    }
+  ],
+
+  "alwaysDenyRules": [
+    {
+      "name": "禁止删除根目录",
+      "tool": "exec",
+      "commandPattern": "rm -rf /"
+    },
+    {
+      "name": "禁止管道执行",
+      "tool": "exec",
+      "commandPattern": "curl * | bash"
+    },
+    {
+      "name": "禁止wget管道执行",
+      "tool": "exec",
+      "commandPattern": "wget * | sh"
+    },
+    {
+      "name": "禁止系统目录写入",
+      "tool": ["write", "edit"],
+      "pathPattern": "/etc/**"
+    },
+    {
+      "name": "禁止SSH密钥修改",
+      "tool": ["write", "edit", "delete"],
+      "pathPattern": "~/.ssh/**"
+    },
+    {
+      "name": "禁止sudo",
+      "tool": "exec",
+      "commandPattern": "sudo *"
+    },
+    {
+      "name": "禁止chmod 777",
+      "tool": "exec",
+      "commandPattern": "chmod 777 *"
+    },
+    {
+      "name": "禁止撤销OAuth",
+      "tool": "feishu_oauth",
+      "action": "revoke"
+    },
+    {
+      "name": "禁止fork bomb",
+      "tool": "exec",
+      "commandPattern": ":(){ :|:& };:"
+    },
+    {
+      "name": "禁止修改系统文件",
+      "tool": ["write", "edit"],
+      "pathPattern": "/System/**"
+    }
+  ],
+
+  "alwaysAskRules": [
+    {
+      "name": "Git推送需确认",
+      "tool": "exec",
+      "commandPattern": "git push *"
+    },
+    {
+      "name": "发消息需确认",
+      "tool": "feishu_im_user_message",
+      "action": "send"
+    },
+    {
+      "name": "创建文档需确认",
+      "tool": "feishu_create_doc"
+    },
+    {
+      "name": "更新文档需确认",
+      "tool": "feishu_update_doc"
+    },
+    {
+      "name": "创建日程需确认",
+      "tool": "feishu_calendar_event",
+      "action": "create"
+    },
+    {
+      "name": "创建任务需确认",
+      "tool": "feishu_task_task",
+      "action": "create"
+    },
+    {
+      "name": "删除操作需确认",
+      "tool": ["delete", "feishu_drive_file"],
+      "action": "delete"
+    },
+    {
+      "name": "批量授权需确认",
+      "tool": "feishu_oauth_batch_auth"
+    },
+    {
+      "name": "npm install需确认",
+      "tool": "exec",
+      "commandPattern": "npm install *"
+    },
+    {
+      "name": "pip install需确认",
+      "tool": "exec",
+      "commandPattern": "pip install *"
+    }
+  ],
+
+  "pathSandbox": {
+    "readWrite": [
+      "/Users/narain/.openclaw/workspace/**",
+      "/tmp/openclaw/**",
+      "/tmp/**"
+    ],
+    "readOnly": [
+      "~/**",
+      "/Users/narain/**"
+    ],
+    "forbidden": [
+      "/etc/**",
+      "/usr/**",
+      "/System/**",
+      "/var/**",
+      "~/.ssh/**",
+      "~/.aws/**",
+      "~/.config/openclaw/**"
+    ]
+  },
+
+  "networkWhitelist": [
+    "*.feishu.cn",
+    "*.larksuite.com",
+    "github.com",
+    "api.github.com",
+    "*.google.com",
+    "*.bing.com",
+    "api.openrouter.ai",
+    "api.openai.com",
+    "*.anthropic.com",
+    "wttr.in",
+    "open-meteo.com"
+  ]
+}

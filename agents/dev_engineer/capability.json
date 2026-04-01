@@ -1,0 +1,32 @@
+{
+  "agent_id": "dev_engineer",
+  "name": "玄机",
+  "last_updated": "2026-03-30T14:46:00+08:00",
+  "skills": {
+    "typescript": {
+      "level": 4,
+      "notes": "掌握编译优化、类型系统最佳实践"
+    },
+    "python": {
+      "level": 4,
+      "notes": "task_dispatcher.py 320行，30测试100%通过"
+    },
+    "ci_cd": {
+      "level": 3,
+      "notes": "GitHub Actions 配置完成（4 jobs）"
+    },
+    "git": {
+      "level": 3,
+      "notes": "版本控制基本功，尚需练习 rebase/workflow"
+    },
+    "system_architecture": {
+      "level": 3,
+      "notes": "能识别技术债务，提出改进方案"
+    }
+  },
+  "learning_focus": [
+    "TypeScript 性能优化",
+    "CI/CD 流水线完善",
+    "大型项目编译优化"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "similarity_threshold": 0.85,
+  "max_tool_result_tokens": 5000,
+  "tool_result_head_tokens": 2000,
+  "tool_result_tail_tokens": 500,
+  "time_based_enabled": true,
+  "gap_threshold_minutes": 60.0,
+  "keep_recent_tool_results": 5,
+  "compactable_tools": [
+    "read", "bash", "exec", "shell", "grep", "glob",
+    "web_search", "web_fetch", "file_read", "file_write",
+    "file_edit", "cat", "ls", "find", "head", "tail"
+  ],
+  "max_input_tokens": 180000,
+  "target_input_tokens": 40000
+}

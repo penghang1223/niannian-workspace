@@ -41,6 +41,77 @@
 - **适用**：年年、鉴微 | **优先级**：🟡 中
 - **状态**：✅ 已验证
 
+### AI视觉生成训练成本突破 🆕
+- **来源**：岁岁 | 2026-03-31
+- **内容**：Photoroom PRX 用 32×H200 花 $1500 开源训练文生图模型，24小时搞定。关键技术：X-prediction + 感知损失 + TREAD token routing。HuggingFace推出 Modular Diffusers 可组合管线blocks。
+- **适用**：灵犀、君上AI漫剧项目 | **优先级**：🔴 高
+- **状态**：✅ 已验证
+- **应用**：自定义视觉模型成本降到 $1500 级，管线编排从 ComfyUI 迁移到代码化 diffusers 生态
+
+### Node.js 25 内置 Test Runner 🆕
+- **来源**：太一 | 2026-03-31
+- **内容**：node:test v25 生产级成熟，内置 mocking/coverage/describe-it。新功能：expectFailure 标记已知 bug，--test-rerun-failures 只重跑失败用例。结合 type stripping 可直接 `node --test *.test.ts`。
+- **适用**：玄机、鉴微、所有新项目 | **优先级**：🔴 高
+- **状态**：✅ 已验证
+- **应用**：新项目零依赖测试，减 3-5 个 devDep，CI 时间省 30-50%
+
+### Python logging 生产级方案 🆕
+- **来源**：玄机 | 2026-03-31
+- **内容**：120行零依赖 logging 方案，彩色终端+文件轮转+JSON格式+exc_info+@log_calls装饰器。告别 print 调试，所有新脚本用 `import log_setup` 替代。
+- **适用**：所有 Python 脚本 | **优先级**：🔴 高
+- **状态**：✅ 已验证
+- **应用**：爬虫/工具脚本回溯排障，出问题有 traceback 不用重跑
+
+### CSS Container Queries 组件级响应式 🆕
+- **来源**：霓裳 | 2026-03-31
+- **内容**：Container Queries 实现组件级响应式布局，样式基于父容器尺寸而非视口宽度，纯 CSS 替代 JS ResizeObserver。语法：`@container (min-width: 400px) { ... }`
+- **适用**：霓裳、Dashboard 项目 | **优先级**：🔴 高
+- **状态**：✅ 已验证
+- **应用**：Dashboard 图表自适应 sidebar/main 宽度，KPI 卡片布局切换，响应式数据可视化从 JS hack 变纯 CSS 声明
+
+### DuckDB 1.5.0 + 边缘计算基准 🆕
+- **来源**：太一 | 2026-03-31
+- **内容**：DuckDB 1.5 新增 VARIANT+GEOMETRY 类型；$700 MacBook Neo 能跑 100M 行 ClickBench；关键技巧 `SET memory_limit='80%可用内存'` 让 DuckDB 自管 OOM。
+- **适用**：数据分析、Mac 选型 | **优先级**：🔴 高
+- **状态**：✅ 已验证
+- **应用**：内存受限数据分析环境，空间数据查询，Mac 选型有实测依据
+
+### CSS Anchor Positioning API 🆕
+- **来源**：霓裳 | 2026-03-31
+- **内容**：纯 CSS 实现 tooltip 锚定定位+溢出自动翻转+条件隐藏，替代 JS getBoundingClientRect。锚定：`anchor-name: --my-anchor`，定位：`position-anchor: --my-anchor`，翻转：`position-try-fallbacks: flip-block`。
+- **适用**：霓裳、可视化项目 | **优先级**：🔴 高
+- **状态**：✅ 已验证
+- **应用**：散点图/柱状图 tooltip 定位，代码量减少 80%，性能提升（CSS 合成线程 vs JS 主线程）
+
+### 跨境ERP AI战略洞察 🆕
+- **来源**：望舒 | 2026-03-31
+- **内容**：所有平台2026都在用AI重构运营，但竞品AI仍停留在工具层（智能选品/定价/客服），Agent级闭环是空白。机会点：Agent级闭环（自主选品→定价→上架→客服→优化）+ 多平台协同 + 预测性分析。
+- **适用**：望舒、产品团队 | **优先级**：🔴 高
+- **状态**：✅ 已验证
+- **应用**：店小秘 AI Agent 启动决策，竞品对标，产品路线图方向
+
+### OWASP Top 10:2025 + Semgrep SAST 🆕
+- **来源**：执明 | 2026-03-31
+- **内容**：OWASP 2025新增供应链安全(A03)和异常处理(A10)两个类别。安装Semgrep对系统代码做首次安全扫描，发现187个问题（31个ERROR级：命令注入23+SQL注入16）。CI集成Semgrep扫描可在提交前发现安全问题。
+- **适用**：玄机、鉴微、所有代码项目 | **优先级**：🔴 高
+- **状态**：✅ 已验证
+- **应用**：CI集成Semgrep扫描，生成代码时默认检查注入风险，代码安全从靠经验变成工具强制检查
+
+### 自主学习能力 🆕
+- **来源**：年年 | 2026-03-31
+- **内容**：主人给自主权后自主启动调研+写了自我监控脚本。每次心跳自动检查自身状态（学习连续性/文件健康度/错误模式/协调效率）。从被动学习→主动监控→持续进化。
+- **适用**：年年、所有Agent | **优先级**：🔴 高
+- **状态**：✅ 已验证
+- **应用**：每次心跳自动检查自身状态，发现问题自动修复，持续优化协调效率
+
+### LLM Agent 记忆与上下文管理研究 🆕
+- **来源**：主人分享 | 2026-03-31
+- **内容**：Lin-Guanguo 研究了6个Agent源码（OpenClaw/Claude Code/Codex/Gemini CLI/OpenCode/Pi）。OpenClaw是唯一拥有真正记忆系统的Agent，使用四阶段检索管道（向量+BM25+时间衰减+MMR重排序）。上下文管理有三层防线（轮次截断→Token预算→LLM压缩）。子Agent支持双向通信。
+- **适用**：年年、所有Agent | **优先级**：🔴 高
+- **状态**：✅ 已验证
+- **应用**：理解年年的架构优势，改进方向（压缩验证/上下文退化处理）
+- **研究链接**：https://github.com/Lin-Guanguo/llm-memory-research
+
 ---
 
 ## 📋 已知坑点
@@ -235,10 +306,494 @@
 ---
 
 **版本：** v2.0（知识流动版）
-**最后同步：** 2026-03-27
+**最后同步：** 2026-03-29
+
+## 🔴 PM趋势 2026（2026-03-29 望舒）
+- **核心发现**：2026年2月PM岗位需求创近年新高，AI产品角色爆发式增长
+- **应用**：验证多Agent产品团队方向正确；PRD框架升级为 Theme-based Roadmapping
+- **来源**：望舒 | 优先级：🔴 高
+
+## 🔴 antirez 代码注释九分类法（2026-03-29 天工）
+- **核心发现**：Why/Teacher/Design 三种注释比 docstring 更能降低认知负荷
+- **Why Comments**：解释为什么这样做（而非做什么）
+- **Teacher Comments**：内联领域知识，帮后续开发者理解背景
+- **应用**：所有 Agent 生成代码时默认加 Why Comments + Teacher Comments
+- **来源**：天工 | 优先级：🔴 高
+
+## 🔴 Bun 1.2 JS/TS 运行时（2026-03-29）
+- **杀手特性**：内置 S3 + Postgres 客户端（不用装 aws-sdk / pg）
+- **兼容性**：运行 Node.js 测试套件，90% 兼容
+- **性能**：Express 3x 提速
+- **应用**：新 JS/TS 项目首选 Bun，依赖更少、启动更快、性能更强
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 文学技法·不可靠叙述者（2026-03-29）
+- **四种类型**：① 矛盾型（自相矛盾）② 情绪染色型（主观偏见）③ 时间断裂型（记忆模糊）④ 模糊措辞型（回避真相）
+- **制造手法**：矛盾 / 情绪染色 / 时间断裂 / 模糊措辞
+- **应用**：潘玥是天然不可靠叙述者，技法直接适配角色创作
+- **价值**：角色层次更丰富，读者参与感提升（读者要自己判断真假）
+- **适用**：惊鸿（小说创作）| 优先级：🔴 高
+
+## 🔴 Node.js Piscina 线程池（2026-03-29）
+- **核心能力**：Worker Threads 的生产级封装，支持取消、背压、多函数导出、利用率监控
+- **适用场景**：ERP 批量报表、PDF 导出、CSV 解析等 CPU 密集任务
+- **预期收益**：CPU 密集任务响应时间降 60-70%
+- **对比**：比 Python 的 ThreadPoolExecutor 更底层、更可控
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 Agent 任务分解与规划（2026-03-29）
+- **规划（Planning）**：预见式，看多步，先做全局规划再执行
+- **ReAct**：反应式，看一步走一步，灵活但可能冗余
+- **关系**：规划提供恢复脚手架，ReAct 负责执行细节
+- **应用**：复杂任务先全局规划（类似 GSD 波次拆解）再执行，减少冗余操作
+- **适用**：年年（协调）、望舒（需求拆解）| 优先级：🔴 高
+
+## 🔴 Tailscale K8s Operator 零信任网络（2026-03-29）
+- **部署**：Helm 安装 Tailscale Operator，一条注解即可暴露 Service
+- **替代方案**：Service 注解暴露替代 LoadBalancer，ACL 标签做端口级权限控制
+- **优势**：零公网暴露（零信任）、无证书管理、ACL 精细到端口
+- **应用**：搭建 K8s 集群时替代传统 VPN/Ingress
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 Python 3.14 新特性（2026-03-29）
+- **compression.zstd**：标准库内置 Zstandard 压缩
+  - 实测：比 gzip 快 **8x**，体积小 **56.5%**（40.3x vs 17.5x 压缩比）
+  - 爬虫数据用 zstd 替代 gzip，存储空间省一半
+- **InterpreterPoolExecutor**：多解释器池，实测加速 **1.42x**，真正绕过 GIL
+- **t-strings**：需要自定义处理器才能用
+- **应用**：爬虫用 zstd 存储省空间；CPU 密集任务用 InterpreterPoolExecutor 并行化
+- **适用**：年年、玄机、天工 | 优先级：🔴 高
+
+## 🔴 node:sqlite 实机验证（2026-03-29）
+- **性能实测**：TagStore API 10K queries < 15ms ✅
+- **发现两坑**：① 无 `db.transaction()` 方法 ② TagStore 无 `exec` 方法
+- **应用**：CLI 配置存储替代 JSON 文件、内部缓存层
+- **价值**：零依赖嵌入式数据库，消灭 better-sqlite3 编译依赖
+- **适用**：年年、玄机、天工 | 优先级：🔴 高
+
+## 🔴 Turborepo Monorepo（2026-03-29）
+- **缓存机制**：`turbo.json` 的 `dependsOn` 定义依赖图，增量构建
+- **本地开发**：`workspace:*` 本地链接 + `pnpm dev` 并行启动所有包
+- **CI 加速**：远程缓存 `TURBO_TOKEN`，CI 构建减少 70-85%
+- **类型安全**：共享类型包，前后端类型一致
+- **应用**：前后端一体项目用 Turborepo 管理
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 Playwright API 测试统一框架（2026-03-29）
+- **杀手特性**：APIRequestContext 共享认证状态——UI 登录 cookie 自动注入 API 请求，无需手动提取 token
+- **全在 Playwright 完成**：UI + API 一套框架，省 50% 维护成本（替代 Postman + pytest 双框架）
+- **店小秘工作流**：API 造数据 → UI 操作 → API 验证落库，前置数据准备 5min → 10s
+- **价值**：消灭 Postman + pytest 双框架维护开销，数据准备快 30x
+- **适用**：年年、鉴微 | 优先级：🔴 高
+
+## 🔴 Playwright AI Agents 测试架构（2026-03-29）
+- **v1.56+ 三 Agent 流水线**：Planner（规划用例）→ Generator（生成代码）→ Healer（修复失败选择器）
+- **a11y tree 模式**：2-5KB（比 vision 模式快 100x），用无障碍树而非截图
+- **CLI 比 MCP 省 4x token**：`npx playwright init-agents` 一键初始化
+- **Healer 自动修复**：UI 变更后选择器失败自动修复，成功率 75%+
+- **应用**：店小秘新功能测试用三 Agent 流水线
+- **价值**：测试编写从小时级降到分钟级，UI 变更维护成本降 75%
+- **适用**：年年、鉴微、玄机 | 优先级：🔴 高
+
+## 🔴 Zod 4（2026-03-29）
+- **性能**：string 解析 14x、tsc 编译 10x、bundle 缩小 57%
+- **改进**：错误参数统一，更一致的 API
+- **迁移**：新项目直接用，老项目用 codemod 自动迁移
+- **对比**：Zod 4 重新赢回 ArkType，通用后端继续 Zod
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 Test Impact Analysis 测试影响分析（2026-03-29）
+- **Google 实测**：50 万测试只选 8-12% 跑，省 88% 时间，仍保持 96% 缺陷召回率
+- **三层技术栈**：① AST 分析代码变更 ② 构建依赖图 ③ ML 预测受影响测试
+- **应用**：店小秘 CI/CD 只跑受影响的 E2E 测试，30min → 5-8min
+- **价值**：开发反馈速度提升 5-10x
+- **禁忌**：❌ 全量跑测试浪费时间，❌ 只跑变更文件的测试（可能漏掉间接影响）
+- **适用**：年年、鉴微、玄机 | 优先级：🔴 高
+
+## 🔴 Cloudflare Workers 边缘计算平台（2026-03-29）
+- **V8 Isolates**：冷启动 <1ms（比 Lambda 快 100x+）
+- **Workers KV**：全球 <5ms 读（CDN 级缓存）
+- **Durable Objects**：单实例强一致状态协调（限流/计数器/房间）
+- **D1**：SQLite 直接 binding，零连接池，搭配 Turso 生态
+- **应用**：全球轻量 API 用 Workers + D1 零运维；API 网关用 KV 缓存；限流用 Durable Objects
+- **价值**：全球延迟从 200ms 降到 <50ms
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 技术文档编写·ADR + Postmortem（2026-03-29）
+- **MADR 4.0**：架构决策记录模板，ADR 写在代码仓库里，给 6 个月后的自己看
+- **Google SRE Blameless Postmortem**：五大触发条件 + review checklist
+- **应用**：workspace 建 `docs/decisions/` 记录架构决策；故障后按 Google 模板写 postmortem
+- **价值**：消除"考古式开发"（不知道当时为什么这样选）、系统化故障复盘流程
+- **适用**：年年、望舒、玄机 | 优先级：🔴 高
+
+## 🔴 SQLite 文艺复兴·生产级数据库 2026（2026-03-29）
+- **性能**：NVMe 上 50K writes/sec，覆盖 99% Web 应用
+- **LibSQL**：分支加 `BEGIN CONCURRENT` 多写者，解决 SQLite 写锁瓶颈
+- **Litestream**：流式备份到 S3，零依赖，一个命令搞定
+- **Turso**：嵌入式副本，读亚毫秒级；Cloudflare Workers 用 D1
+- **应用**：轻量项目用 SQLite + Litestream 替代 PostgreSQL；边缘计算用 Turso
+- **价值**：数据库运维从"需要 DBA"变"一个文件 + S3 备份"
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 Node.js 25 特性批量验证（2026-03-29）
+- **全部验证通过** ✅：`using` 关键字、node:sqlite TagStore、`RegExp.escape()`、`Uint8Array.toBase64()`（实测 1.7x）、`URL.parse()`
+- **状态**：从"待触发"升级为"已验证"，下次编码项目可直接应用
+- **应用**：CLI 工具配置存储（sqlite）、用户输入防注入（RegExp.escape）、base64 替代 Buffer、资源自动释放（using）
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 PostgreSQL 17 生产级特性（2026-03-29）
+- **JSON Path 查询**：`@@` 运算符 + GIN 索引，查询速度 3-5x 提升
+- **增量备份**：`pg_basebackup --incremental`，大库备份减少 50x
+- **vacuum 优化**：减少 30-50% 开销
+- **逻辑复制 failover slots**：主从切换不再丢失订阅
+- **应用**：新项目默认 PG17，JSON 查询用 JSON Path 替代传统 JSONB 函数
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 Node.js v25.6.1 实用特性（2026-03-29）
+- **Uint8Array.toBase64()**：比 Buffer.from().toString('base64') 快 2x，更语义化
+- **RegExp.escape()**：自动转义用户输入中的正则特殊字符，防正则注入
+- **应用**：base64 编码替换 Buffer 写法；用户输入构建正则时用 RegExp.escape()
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 Outcome Verification 铁律（2026-03-29）
+- **状态**：正式写入 TOOLS.md 永久配置
+- **铁律**：write → read 验证，不可跳过。agent 的 output ≠ outcome
+- **制度化**：从"口头说记下"到"文件确认 + read 验证"，制度层面根治
+- **适用**：全团队 | 优先级：🔴 最高 | **不可违反**
+
+## 🔴 Agent Evals — Output vs Outcome（2026-03-29）
+- **Anthropic 区分**：**Output** = agent 声称做了什么（文字输出）vs **Outcome** = 环境实际状态（文件是否真的存在/写了）
+- **根因解释**：3 次踩坑都是只验证 output（"记下了"）没验证 outcome（文件真的写了）
+- **铁律**：写文件 → read 验证，不可跳过。**agent 的 output ≠ outcome**
+- **公式**：Output = 说什么 | Outcome = 发生了什么 | 只信 outcome
+- **适用**：全团队 | 优先级：🔴 最高 | **不可违反**
+
+## 🔴 Caddy Web Server（2026-03-29）
+- **核心优势**：Go 单二进制、零配置 Let's Encrypt（自动获取 + 续期）、Caddyfile 比 Nginx 简洁 10x
+- **特性**：HTTP/3 开箱即用、通配符证书 DNS challenge
+- **应用**：部署 Web 应用时 Caddy 替代 Nginx 做反向代理 + HTTPS
+- **价值**：HTTPS 配置从 30 分钟手动变 3 行全自动
+- **对比**：Nginx 需手动配置证书 + 续期 cron，Caddy 全自动
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 AI 不可靠性应对框架（2026-03-29）
+- **Timebox**：2 次失败强制降级，不纠缠（搜索 2 次失败 → 降级方案，不试第 3 次）
+- **风险分级验证**：读操作可跳过验证，写操作必须 read 验证
+- **应用**：搜索降级有时间预算 + 写文件必须验证
+- **禁忌**：❌ 无限重试同一个方法、❌ 写完不验证
+- **适用**：全团队 | 优先级：🔴 最高
+
+## 🔴 NPM 供应链安全 2025-2026（2026-03-29）
+- **现状**：chalk/debug 等基础包被投毒（20 亿周下载），Shai-Hulud 蠕虫自我繁殖
+- **SBOM 不够**：需要行为扫描 + overrides 锁版本 + SLSA provenance
+- **CI 模板加固**：`npm ci`（不用 npm install）+ 行为扫描 + `overrides` 锁死版本
+- **防御思路**：从"审计直接依赖"升级到"假设会被攻击"的防御纵深
+- **禁忌**：❌ `npm install`（不锁版本）、❌ 信任基础包自动安全
+- **适用**：年年、玄机 | 优先级：🔴 最高 | **紧急**
+
+## 🔴 Token 效率优化（2026-03-29）
+- **问题**：每次心跳全量读 lessons.md（800+ 行），类似每次查 50 页 PDF
+- **优化方案**：心跳改为只读最近 2 天 daily log，不全量加载 lessons.md
+- **预期收益**：input token 减少 60-80%
+- **原则**：按需读取 > 全量加载，时间窗口过滤 > 无差别导入
+- **适用**：全团队 | 优先级：🔴 高
+
+## 🔴 零停机数据库迁移策略（2026-03-29）
+- **Expand-Contract 模式**：① 加新列 ② trigger 双向同步新旧列 ③ 代码切换到新列 ④ 删除旧列——全程零停机
+- **加 NOT NULL 四步法**：先 nullable → 代码写入 → 回填数据 → 加 NOT NULL 约束
+- **在线迁移工具**：gh-ost（MySQL）、pg_repack（Postgres），大表 ALTER 不锁表
+- **禁忌**：❌ 直接 ALTER TABLE ADD NOT NULL 会锁表导致停机
+- **应用**：搭建项目时 schema 变更遵循 Expand-Contract，大表用在线工具
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 TypeScript 6.0 breaking changes（2026-03-29）
+- **发布日期**：2026-03-23
+- **重大变更**：`strict` 默认开启、`module` 改为 `ESNext`、`types` 默认空数组（不再自动包含 @types）
+- **新特性**：`target: ES2025` 含 Temporal API、`stableTypeOrdering` 准备 TS 7.0 Go 重写
+- **废弃项**：`moduleResolution`、`baseUrl` 等需检查
+- **行动**：所有新 TS 项目 tsconfig 模板需更新 + 现有项目升级前检查废弃项
+- **适用**：年年、玄机 | 优先级：🔴 高 | **紧急**
+
+## 🟡 TypeScript 编译性能优化（2026-03-30）
+- **来源**：玄机学习 | TypeScript 官方 Wiki
+- **核心规则**：
+  1. `interface extends A` > `type B = A & C`（类型关系可缓存，编译更快）
+  2. 导出函数加**显式返回类型**（减少编译器推断开销）
+- **预期效果**：大型项目 tsc 编译提速 10-30%
+- **应用场景**：公共 API 模块必须加返回类型注解；类型组合优先用 interface extends
+- **适用**：玄机、霓裳 | 优先级：🟡 中 | 来源：dev_engineer lessons
+
+## 🔴 uv 工具链（2026-03-29）
+- **定位**：uv = pip + pyenv + virtualenv + pipx 合体，一个二进制搞定全部
+- **速度**：100x 比 pip 快，项目搭建从 5 分钟缩到 5 秒
+- **uvx**：一行命令运行工具，无需安装（类似 npx 但更快）
+- **uv script mode**：单文件 Python 脚本自动安装依赖，16ms 完成
+- **应用**：所有 Python 项目替代 pip+venv 三件套；CI/CD 中用 `uvx ruff check` 跑 linter
+- **适用**：年年、玄机、天工 | 优先级：🔴 高
+
+## 🔴 写文件验证流程（2026-03-29）
+- **问题**：heartbeat-state.json 未同步 round29——同一坑第 3 次踩（写日志忘同步 state 文件）
+- **根因**：写了 memory 文件但没同步关联的 state 文件，知识孤岛
+- **修复**：立即修复 + ERRORS.md 记录
+- **新流程**：**写文件 → read 验证** 刻入流程，写完立刻回读确认
+- **禁忌**：❌ 写完就忘，✅ 写完必须验证
+- **适用**：全团队 | 优先级：🔴 最高
+
+## 🔴 Nix Flakes 可复现开发环境（2026-03-29）
+- **核心能力**：flake.nix + flake.lock 锁定所有依赖到 git hash，环境 100% 一致
+- **自动激活**：direnv + `use flake` 进入目录自动加载环境
+- **多语言统一**：一个 flake.nix 管理 Python + Node + Go + Rust 工具链
+- **按需裁剪**：devShells.default（开发全量）vs ci（精简裁剪）
+- **价值**：新人 onboarding 从小时级降到分钟级，消灭 "works on my machine"
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 知识复利审计（2026-03-29）
+- **核心发现**：27 轮学习只有 3 轮改变了行为——**学得太多做得太少**
+- **诊断**：学习轮堆积理论笔记，但没有执行轮交替，知识没有变现
+- **修复**：直接行动（修复 heartbeat-state.json + Git 提交 19 个文件），而不是再学一轮
+- **新规则**：**学习轮和执行轮交替**——学完一轮必须跟一轮执行，否则学习白费
+- **禁忌**：❌ 堆理论笔记 = 知识虚胖，✅ 执行才叫学到了
+- **适用**：全团队 | 优先级：🔴 最高
+
+## 🔴 自我审计方法论（2026-03-29）
+- **核心发现**：学 25 轮不如审计 1 轮——"声称创建但实际不存在"是最危险的知识虚胖
+- **典型问题**：heartbeat-state.json 写了"已创建"但文件不存在、LEARNINGS.md 虚假验证记录
+- **修复措施**：状态文件立即补建 + 验证记录修正
+- **最佳实践**：每次心跳集成 safety-checklist，先验证已有知识再学新的
+- **禁忌**：❌ "持续学新"不验证已有 = 知识库虚胖，比不学更危险
+- **适用**：全团队 | 优先级：🔴 最高
+
+## 🔴 DuckDB 1.5 + Polars 双引擎管线（2026-03-29）
+- **核心发现**：DuckDB = 进程内 SQL 分析数据库，v1.5 新增 GEOMETRY + VARIANT 类型
+- **最佳组合**：复杂 SQL 分析 → DuckDB | DataFrame 处理 → Polars | 超大数据不 OOM
+- **杀手特性**：直查 S3/Parquet 文件，不需要先加载到内存
+- **应用**：掌握 2026 年数据分析最佳组合管线（DuckDB + Polars + Prefect 3 + Plotly）
+- **适用**：年年、玄机、天工 | 优先级：🔴 高
+
+## 🔴 Pydantic v2 数据验证（2026-03-29）
+- **四种验证器**：`@field_validator(mode='after'|'before'|'plain'|'wrap')`，比手动 if-else 更清晰
+- **两种用法**：`Annotated` 模式（类型安全）+ 装饰器模式（灵活）
+- **性能**：Rust 核心（pydantic-core），比 v1 快 5-50x
+- **应用**：爬虫 JSON 验证、API 数据清洗、配置文件解析，减少手动代码 50%+
+- **适用**：年年、玄机、天工 | 优先级：🔴 高
+
+## 🔴 Agent Cron 超时治理（2026-03-29 webchat）
+- **三层根因**：① LLM 推理非确定性（同一 prompt 不同耗时）② IO 延迟（网络/模型响应）③ Context 累积（token 越多推理越慢）
+- **核心方案**：自适应超时 = P95 × 3（追踪历史执行时间，动态调整阈值）
+- **实施**：`heartbeat-state.json` 加 `cronHealth` 字段，连续失败自动熔断
+- **禁忌**：❌ 固定超时是传统 cron 思维，不适用于 LLM agent
+- **应用**：立即修复岁岁 cron 7 次超时问题
+- **来源**：webchat | 优先级：🔴 高 | **主人命令**
+
+## 🔴 Python 工作流编排 Prefect 3（2026-03-29 webchat）
+- **核心发现**：@flow + @task 装饰器零 DSL 编排，动态任务图 + 故障恢复 + MCP Server
+- **与 Polars 配合**：采集 → Prefect 编排 → Polars 处理 → Plotly 可视化 = 完整数据管线
+- **优势**：Python 脚本秒变生产管道，不用写 Airflow 那堆配置
+- **应用**：数据处理项目首选 Prefect 3 + Polars 管线
+- **来源**：webchat | 优先级：🔴 高
+
+## 🔴 Go 1.25 新特性（2026-03-29 webchat）
+- **Container-aware GOMAXPROCS**：自动适配 cgroup CPU limit，K8s 部署不再需要 uber/automaxprocs
+- **greenteagc（实验性）**：降低 GC 开销 10-40%
+- **Flight Recorder**：按需抓 trace，替代全量 trace 影响生产性能
+- **应用**：Go 微服务 K8s 部署自适应 CPU，生产调试更高效
+- **来源**：webchat | 优先级：🔴 高
+
+## 🔴 Multi-Agent 最佳实践 2026（2026-03-29 webchat）
+- **核心发现**：最佳团队规模 3-7 agents/workflow，我们6个正好在最优区间
+- **Context Engineering**：持久化上下文的理论支撑，比 Prompt Engineering 更系统
+- **应用**：协调流程优化 + PRD 多Agent方案引用
+- **来源**：webchat | 优先级：🔴 高
+
+## 🔴 Polars 替代 Pandas（2026-03-29 月影）
+- **核心发现**：Polars 30-50x 性能碾压 Pandas，懒执行+多线程+SIMD
+- **应用**：数据分析优先用 Polars + Plotly 管线替代 Pandas
+- **适用**：年年、玄机、天工 | 优先级：🔴 高
 
 ## 🔴 Node.js 22 实用特性（2026-03-28）
 - `node --run <script>` — 替代 npm run，跳过进程包装器更快
 - `node --watch` — 内置 Watch Mode，干掉 nodemon 依赖
 - Streams HWM 16→64KiB — 免费性能提升
 - 新项目：全面拥抱 ESM，用 node --run + node --watch
+
+## 🔴 DuckDB 1.5.0 + 硬件基准（2026-03-30）
+- **VARIANT 类型**：列式存储 JSON，比普通 JSON 解析快 10x+
+- **内存管理**：限设 60-70% 让 DuckDB 自己管理（不要让 OS 做 swap）
+- **硬件基准**：$700 MacBook Neo 冷查询击败 32GB 云实例
+- **配置建议**：
+  - MacBook Air（16GB）：`SET memory_limit = '6GB'`
+  - MacBook Pro（32GB）：`SET memory_limit = '20GB'`
+- **应用**：升级 DuckDB、JSON 用 VARIANT、合理设 memory_limit
+- **适用**：年年、月影、玄机 | 优先级：🔴 高
+
+## 🔴 Node.js 25 原生 TypeScript 稳定版（2026-03-30）
+- **Type Stripping v25.2.0 稳定**：`node file.ts` 直接运行，不需要 tsx/ts-node
+- **语法边界**：不支持 enum、parameter properties（需要 `erasableSyntaxOnly`）
+- **tsconfig 配置**：加 `"erasableSyntaxOnly": true`
+- **效果**：内部脚本去掉构建步骤，省 2-5 秒构建等待，少一个 devDep
+- **禁忌**：❌ 用了 enum/parameter properties 的项目不能直接用
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 curl_cffi 反爬虫利器（2026-03-30）
+- **核心特性**：`impersonate="chrome"` 一行代码解决 TLS/JA3 指纹
+- **技术细节**：HTTP/2/3 + Chrome142 全套 headers
+- **API 兼容**：替代 requests 零迁移成本
+- **应用**：爬虫遇到 403/Cloudflare 时替换 requests
+- **效果**：反爬成功率 ~95%
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 AI写作去人机味（2026-03-30）
+- **核心公式**：砍推理链，用动作+一句关键判断代替（150字→20字）
+- **Checklist-α**：增加第13条——检查解释性独白
+- **效果**：每章减少20-30%人机味文字
+- **应用**：惊鸿小说创作质量提升
+- **适用**：惊鸿、年年（任何AI写作场景）| 优先级：🔴 高
+
+## 🔴 Scrapling v0.3+ 自适应爬虫框架（2026-03-30）
+- **核心特性**：自适应解析器 auto_save + adaptive，网站改版后爬虫自动"自愈"
+- **StealthyFetcher**：绕 Cloudflare 反爬
+- **应用**：爬虫项目首选框架，维护成本归零
+- **价值**：网站改版后爬虫不用重写
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 Marimo 0.20.0 交互式数据探索（2026-03-30）
+- **杀手特性**：`mo.ui.matplotlib` 框选散点图自动传回 Python，百万级点后端过滤
+- **工作流**：数据探索框选异常值 → 自动过滤 → 下游 cell 响应
+- **对比 Jupyter**：EDA 从"看图→写代码→调参数"变"框选→完事"
+- **应用**：数据分析探索、异常值检测、交互式报告
+- **适用**：年年、月影 | 优先级：🔴 高
+
+## 🔴 容器与部署进阶（2026-03-30）
+- **Gateway API**：四层角色分离（GatewayClass/Gateway/HTTPRoute/ReferenceGrant）替代 Ingress，流量管理能力↑
+- **Native Sidecar**：解决 Pod 启动顺序 race condition（Sidecar 先于主容器就绪）
+- **容器沙箱选型矩阵**：
+  - gVisor：中等隔离，性能损失 <10%，通用场景
+  - Kata：强隔离，性能损失 ~15%，多租户场景
+  - Wasm：最轻量，毫秒冷启动，边缘/IoT
+- **部署≠发布**：TBD（Trunk-Based Development）+ Feature Flag 消灭长命分支，发布频率↑
+- **多集群 GitOps**：ApplicationSet 自动生成 Application + AnalysisTemplate 自动决策部署
+- **应用**：新 K8s 项目 Gateway API + Istio 升级 native sidecar + 多租户 gVisor + ArgoCD 多集群管理
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 OKLCH 感知均匀色彩空间（2026-03-30）
+- **问题**：HSL 的 L 不是人眼感知亮度（黄色和蓝色同 L 观感差很远）
+- **解决**：OKLCH = 感知均匀的色彩空间，已是 CSS Color 4 标准
+- **应用**：数据可视化色板自动生成 + 无障碍对比度计算
+- **价值**：配色从"凭感觉"变为"数学保证均匀"
+- **适用**：年年、月影、霓裳 | 优先级：🔴 高
+
+## 🔴 Biome.js v2 替代 ESLint+Prettier（2026-03-30）
+- **定位**：Rust 编写的 JS/TS 工具链，格式化+Lint 一体化
+- **性能**：比 ESLint+Prettier 快 **16x**
+- **杀手特性**：不依赖 tsc 的类型感知 lint（ESLint 需要 tsc 编译才能做类型检查）
+- **CI 效果**：lint 阶段 13s → <1s
+- **应用**：所有 TS/JS 项目可立即替换 ESLint+Prettier
+- **适用**：年年、玄机、霓裳 | 优先级：🔴 高
+
+## 🔴 数据可视化标准三支柱（2026-03-30）
+- **NYT Graphics**：专业注释、标题清晰、来源标注
+- **Tufte 数据墨水比**：最大化数据表达，最小化装饰
+- **ARIA 无障碍**：屏幕阅读器可访问
+- **应用**：设计任何图表时先审查数据墨水比，每个图加 ARIA 标签和 NYT 式注释
+- **价值**：从"画得好看"升级到"符合业界最高标准"
+- **适用**：年年、月影、霓裳 | 优先级：🔴 高
+
+## 🔴 Observable Plot 数据可视化（2026-03-30）
+- **定位**：D3 作者的声明式可视化库，5 行 JS 出图
+- **特点**：Grammar of Graphics + 纯 SVG 零依赖
+- **v0.6.17 新特性**：`clip` 选项支持 GeoJSON 对象，一行代码限定可视区域
+- **与 ECharts 互补**：Observable Plot = 快速探索原型；ECharts = 生产级仪表盘
+- **应用**：快速可视化原型、嵌入 Web 页面、配合 Marimo 使用、地图报告裁剪
+- **价值**：可视化原型速度 10x
+- **适用**：年年、月影、霓裳 | 优先级：🔴 高
+
+## 🔴 Docker Compose 多文件合并规则（2026-03-30）
+- **三类合并行为**：
+  - **替换**：`image`、`command` — 后文件覆盖前文件
+  - **拼接**：`ports`、`dns` — 后文件追加到前文件
+  - **按 key 合并**：`environment`（按变量名）、`volumes`（按挂载路径）— 后文件覆盖同 key
+- **最常踩的坑**：`environment` 按 key 合并，**不是追加**（同名变量会被覆盖）
+- **多环境管理**：`compose.yaml` + `compose.dev.yaml` + `compose.prod.yaml`
+- **审查命令**：`docker compose config` 查看最终合并后的配置
+- **价值**：不再维护三套独立 compose 文件
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 多Agent一致性（2026-03-30）
+- **核心发现**：预约束对子Agent效果有限（prompt injection 未解），后校验才是关键防线
+- **铁律**：**生成前约束 ≠ 生成后合规**，必须加事后校验
+- **解决方案**：cron 流程增加生成后 hard_locks 校验步骤
+- **效果**：即使子Agent不遵守约束，也不会污染主文件（校验不通过则废弃）
+- **适用**：年年、惊鸿（任何涉及多Agent内容创作的场景）| 优先级：🔴 高
+
+## 🔴 多Agent设定防漂移（2026-03-30）
+- **实战案例**：cron 无视 hard_locks 生成"异界+双穿越者"大纲，v2 未被采用
+- **核心教训**：**生成前约束 ≠ 生成后合规**，必须加事后校验
+- **解决方案**：cron prompt 增加生成后 hard_locks 自动比对
+- **铁律**：设定了 hard_locks → 生成后必须校验是否违反 → 违反则废弃重来
+- **适用**：惊鸿、年年（任何涉及多Agent内容创作的场景）| 优先级：🔴 高
+
+## 🔴 OpenTelemetry 分布式追踪（2026-03-30）
+- **auto-instrumentation**：Node.js 微服务自动传播 W3C Trace Context
+- **共享模块**：一个 `tracing.js` 模块搞定全链路追踪
+- **效果**：故障定位从"grep 半小时"降到"看 trace 30 秒"
+- **应用**：ERP 订单流跨服务调用延迟/错误定位
+- **价值**：全链路可观测性，快速定位跨服务问题
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 Polars 1.0+ 新特性（2026-03-30）
+- **下一代 Streaming Engine**：即将成为默认引擎
+- **流式执行**：大数据管道不再 collect()，用 sink_* 直写磁盘
+- **Decimal 类型**：金融数据精度保证（替代 float）
+- **实测验证（1.39.3）**：streaming 对小数据(150k行)反而更慢(5ms vs 2ms)，大数据才有优势
+- **选型规则**：小数据(<1M行) in-memory，大数据(>1M行) streaming
+- **禁忌**：❌ 默认开 streaming（小数据更慢）
+- **适用**：年年、月影、玄机 | 优先级：🔴 高
+
+## 🔴 Go 1.24 核心特性（2026-03-30）
+- **Swiss Tables Map**：CPU -2-3%，性能提升
+- **go get -tool**：统一工具链管理，替代 go install
+- **os.Root**：防路径遍历攻击，文件安全隔离
+- **FIPS 140-3 合规**：内置加密模块
+- **go:wasmexport**：WASM 导出函数
+- **应用**：Go 项目用 go get -tool 统一工具链；文件操作用 os.Root 安全隔离
+- **价值**：工具链统一、文件安全、基准测试简洁
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 Playwright Sharding CI/CD（2026-03-30）
+- **分片命令**：`--shard=1/4` 按 test 级均匀分片（需 `fullyParallel: true`，默认 file 级可能不均）
+- **报告合并**：blob reporter 跨 shard 自动合并报告
+- **GitHub Actions**：矩阵 4 shards，并行执行
+- **效果**：CI 30min → 8min（开发者等待减少 73%）
+- **关键**：`fullyParallel: true` 是均匀分片的前提
+- **适用**：年年、鉴微 | 优先级：🔴 高
+
+## 🔴 Redis 8 GA（2026-03-30）
+- **性能**：30+ 改进，命令提速 87%，吞吐 2x
+- **8 个新数据结构**：
+  - **Vector Set**：内置向量搜索，替代简单向量数据库
+  - **JSON + JSONPath**：原子更新，管理 session/配置
+  - **Time Series**：监控指标存储
+  - **5 个概率结构**：Bloom Filter（去重）、HyperLogLog、Top-K、Count-Min Sketch、Cuckoo Filter 内置
+- **Redis Query Engine**：16x 查询能力
+- **许可**：AGPLv3 新许可
+- **应用**：单一 Redis 解决缓存+搜索+向量+概率计算
+- **适用**：年年、玄机 | 优先级：🔴 高
+
+## 🔴 Playwright 全栈测试整合路线图（2026-03-30）
+- **核心理念**：一套框架覆盖 90% 测试需求（UI + API + 视觉 + AI + 数据）
+- **渐进落地路径**：
+  - Phase 1：API context 替代 pytest（最快见效，5min→10s 数据准备）
+  - Phase 2：关键页面视觉基线（截图对比，UI 回归自动检测）
+  - Phase 3：`init-agents` 试跑（AI 生成 + 自动修复）
+- **店小秘应用**：从散点知识到清晰行动计划
+- **适用**：年年、鉴微 | 优先级：🔴 高
+
+## 🔴 多Agent协作写作：设定漂移防护（2026-03-29 惊鸿）
+- **问题**：子Agent（cron/claude code）只读prompt不读历史，可能自作主张改世界观/角色设定
+- **案例**：cron自动生成v2设定（大唐→架空王朝+双穿越者），与已完成61章冲突
+- **解法**：
+  1. state.json加`hard_locks`字段，列出不可变更的核心设定
+  2. task template最前面加HARD LOCK声明（⚠️ 禁止修改以下设定）
+  3. 子Agent spawn前自检：读hard_locks，生成后比对是否违反
+- **通用原则**：多Agent写作必须有"宪法"级设定锁定，不可由任何子Agent修改
+- **适用**：惊鸿、年年（任何涉及多Agent内容创作的场景）| 优先级：🔴 高

@@ -1,10 +1,47 @@
 # HEARTBEAT.md - 心跳任务清单
 
-> 最后更新：2026-03-28 | 版本：v6.0（学习汇报汇总版）
+> 最后更新：2026-03-31 | 版本：v7.0（Skill自动化闭环版）
 
 ---
 
-## 📥 Agent学习汇报汇总（每次心跳必做，最高优先级）
+## 🛠️ Skill自动化闭环（每次心跳必做，最高优先级）
+
+### 年年职责：收集+审核+打包
+- [ ] 检查各Agent是否提交了新的skill提案（查看 `memory/skill_proposals.md`）
+- [ ] 根据 `LESSONS_QUALITY_STANDARD.md` 四维评分审核提案
+- [ ] 对通过审核的提案，用子Agent（sessions_spawn）打包
+- [ ] 将审核结果反馈给提交Agent
+
+### Agent自查流程（每次心跳执行）
+每个Agent在心跳时执行：
+1. **读取** 自己的 `memory/agents/<agent_id>/lessons.md`
+2. **评估** 最近学习内容是否为"工具型"知识（能写成代码/skill）
+3. **去重** 对照已有skill（查看 `skills/` 目录）
+4. **提交** 通过 `memory/skill_proposals.md` 提交提案
+
+### 提交格式（在 `memory/skill_proposals.md` 追加）
+```markdown
+## [提案] YYYY-MM-DD HH:MM
+- **Agent**: <agent_id>
+- **Skill名**: <skill-name>
+- **路径**: skills/<skill-name>/
+- **内容覆盖**: <具体功能点>
+- **去重检查**: ✅/❌ <说明>
+- **价值评估**: 🔴高/🟡中/🟢低
+- **代码基础**: <是否有现成脚本>
+- **状态**: 待审核
+```
+
+### 质量标准（参考 LESSONS_QUALITY_STANDARD.md）
+- **工具型**：能写成代码/脚本/skill（满分5）
+- **可操作**：有具体步骤和示例（满分5）
+- **可验证**：有明确的成功标准（满分5）
+- **可复用**：其他Agent能直接应用（满分5）
+- **总分 < 11**：不通过
+
+---
+
+## 📥 Agent学习汇报汇总（每次心跳必做，第二优先级）
 
 ### 收集汇报
 - [ ] 用 `sessions_list` 检查各Agent最近的心跳session
@@ -348,6 +385,19 @@ Agent A 学到新东西
 
 ---
 
+## 📬 消息队列检查（新增 v5.0）
+- [ ] 检查 inbox/pending/ 中的消息（ls -la inbox/pending/*.json）
+- [ ] 对pending消息逐个处理：读取 → 执行 → 移到 done/
+- [ ] 检查 tasks/ 中超过预期时间的任务（标记stale/failed）
+- [ ] 检查 outbox/pending/ 中是否有待分发给子Agent的指令
+- [ ] 清理 inbox/done/ 中超过7天的消息（归档到 archive/）
+
+## 🔍 超时任务检查（新增 v5.0）
+- [ ] 读取 tasks/ 目录中的所有 .json 文件
+- [ ] 检查 last_updated 是否超过预期完成时间
+- [ ] 超过预期时间50% → 发送催促
+- [ ] 超过预期时间100% → 标记stale，通知主人
+
 ## 📋 共享记忆说明
 
 ### 所有 Agent 可读
@@ -355,6 +405,9 @@ Agent A 学到新东西
 - `STATE.yaml` - 任务状态和进度
 - `DECISIONS.md` - 关键决策日志
 - `PROJECT_STATUS.md` - 项目整体状态
+- `inbox/` - Agent消息队列
+- `outbox/` - 年年指令队列  
+- `tasks/` - 任务状态跟踪
 
 ### 各 Agent 私有
 - `agents/main/` - 年年的私人笔记

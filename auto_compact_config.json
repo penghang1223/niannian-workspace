@@ -1,0 +1,39 @@
+{
+    "_comment": "Auto Compactor 配置 — 参考 Claude Code autocompact 实现",
+
+    "_doc_threshold": {
+        "compact_threshold_ratio": "触发压缩的 token 使用比例。0.80 = 80% 时触发，与 Claude Code 一致",
+        "max_context_tokens": "上下文窗口上限，取决于模型。Claude Sonnet = 200K",
+        "target_tokens_after_compact": "压缩后期望保留的 token 数（参考 Claude Code 的 POST_COMPACT_TOKEN_BUDGET）"
+    },
+
+    "_doc_preserve": {
+        "preserve_last_n_messages": "压缩后保留最近 N 条原始消息，防止丢失最近对话上下文",
+        "max_summary_output_tokens": "LLM 生成摘要的最大 token 数（Claude Code 使用 COMPACT_MAX_OUTPUT_TOKENS）"
+    },
+
+    "_doc_retry": {
+        "max_ptl_retries": "prompt-too-long 最大重试次数（Claude Code 的 MAX_PTL_RETRIES = 2）",
+        "ptl_truncate_ratio": "每次 PTL 重试截断最旧消息的比例（Claude Code 默认 20%）"
+    },
+
+    "max_context_tokens": 200000,
+    "compact_threshold_ratio": 0.80,
+    "target_tokens_after_compact": 40000,
+
+    "preserve_last_n_messages": 6,
+    "max_summary_output_tokens": 4096,
+
+    "max_ptl_retries": 3,
+    "ptl_truncate_ratio": 0.20,
+
+    "model": "claude-sonnet-4-20250514",
+    "api_base_url": "https://api.anthropic.com",
+    "api_key_env": "ANTHROPIC_API_KEY",
+
+    "restore_recent_files": true,
+    "max_files_to_restore": 5,
+    "max_tokens_per_file": 5000,
+
+    "custom_summary_instructions": ""
+}
