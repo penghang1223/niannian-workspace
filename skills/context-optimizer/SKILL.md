@@ -1,6 +1,24 @@
 # SKILL.md - Context Optimizer
 
-> 参考Claude Code的上下文压缩策略，为OpenClaw提供自动优化能力
+> OpenClaw运行时优化系统 — 系级级安装，所有Agent统一受益
+
+## 类型
+
+**Runtime Optimizer（运行时优化）**
+
+- 🎯 受众：OpenClaw系统管理员
+- 📦 安装方式：系统级安装（不是Agent级）
+- 🔄 生效方式：OpenClaw运行时自动调用，Agent无需感知
+
+## 工作原理
+
+```
+Agent A ←┐
+Agent B ←┼── OpenClaw运行时（统一优化） ← context-optimizer
+Agent C ←┘
+```
+
+所有Agent间接受益，但不需要单独配置。
 
 ## 功能
 
@@ -9,30 +27,40 @@
 - 合并连续的工具调用结果
 - 压缩长文本（保留首尾关键信息）
 - **效果**：节省60%+重复token
+- **谁在用**：运行时自动
+- **Agent感知**：❌ 不感知
 
 ### 2. 自动压缩 (autocompact)
 - 监控token使用量
 - 超过阈值时自动触发压缩
 - 生成对话摘要+保留关键文件
 - **效果**：长对话节省50%+token
+- **谁在用**：运行时自动
+- **Agent感知**：❌ 不感知
 
 ### 3. 流式并行执行 (streaming_executor)
 - 流式检测工具调用
 - 并行执行多个工具
 - 错误隔离+自动重试
 - **效果**：工具执行加速3x
+- **谁在用**：运行时自动
+- **Agent感知**：❌ 不感知
 
 ### 4. Token预算管理 (token_budget)
 - Token使用追踪（累计/本次/剩余）
 - 三级阈值预警（75%警告/85%压缩/90%危险）
 - 预算耗尽自动续期（最多5次）
 - **效果**：防止上下文溢出，智能预算管理
+- **谁在用**：心跳监控
+- **Agent感知**：🟡 告警时感知
 
 ### 5. 工具延迟加载 (tool_defer)
 - 初始prompt仅加载~10个核心工具
 - 40+工具按需搜索加载
 - 多维度搜索评分
 - **效果**：节省75%+工具描述token
+- **谁在用**：运行时自动
+- **Agent感知**：❌ 不感知
 
 ## 用法
 
@@ -97,16 +125,6 @@ results = await executor.wait_all()
 | safety_margin | 0.8 | 压缩触发比例 |
 | max_concurrent | 5 | 最大并行工具数 |
 | timeout_seconds | 30.0 | 工具执行超时 |
-
-## 架构参考
-
-基于Claude Code v2.1.88源码分析：
-- **4层压缩管道**：snip→microcompact→collapse→autocompact
-- **StreamingToolExecutor**：流式接收+并行执行
-- **熔断器**：连续失败3次停止压缩
-- **Token预算**：500K自动继续
-
-详细分析见：`CLAUDE_CODE_DEEP_ANALYSIS.md`
 
 ## 依赖
 
