@@ -59,11 +59,16 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 
 ## 搜索降级规则（子 Agent 适用）
 
-当 `web_search` 工具不可用时，按以下顺序降级：
-1. `exec` + `curl` 调搜索引擎 API（Brave/Google/Bing）
-2. `exec` + `curl` 抓取搜索结果页 HTML，提取链接
-3. `web_fetch` 抓取目标网页内容
-4. 向年年（main agent）发 `sessions_send` 请求代为搜索
+**可用搜索方式清单**（2026-04-01 验证）：
+- ✅ `web_search` — Brave API（已配置，首选）
+- ✅ `web_fetch` — 始终可用
+- ✅ `exec` + `curl` — 可用，有频率限制
+- ✅ `scripts/search_fallback.py` — 多引擎自动降级
+
+当 `web_search` 失败时，按以下顺序降级：
+1. `web_fetch` 抓取目标网页内容（首选）
+2. `scripts/search_fallback.py "关键词"` — 多引擎自动降级
+3. 向年年（main agent）发 `sessions_send` 请求代为搜索
 
 **禁止**：直接说"搜索工具不可用"就放弃，必须尝试以上方法。
 
@@ -298,9 +303,8 @@ This is a starting point. Add your own conventions, style, and rules as you figu
 ## 搜索降级规则（所有Agent适用）
 
 当 `web_search` 工具不可用时，按以下顺序降级：
-1. `web_fetch` 抓取 Google 搜索结果页（https://www.google.com/search?q=xxx）
-2. `web_fetch` 抓取 Bing 搜索结果页
-3. `exec` + `curl` 调搜索引擎网页
-4. 向年年（main agent）发 `sessions_send` 请求代为搜索
+1. `web_fetch` 抓取目标网页内容（首选）
+2. `scripts/search_fallback.py "关键词"` — 多引擎自动降级（Brave→Google→Bing→DuckDuckGo→SearX）
+3. 向年年（main agent）发 `sessions_send` 请求代为搜索
 
 **禁止**：直接说"搜索工具不可用"就放弃，必须尝试以上方法。
