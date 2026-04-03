@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 数据库
+  postgres:
+    image: postgis/postgis:15-3.3-alpine
+    container_name: opc-postgres
+    environment:
+      POSTGRES_DB: opc_platform
+      POSTGRES_USER: opc_user
+      POSTGRES_PASSWORD: opc_password_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - opc-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opc_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis 缓存
+  redis:
+    image: redis:7-alpine
+    container_name: opc-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - opc-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 后端服务
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: opc-backend
+    environment:
+      NODE_ENV: development
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: opc_user
+      DB_PASSWORD: opc_password_2026
+      DB_NAME: opc_platform
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: opc_jwt_secret_key_2026_change_in_production
+      JWT_EXPIRES_IN: 7d
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    volumes:
+      - ../backend:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - opc-network
+    command: npm run dev
+
+networks:
+  opc-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
