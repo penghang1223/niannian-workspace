@@ -1,0 +1,35 @@
+{
+  "domain": "bilibili.com",
+  "last_updated": "2026-04-02T22:00:00+08:00",
+  "url_patterns": [
+    "https://www.bilibili.com/video/{bvid}",
+    "https://space.bilibili.com/{uid}",
+    "https://search.bilibili.com/all?keyword={query}",
+    "https://api.bilibili.com/x/web-interface/view?bvid={bvid}"
+  ],
+  "platform_features": {
+    "video": "视频平台",
+    "login_required": false,
+    "api_available": true,
+    "supports_subtitles": true
+  },
+  "tips": [
+    "使用API可以获取视频详细信息",
+    "视频字幕可以通过API获取",
+    "搜索功能支持多种筛选"
+  ],
+  "traps": [
+    "某些视频可能需要登录",
+    "API有频率限制",
+    "某些内容可能有地区限制"
+  ],
+  "known_issues": [
+    "视频链接可能有时效性",
+    "某些页面有动态加载"
+  ],
+  "success_patterns": [
+    "使用API获取视频信息",
+    "使用web_search搜索B站内容",
+    "对于视频分析，使用summarize技能"
+  ]
+}

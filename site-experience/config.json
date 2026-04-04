@@ -1,0 +1,25 @@
+{
+  "system": {
+    "name": "site-experience",
+    "version": "1.0.0",
+    "author": "年年",
+    "created": "2026-04-02"
+  },
+  "storage": {
+    "base_dir": "/Users/narain/.openclaw/workspace/site-experience/domains",
+    "file_format": "json",
+    "backup_enabled": true,
+    "backup_dir": "/Users/narain/.openclaw/workspace/site-experience/backups"
+  },
+  "features": {
+    "auto_load": true,
+    "auto_save": true,
+    "cross_session": true,
+    "domain_wildcard": true
+  },
+  "integration": {
+    "heartbeat_enabled": true,
+    "browser_enabled": true,
+    "search_enabled": true
+  }
+}

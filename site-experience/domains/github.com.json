@@ -1,0 +1,36 @@
+{
+  "domain": "github.com",
+  "last_updated": "2026-04-02T22:00:00+08:00",
+  "url_patterns": [
+    "https://github.com/{owner}/{repo}",
+    "https://github.com/{owner}/{repo}/issues",
+    "https://github.com/{owner}/{repo}/pulls",
+    "https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{path}"
+  ],
+  "platform_features": {
+    "code": "代码托管平台",
+    "login_required": false,
+    "api_available": true,
+    "supports_raw_content": true
+  },
+  "tips": [
+    "使用raw.githubusercontent.com获取原始文件内容",
+    "使用GitHub API可以获取更多结构化数据",
+    "对于私有仓库需要认证",
+    "使用gh CLI工具可以更方便地操作"
+  ],
+  "traps": [
+    "API有频率限制",
+    "某些页面有动态加载",
+    "大文件可能需要特殊处理"
+  ],
+  "known_issues": [
+    "某些页面需要JavaScript才能正常显示",
+    "搜索功能可能有限制"
+  ],
+  "success_patterns": [
+    "使用web_fetch获取README和文档",
+    "使用gh CLI进行仓库操作",
+    "使用GitHub API获取结构化数据"
+  ]
+}

@@ -119,6 +119,82 @@ Agent A 学到新东西
 
 ---
 
+## 📨 主动消息扫描（每次心跳必做，第三优先级）
+
+> 参考 Kuse AI Junior 的主动性设计，不等指令，主动发现问题
+
+### 扫描范围
+- [ ] 搜索飞书消息中的关键词：`待办/跟进/明天/截止/urgent/紧急/TODO/Action`
+- [ ] 检查@主人的消息是否有未回复的（超过2小时）
+- [ ] 检查是否有提及日期但未创建任务的消息
+- [ ] 检查群聊中是否有需要主人关注但未@的消息
+
+### 扫描方式
+```python
+# 使用 feishu_im_user_search_messages 搜索关键词
+# 使用 feishu_im_user_get_messages 获取最近消息
+# 使用 LLM 分析消息意图和优先级
+```
+
+### 发现问题后的行动
+| 问题类型 | 行动 |
+|----------|------|
+| 未回复的@消息 | 立即通知主人 |
+| 提及待办但未创建任务 | 询问主人是否创建任务 |
+| 提及截止日期 | 检查是否需要提醒 |
+| 紧急/负面情绪 | 立即通知主人 |
+
+### 催促状态管理
+- 读取 `memory/escalation-state.json` 检查待催促项
+- 新发现的问题 → 添加到 items 数组（state: pending）
+- 超过 reminder_delay_hours → 发送提醒（state: reminded）
+- 超过 urge_delay_hours → 正式催促（state: urged）
+- 超过 escalate_delay_hours → 升级汇报（state: escalated）
+- 已完成的事项 → 从 items 中移除
+
+### 扫描频率
+- 每次心跳执行（约30分钟一次）
+- 深夜时段（23:00-08:00）仅扫描紧急消息
+
+---
+
+## 🌐 站点经验加载（每次心跳涉及网页操作时执行）
+
+> 参考 web-access 项目的站点经验积累功能
+
+### 加载时机
+- 使用 web_search / web_fetch / browser 工具访问网站前
+- 发现新网站或新域名时
+
+### 加载方式
+```bash
+# 加载指定域名的经验
+python3 /Users/narain/.openclaw/workspace/site-experience/scripts/load-experience.py <domain>
+
+# 搜索相关经验
+python3 /Users/narain/.openclaw/workspace/site-experience/scripts/search-experience.py <keyword>
+```
+
+### 保存新经验
+当发现以下情况时，保存站点经验：
+- 发现新的URL模式
+- 遇到反爬机制或陷阱
+- 找到成功的访问模式
+- 发现平台特殊特性
+
+```bash
+# 保存经验
+python3 /Users/narain/.openclaw/workspace/site-experience/scripts/save-experience.py <domain> '<json_data>'
+```
+
+### 经验应用
+- 访问网站前先检查是否有经验
+- 根据经验选择合适的工具和策略
+- 避免重复踩坑
+- 复用成功的访问模式
+
+---
+
 ## 🧠 记忆系统任务（每次心跳执行）
 
 ### 1. 记忆同步
@@ -343,6 +419,16 @@ Agent A 学到新东西
 📊 当前总数：X 个
 🔥 热门话题：{话题名} (X 次)
 💡 主动建议：{建议内容}
+━━━━━━━━━━━━━━━━━━━━
+
+📨 主动消息扫描
+━━━━━━━━━━━━━━━━━━━━
+🔍 扫描消息：X 条
+⚠️ 发现问题：X 个
+  - 未回复@消息：X 条
+  - 待办关键词：X 条
+  - 截止日期：X 条
+🔔 催促状态：pending X / reminded X / urged X / escalated X
 ━━━━━━━━━━━━━━━━━━━━
 
 🎯 任务管理系统状态

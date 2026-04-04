@@ -858,13 +858,10 @@ function determineBridgeEnabled() {
   return Boolean(process.env.OPENCLAW_WORKSPACE);
 }
 
-async function run() {
-  const bridgeEnabled = determineBridgeEnabled();
-  const loopMode = ARGS.includes('--loop') || ARGS.includes('--mad-dog') || String(process.env.EVOLVE_LOOP || '').toLowerCase() === 'true';
-
+// Pre-flight safeguards: race detection, queue limits, system load, loop gating.
+// Returns { abort: true } if the cycle should be skipped, otherwise { abort: false }.
+async function runPreflightChecks(bridgeEnabled, loopMode) {
   // SAFEGUARD: If another evolver Hand Agent is already running, back off.
-  // Prevents race conditions when a wrapper restarts while the old Hand Agent
-  // is still executing. The Core yields instead of starting a competing cycle.
   if (process.platform !== 'win32') {
     try {
       const _psRace = require('child_process').execSync(
@@ -873,49 +870,33 @@ async function run() {
       ).trim();
       if (_psRace && _psRace.length > 0) {
         console.log('[Evolver] Another evolver Hand Agent is already running. Yielding this cycle.');
-        return;
+        return { abort: true };
       }
-    } catch (_) {
-      // grep exit 1 = no match = no conflict, safe to proceed
-    }
+    } catch (_) {}
   }
 
   // SAFEGUARD: If the agent has too many active user sessions, back off.
-  // Evolver must not starve user conversations by consuming model concurrency.
   const QUEUE_MAX = Number.parseInt(process.env.EVOLVE_AGENT_QUEUE_MAX || '10', 10);
   const QUEUE_BACKOFF_MS = Number.parseInt(process.env.EVOLVE_AGENT_QUEUE_BACKOFF_MS || '60000', 10);
   const activeUserSessions = getRecentActiveSessionCount(10 * 60 * 1000);
   if (activeUserSessions > QUEUE_MAX) {
     console.log(`[Evolver] Agent has ${activeUserSessions} active user sessions (max ${QUEUE_MAX}). Backing off ${QUEUE_BACKOFF_MS}ms to avoid starving user conversations.`);
-    writeDormantHypothesis({
-      backoff_reason: 'active_sessions_exceeded',
-      active_sessions: activeUserSessions,
-      queue_max: QUEUE_MAX,
-    });
+    writeDormantHypothesis({ backoff_reason: 'active_sessions_exceeded', active_sessions: activeUserSessions, queue_max: QUEUE_MAX });
     await sleepMs(QUEUE_BACKOFF_MS);
-    return;
+    return { abort: true };
   }
 
   // SAFEGUARD: System load awareness.
-  // When system load is too high (e.g. too many concurrent processes, heavy I/O),
-  // back off to prevent the evolver from contributing to load spikes.
-  // Echo-MingXuan's Cycle #55 saw load spike from 0.02-0.50 to 1.30 before crash.
   const LOAD_MAX = parseFloat(process.env.EVOLVE_LOAD_MAX || String(getDefaultLoadMax()));
   const sysLoad = getSystemLoad();
   if (sysLoad.load1m > LOAD_MAX) {
     console.log(`[Evolver] System load ${sysLoad.load1m.toFixed(2)} exceeds max ${LOAD_MAX.toFixed(1)} (auto-calculated for ${os.cpus().length} cores). Backing off ${QUEUE_BACKOFF_MS}ms.`);
-    writeDormantHypothesis({
-      backoff_reason: 'system_load_exceeded',
-      system_load: { load1m: sysLoad.load1m, load5m: sysLoad.load5m, load15m: sysLoad.load15m },
-      load_max: LOAD_MAX,
-      cpu_cores: os.cpus().length,
-    });
+    writeDormantHypothesis({ backoff_reason: 'system_load_exceeded', system_load: { load1m: sysLoad.load1m, load5m: sysLoad.load5m, load15m: sysLoad.load15m }, load_max: LOAD_MAX, cpu_cores: os.cpus().length });
     await sleepMs(QUEUE_BACKOFF_MS);
-    return;
+    return { abort: true };
   }
 
   // Loop gating: do not start a new cycle until the previous one is solidified.
-  // This prevents wrappers from "fast-cycling" the Brain without waiting for the Hand to finish.
   if (bridgeEnabled && loopMode) {
     try {
       const st = readStateForSolidify();
@@ -924,25 +905,51 @@ async function run() {
       if (lastRun && lastRun.run_id) {
         const pending = !lastSolid || !lastSolid.run_id || String(lastSolid.run_id) !== String(lastRun.run_id);
         if (pending) {
-          writeDormantHypothesis({
-            backoff_reason: 'loop_gating_pending_solidify',
-            signals: lastRun && Array.isArray(lastRun.signals) ? lastRun.signals : [],
-            selected_gene_id: lastRun && lastRun.selected_gene_id ? lastRun.selected_gene_id : null,
-            mutation: lastRun && lastRun.mutation ? lastRun.mutation : null,
-            personality_state: lastRun && lastRun.personality_state ? lastRun.personality_state : null,
-            run_id: lastRun.run_id,
-          });
+          writeDormantHypothesis({ backoff_reason: 'loop_gating_pending_solidify', signals: lastRun && Array.isArray(lastRun.signals) ? lastRun.signals : [], selected_gene_id: lastRun && lastRun.selected_gene_id ? lastRun.selected_gene_id : null, mutation: lastRun && lastRun.mutation ? lastRun.mutation : null, personality_state: lastRun && lastRun.personality_state ? lastRun.personality_state : null, run_id: lastRun.run_id });
           const raw = process.env.EVOLVE_PENDING_SLEEP_MS || process.env.EVOLVE_MIN_INTERVAL || '120000';
           const n = parseInt(String(raw), 10);
           const waitMs = Number.isFinite(n) ? Math.max(0, n) : 120000;
           await sleepMs(waitMs);
-          return;
+          return { abort: true };
         }
       }
     } catch (e) {
       // If we cannot read state, proceed (fail open) to avoid deadlock.
     }
   }
+
+  return { abort: false };
+}
+
+// Repair loop circuit breaker: detect stuck repair->fail->repair cycles.
+function checkRepairLoopCircuitBreaker() {
+  const threshold = require('./config').REPAIR_LOOP_THRESHOLD;
+  try {
+    const allEvents = readAllEvents();
+    const recent = Array.isArray(allEvents) ? allEvents.slice(-threshold) : [];
+    if (recent.length >= threshold) {
+      const allRepairFailed = recent.every(e =>
+        e && e.intent === 'repair' &&
+        e.outcome && e.outcome.status === 'failed'
+      );
+      if (allRepairFailed) {
+        const geneIds = recent.map(e => (e.genes_used && e.genes_used[0]) || 'unknown');
+        const sameGene = geneIds.every(id => id === geneIds[0]);
+        console.warn(`[CircuitBreaker] Detected ${threshold} consecutive failed repairs${sameGene ? ` (gene: ${geneIds[0]})` : ''}. Forcing innovation intent to break the loop.`);
+        process.env.FORCE_INNOVATION = 'true';
+      }
+    }
+  } catch (e) {
+    console.error(`[CircuitBreaker] Check failed (non-fatal): ${e.message}`);
+  }
+}
+
+async function run() {
+  const bridgeEnabled = determineBridgeEnabled();
+  const loopMode = ARGS.includes('--loop') || ARGS.includes('--mad-dog') || String(process.env.EVOLVE_LOOP || '').toLowerCase() === 'true';
+
+  const preflight = await runPreflightChecks(bridgeEnabled, loopMode);
+  if (preflight.abort) return;
 
   // Reset per-cycle env flags to prevent state leaking between cycles.
   // In --loop mode, process.env persists across cycles. The circuit breaker
@@ -1005,31 +1012,7 @@ async function run() {
     console.log('[Maintenance] Skipped (dry-run mode).');
   }
 
-  // --- Repair Loop Circuit Breaker ---
-  // Detect when the evolver is stuck in a "repair -> fail -> repair" cycle.
-  // If the last N events are all failed repairs with the same gene, force
-  // innovation intent to break out of the loop instead of retrying the same fix.
-  const REPAIR_LOOP_THRESHOLD = 3;
-  try {
-    const allEvents = readAllEvents();
-    const recent = Array.isArray(allEvents) ? allEvents.slice(-REPAIR_LOOP_THRESHOLD) : [];
-    if (recent.length >= REPAIR_LOOP_THRESHOLD) {
-      const allRepairFailed = recent.every(e =>
-        e && e.intent === 'repair' &&
-        e.outcome && e.outcome.status === 'failed'
-      );
-      if (allRepairFailed) {
-        const geneIds = recent.map(e => (e.genes_used && e.genes_used[0]) || 'unknown');
-        const sameGene = geneIds.every(id => id === geneIds[0]);
-        console.warn(`[CircuitBreaker] Detected ${REPAIR_LOOP_THRESHOLD} consecutive failed repairs${sameGene ? ` (gene: ${geneIds[0]})` : ''}. Forcing innovation intent to break the loop.`);
-        // Set env flag that downstream code reads to force innovation
-        process.env.FORCE_INNOVATION = 'true';
-      }
-    }
-  } catch (e) {
-    // Non-fatal: if we can't read events, proceed normally
-    console.error(`[CircuitBreaker] Check failed (non-fatal): ${e.message}`);
-  }
+  checkRepairLoopCircuitBreaker();
 
   const recentMasterLog = readRealSessionLog();
   const todayLog = readRecentLog(TODAY_LOG);
@@ -1206,7 +1189,7 @@ async function run() {
 
   // --- Idle-cycle gating: skip Hub API calls during saturation to save credits ---
   let _idleFetchInterval = parseInt(String(process.env.EVOLVER_IDLE_FETCH_INTERVAL_MS || ''), 10);
-  if (!Number.isFinite(_idleFetchInterval) || _idleFetchInterval <= 0) _idleFetchInterval = 1800000;
+  if (!Number.isFinite(_idleFetchInterval) || _idleFetchInterval <= 0) _idleFetchInterval = 600000;
   let skipHubCalls = false;
 
   if (shouldSkipHubCalls(signals)) {

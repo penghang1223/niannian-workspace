@@ -1,0 +1,31 @@
+{
+  "name": "openclaw-statusline",
+  "version": "1.0.0",
+  "description": "A beautiful status bar system for OpenClaw",
+  "main": "./src/openclaw-statusline.js",
+  "bin": {
+    "openclaw-status": "./src/openclaw-statusline.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node ./src/openclaw-statusline.ts",
+    "dev": "nodemon --exec ts-node ./src/openclaw-statusline.ts"
+  },
+  "keywords": [
+    "openclaw",
+    "status-bar",
+    "cli",
+    "dashboard",
+    "monitoring"
+  ],
+  "author": "Niannian (年年)",
+  "license": "MIT",
+  "dependencies": {
+    "ts-node": "^10.0.0",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "nodemon": "^3.0.0"
+  }
+}

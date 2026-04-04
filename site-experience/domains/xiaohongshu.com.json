@@ -1,0 +1,38 @@
+{
+  "domain": "xiaohongshu.com",
+  "last_updated": "2026-04-02T22:00:00+08:00",
+  "url_patterns": [
+    "https://www.xiaohongshu.com/explore",
+    "https://www.xiaohongshu.com/search_result?keyword={query}",
+    "https://www.xiaohongshu.com/user/profile/{user_id}",
+    "https://www.xiaohongshu.com/discovery/item/{note_id}"
+  ],
+  "platform_features": {
+    "content": "生活方式分享平台",
+    "login_required": true,
+    "anti_scraping": true,
+    "supports_api": false,
+    "xsec_token_required": true
+  },
+  "tips": [
+    "需要登录才能查看完整内容",
+    "搜索结果页面有动态加载",
+    "图片和视频内容需要特殊处理",
+    "创作者平台有独立的登录状态"
+  ],
+  "traps": [
+    "xsec_token机制，URL需要包含此参数",
+    "平台可能返回内容不存在但实际是访问方式问题",
+    "频繁访问可能触发限流"
+  ],
+  "known_issues": [
+    "移动端和桌面端内容可能不同",
+    "某些内容需要APP才能查看",
+    "创作者平台状态校验复杂"
+  ],
+  "success_patterns": [
+    "使用浏览器工具可以处理登录状态",
+    "对于公开内容，可以使用web_fetch",
+    "对于需要登录的内容，使用CDP模式"
+  ]
+}

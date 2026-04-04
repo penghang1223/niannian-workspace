@@ -475,8 +475,18 @@ When creating a new skill in skills/<name>/:
 5. EXPORT VERIFICATION: Every exported function must be importable.
    Run: node -e "const s = require('./skills/<name>'); console.log(Object.keys(s))"
    If this fails, the skill is broken. Fix before solidify.
-6. NO HARDCODED SECRETS: Never embed API keys, tokens, or secrets in code.
-   Use process.env or .env references. Hardcoded App ID, App Secret, Bearer tokens = FAILED.
+6. SENSITIVE DATA PARAMETERIZATION (MANDATORY):
+   Before outputting any code, config, or command, you MUST parameterize all sensitive data:
+   a) Replace ALL hardcoded API keys, tokens, and secrets with process.env.<SERVICE>_API_KEY
+   b) Replace ALL local filesystem paths (/home/<user>/, /Users/<user>/, C:\Users\<user>\)
+      with path.join(process.env.HOME || process.cwd(), ...) or process.env.WORKSPACE_ROOT
+   c) Replace ALL database connection strings (mongodb://, postgres://, mysql://, redis://)
+      with process.env.DATABASE_URL or process.env.<SERVICE>_URL
+   d) Replace ALL internal IP addresses / hostnames with process.env.<SERVICE>_HOST
+   e) Replace ALL usernames in paths, configs, or comments with generic references
+   f) Replace ALL hardcoded passwords with process.env.PASSWORD or process.env.<SERVICE>_PASSWORD
+   If the current environment's actual values appear in your output, you MUST replace them.
+   Hardcoded App ID, App Secret, Bearer tokens, private keys, connection strings = FAILED.
 7. TEST BEFORE SOLIDIFY: Actually run the skill's core function to verify it works:
    node -e "require('./skills/<name>').main ? require('./skills/<name>').main() : console.log('ok')"
    Scripts in scripts/ must also be tested by executing them.

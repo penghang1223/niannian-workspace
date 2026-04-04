@@ -1,0 +1,36 @@
+{
+  "domain": "baidu.com",
+  "last_updated": "2026-04-02T22:00:00+08:00",
+  "url_patterns": [
+    "https://www.baidu.com/s?wd={query}",
+    "https://www.baidu.com/s?wd={query}&pn={page}",
+    "https://www.baidu.com/search?wd={query}"
+  ],
+  "platform_features": {
+    "search": "百度搜索",
+    "login_required": false,
+    "anti_scraping": true,
+    "supports_site_search": true
+  },
+  "tips": [
+    "使用引号可以精确匹配",
+    "使用site:限定搜索范围",
+    "使用filetype:限定文件类型",
+    "使用intitle:搜索标题",
+    "使用inurl:搜索URL"
+  ],
+  "traps": [
+    "推广链接需要跳过（标记为广告）",
+    "某些页面有反爬机制，可能需要验证码",
+    "搜索结果可能有动态加载"
+  ],
+  "known_issues": [
+    "移动端和桌面端URL格式不同",
+    "某些搜索结果需要登录才能查看"
+  ],
+  "success_patterns": [
+    "使用web_search工具比直接抓取更可靠",
+    "对于中文内容搜索，百度比Google更准确",
+    "使用缓存页面可以避免反爬"
+  ]
+}

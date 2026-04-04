@@ -1,0 +1,35 @@
+{
+  "domain": "zhihu.com",
+  "last_updated": "2026-04-02T22:00:00+08:00",
+  "url_patterns": [
+    "https://www.zhihu.com/question/{question_id}",
+    "https://www.zhihu.com/answer/{answer_id}",
+    "https://www.zhihu.com/people/{user_id}",
+    "https://www.zhihu.com/search?type=content&q={query}"
+  ],
+  "platform_features": {
+    "qa": "问答社区",
+    "login_required": false,
+    "anti_scraping": true,
+    "supports_api": false
+  },
+  "tips": [
+    "问题页面可以直接访问",
+    "某些回答可能需要登录",
+    "搜索功能有限制"
+  ],
+  "traps": [
+    "频繁访问可能触发验证码",
+    "某些内容可能需要登录",
+    "移动端和桌面端内容可能不同"
+  ],
+  "known_issues": [
+    "搜索功能可能不如百度准确",
+    "某些页面有动态加载"
+  ],
+  "success_patterns": [
+    "使用web_search搜索知乎内容",
+    "对于具体问题，直接访问URL",
+    "使用缓存页面避免反爬"
+  ]
+}
