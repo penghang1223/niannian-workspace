@@ -16,6 +16,7 @@
 - **去重检查**: ✅/❌ <说明>
 - **价值评估**: 🔴高/🟡中/🟢低
 - **代码基础**: <是否有现成脚本>
+- **四维评分**: 工具型 X | 可操作 X | 可验证 X | 可复用 X = **总分/20**
 - **状态**: 待审核
 ```
 
@@ -167,9 +168,6 @@
 ### 2026-04-04（1 个已完成）
 - ✅ raincloud-viz — 月影（数据可视化/Raincloud Plot）
 
-### 2026-04-04（1 个已完成）
-- ✅ raincloud-viz — 月影（Raincloud Plot 数据可视化）
-
 ---
 
 ## 已拒绝提案
@@ -184,20 +182,34 @@
 
 ---
 
-## 📋 今日审核总结（2026-04-04）
+## 📋 今日审核总结（2026-04-05）
 
 | 提案 | Agent | 状态 | 下一步 |
 |------|-------|------|--------|
 | ops-automation | zhiming | ⏳ 需补充代码 | 等待 4 个脚本实现 |
 | workflow-optimizer | zhiming | ⏳ 需补充代码 | 等待 self-check.sh |
-| raincloud-viz | yueying | ✅ 已完成 | — |
 | falcon-perception | yueying | ⏳ 需部署代码 | 等待 HuggingFace 部署 |
 | ops-automation-scripts | zhiming | ⏳ 合并处理 | 与 ops-automation 合并 |
 | heartbeat-workflow-optimizer | zhiming | ⏳ 合并处理 | 与 workflow-optimizer 合并 |
 
 **今日行动项**：
-1. ✅ 打包 `raincloud-viz` skill（月影提供代码，年年打包）— **已完成**
-2. ⏳ 催促执明补充 4 个运维脚本
-3. ⏳ 催促月影补充 Falcon Perception 部署代码
+1. ⏳ 催促执明补充 4 个运维脚本（cron-health-check.sh / archive-with-extract.sh / session-archive-incremental.sh / self-check.sh）
+2. ⏳ 催促月影补充 Falcon Perception 部署代码
+3. ⚠️ 优化 skill_evaluator.py 避免生成低质量提案（直接用章节标题做 skill 名）
+
+**今日扫描结果**：
+| Agent | 章节数 | 可打包 | 说明 |
+|-------|--------|--------|------|
+| yueying | 5 | 0 | 有 1 个自动提案但质量不足，已清理 |
+| zhiming | 7 | 0 | 有 2 个自动提案但质量不足，已清理 |
+| taiyi | 5 | 0 | 纯知识型内容，无可打包 skill |
+| main | 5 | 0 | 纯知识型内容，无可打包 skill |
+| dev_engineer | 2 | 0 | 无新内容 |
+| frontend_dev | 7 | 0 | 无新内容 |
+
+**改进建议**：
+- skill_evaluator.py 需要增强评估逻辑，不能仅凭"有代码块"就判定可打包
+- 需要加入四维评分自动计算
+- 需要检查 skill 名称是否符合规范（英文、短横线分隔）
 
 ---
