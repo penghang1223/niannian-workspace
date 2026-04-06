@@ -1,7 +1,7 @@
 {
   "last_run": {
-    "run_id": "run_1775455203247",
-    "created_at": "2026-04-06T06:00:03.314Z",
+    "run_id": "run_1775476804624",
+    "created_at": "2026-04-06T12:00:04.713Z",
     "parent_event_id": "evt_1773665576530",
     "selected_gene_id": "gene_gep_innovate_from_opportunity",
     "selected_capsule_id": "capsule_1770477654236",
@@ -10,8 +10,8 @@
       "reason": [
         "signals match gene.signals_match",
         "capsule trigger matches signals",
-        "signals: log_error, protocol_drift, user_feature_request:- 决策/行动：已追加至 ideas-collection.md，漫剧 Agent 管线需多模型路由, repeated_tool_usage:exec",
-        "memory_graph: memory_prefer:gene_gep_innovate_from_opportunity | memory_ban:gene_gep_repair_from_errors,gene_gep_optimize_prompt_and_assets | gene_prior:0.390",
+        "signals: log_error, protocol_drift, user_feature_request:- 决策/行动：已追加至 ideas-collection.md，漫剧 Agent 管线需多模型路由, perf_bottleneck, high_tool_usage:exec, repeated_tool_usage:exec",
+        "memory_graph: memory_prefer:gene_gep_innovate_from_opportunity | memory_ban:gene_gep_optimize_prompt_and_assets | gene_prior:0.379",
         "drift_intensity: 0.577"
       ],
       "alternatives": [
@@ -23,23 +23,27 @@
       "log_error",
       "protocol_drift",
       "user_feature_request:- 决策/行动：已追加至 ideas-collection.md，漫剧 Agent 管线需多模型路由",
+      "perf_bottleneck",
+      "high_tool_usage:exec",
       "repeated_tool_usage:exec"
     ],
     "mutation": {
       "type": "Mutation",
-      "id": "mut_1775455203245",
+      "id": "mut_1775476804622",
       "category": "repair",
       "trigger_signals": [
         "log_error",
         "protocol_drift",
         "user_feature_request:- 决策/行动：已追加至 ideas-collection.md，漫剧 Agent 管线需多模型路由",
+        "perf_bottleneck",
+        "high_tool_usage:exec",
         "repeated_tool_usage:exec"
       ],
       "target": "gene:gene_gep_innovate_from_opportunity",
       "expected_effect": "reduce runtime errors, increase stability, and lower failure rate",
       "risk_level": "low"
     },
-    "mutation_id": "mut_1775455203245",
+    "mutation_id": "mut_1775476804622",
     "personality_state": {
       "type": "PersonalityState",
       "rigor": 0.7,

@@ -353,3 +353,53 @@
 
 ### 实际效果
 - （待回填）
+
+---
+
+## [2026-04-06] 学习闭环
+
+### 学了什么
+- 领域：CSS `field-sizing: content`（自动适配内容的表单控件）
+- 来源：https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/field-sizing
+- 核心知识点：
+  - `field-sizing: content` — 表单控件（input/textarea）自动根据内容调整高度
+  - 替代 JS 的 textarea 自动增高方案
+  - 达到最大尺寸后自动滚动
+  - 适用元素：input[email/number/password/search/tel/text/url]、textarea
+  - 浏览器支持：Chrome 123+、Safari 17.4+、Firefox 128+
+
+### 有用吗？
+- 价值评级：🔴
+- 理由：一行 CSS 替代整套 JS 自动增高逻辑。nannan-dashboard 的表单输入体验可大幅提升，无需监听 input 事件手动调整高度。
+
+### 用在哪？
+- 具体场景：多行文本输入、评论框、备注字段
+- 预期改善：减少 JS 代码，提升性能，用户体验更流畅
+
+### 实际效果
+- （待回填）
+
+---
+
+## [2026-04-06] 学习闭环
+
+### 学了什么
+- 领域：CSS `interpolate-size: allow-keywords`（动画 intrinsic size）
+- 来源：https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/interpolate-size
+- 核心知识点：
+  - `interpolate-size: allow-keywords` — 允许动画 `height: 0` → `height: auto`
+  - 解决 CSS 最古老的痛点：无法过渡到 intrinsic size
+  - 可动画值：`fit-content`, `max-content`, `min-content`, `auto`
+  - 实验性特性，需检查浏览器支持
+  - 浏览器支持：Chrome 131+（实验性）
+
+### 有用吗？
+- 价值评级：🔴
+- 理由：解决手风琴/展开动画的终极方案！以前要用 `max-height` hack 或 JS 测量，现在纯 CSS 实现平滑展开/收起。
+
+### 用在哪？
+- 具体场景：手风琴菜单、展开/收起卡片、下拉面板
+- 预期改善：消除 max-height hack，动画更精确，代码更简洁
+
+### 实际效果
+- （待回填）

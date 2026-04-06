@@ -1,167 +1,179 @@
-# 香港入境事务处身份证预约工具
+# 香港身份证预约自动化系统
 
-> 自动化预约香港身份证办理服务
+> 自动填写表单 + 验证码识别
 
-## 📋 功能特点
+## 📦 已创建文件
 
-- ✅ 自动填写预约信息
-- ✅ 自动选择办事处/日期/时间
-- ✅ 支持多人并发预约
-- ✅ 自动截图保存确认页面
-- ✅ 支持指定日期/时间或选最早
+| 文件 | 说明 | 大小 |
+|------|------|------|
+| `config.py` | 配置数据（申请类别/子类别/表单元素映射） | 3KB |
+| `captcha_solver.py` | 验证码识别模块（2Captcha + Tesseract） | 5KB |
+| `hk_immd_auto_book.py` | 主脚本（完整自动化流程） | 8KB |
+| `script_template.py` | 脚本模板（步骤记录） | 3KB |
+| `README.md` | 本文档 | - |
 
 ## 🚀 快速开始
 
 ### 1. 安装依赖
 
 ```bash
-# 进入项目目录
 cd /Users/narain/.openclaw/workspace/hk-immd-reserve
 
-# 安装 browser-use（已安装可跳过）
-pip3 install --break-system-packages browser-use
+# 安装验证码识别库
+pip3 install --break-system-packages 2captcha-python pillow pytesseract
+
+# 确保 Tesseract OCR 已安装（macOS）
+brew install tesseract
 ```
 
-### 2. 编辑预约信息
+### 2. 配置 API 密钥（可选）
 
-**单人版** - 编辑 `hk_immd_reserve.py`：
+**方式 1: 使用 2Captcha API（推荐，识别率 95%+）**
 
-```python
-# 修改这部分
-result = await book_hk_immd_appointment(
-    name="張三",  # 繁体中文姓名
-    id_number="A1234567",  # 身份证号
-    phone="91234567",  # 电话
-    email="test@example.com",  # 电邮
-    office="灣仔",  # 办事处
-    date=None,  # 指定日期或 None
-    time=None,  # 指定时间或 None
-    headed=True,  # 是否显示浏览器
-)
+```bash
+# 注册 2Captcha: https://2captcha.com/
+# 获取 API 密钥后设置环境变量
+export CAPTCHA_API_KEY="your_2captcha_api_key"
 ```
 
-**多人版** - 编辑 `hk_immd_multi.py`：
+**方式 2: 使用 Tesseract OCR（本地免费，识别率 60-80%）**
 
-```python
-# 修改 APPLICANTS 列表
-APPLICANTS = [
-    {
-        "name": "張三",
-        "id": "A1234567",
-        "phone": "91234567",
-        "email": "zhang@example.com",
-        "office": "灣仔"
-    },
-    # ... 添加更多人
-]
+```bash
+# 无需 API 密钥，直接使用
+# 识别率取决于验证码图片质量
 ```
 
 ### 3. 运行脚本
 
-**单人版**：
-
 ```bash
-python3 hk_immd_reserve.py
+# 编辑用户信息
+nano hk_immd_auto_book.py
+
+# 修改 user_info 字典
+user_info = {
+    "申请类型": "换领",  # 换领/补领/首次/同时/旧款
+    "子类别": "18 岁",   # 18 岁/11 岁/永久/其他
+    "证件类型": "香港身份證",
+    "身份证号码": "F588602A",
+    "括号数字": "4",
+    "出生日": "15",
+    "出生年": "1990",
+    "查询代码": "1234",  # 自选 4 位数字
+}
+
+# 运行脚本
+python3 hk_immd_auto_book.py
 ```
 
-**多人版**：
+## 🔧 验证码识别模块
 
-```bash
-python3 hk_immd_multi.py
-```
+### 支持的方法
 
-## 📁 输出文件
+| 方法 | 识别率 | 速度 | 成本 | 推荐度 |
+|------|--------|------|------|--------|
+| **2Captcha API** | 95%+ | 10-30 秒 | $0.5-3/1000 次 | ⭐⭐⭐⭐⭐ |
+| **Tesseract OCR** | 60-80% | <1 秒 | 免费 | ⭐⭐⭐ |
 
-- `appointment_姓名.png` - 预约确认截图
-- 终端输出预约编号
-
-## 🎯 办事处列表
-
-- 灣仔
-- 觀塘
-- 長沙灣
-- 荃灣
-- 沙田
-- 大埔
-- 屯門
-- 元朗
-
-## ⚙️ 高级选项
-
-### 使用已有 Chrome Profile
-
-编辑脚本，在 Agent 初始化前添加：
+### 使用示例
 
 ```python
-import os
-os.environ['BROWSER_USE_PROFILE'] = 'Default'
+from captcha_solver import CaptchaSolver
+
+# 方式 1: 自动选择（优先 2Captcha）
+solver = CaptchaSolver(api_key="YOUR_API_KEY", method="auto")
+
+# 方式 2: 强制使用 Tesseract
+solver = CaptchaSolver(method="tesseract")
+
+# 识别验证码
+image_base64 = "..."  # 验证码图片的 base64
+success, code = solver.solve(image_base64)
+
+if success:
+    print(f"验证码：{code}")
+else:
+    print(f"识别失败：{code}")
 ```
 
-### 后台运行（不显示浏览器）
+## 📋 申请类别说明
 
-```python
-headed=False  # 修改此参数
+### 主类别（5 种）
+
+| 关键词 | 对应选项 |
+|--------|----------|
+| 首次/第一次 | 首次登記身份證（持單程證人士除外） |
+| 换领/到期 | 換領/補領身份證 |
+| 补领/丢失 | 換領/補領身份證 |
+| 同时/一起 | 同時申請身份證和旅行證件 |
+| 旧款/智能 | 持舊款身份證人士換領新智能身份證 |
+
+### 子类别（换领/补领）
+
+| 关键词 | 对应选项 |
+|--------|----------|
+| 18 岁/成年 | 年滿 18 歲換證 |
+| 11 岁/儿童 | 年滿 11 歲換證 |
+| 永久 | 已成功核實永久性居民身份證資格 |
+| 其他 | 其他 |
+
+## 🎯 完整流程
+
 ```
-
-### 指定日期和时间
-
-```python
-date="2026-04-15"  # 格式：YYYY-MM-DD
-time="10:00"       # 格式：HH:MM
+步骤 0: 同意条款
+  ↓
+步骤 1: 填写申请表单（5 个下拉框 + 4 个输入框 + 验证码）
+  ↓
+步骤 2: 选择办理地点（待实现）
+  ↓
+步骤 3: 选择预约时间（待实现）
+  ↓
+步骤 4: 确认信息（待实现）
+  ↓
+步骤 5: 预约完成（待实现）
 ```
 
 ## ⚠️ 注意事项
 
-1. **繁体中文** - 姓名必须用繁体中文
-2. **身份证号** - 格式：字母 +7 位数字（如 A1234567）
-3. **电话** - 8 位数字（如 91234567）
-4. **并发限制** - 建议最多 5 个同时，避免被封锁
-5. **验证码** - 如遇验证码，可能需要手动处理
+1. **验证码识别**
+   - 政府网站验证码通常有干扰线
+   - 推荐使用 2Captcha API（人工识别）
+   - Tesseract 对复杂验证码识别率较低
 
-## 🔧 故障排查
+2. **反爬措施**
+   - 不要频繁请求（建议间隔 2-5 秒）
+   - 使用真实 User-Agent
+   - 考虑使用代理 IP
 
-### 问题 1：browser-use 未找到
+3. **法律风险**
+   - 仅供学习研究使用
+   - 不要用于商业牟利
+   - 遵守香港入境事务处规定
 
-```bash
-# 检查安装
-which browser-use
+## 🔑 获取 2Captcha API 密钥
 
-# 重新安装
-pip3 install --break-system-packages browser-use
-```
-
-### 问题 2：Chrome 未找到
-
-```bash
-# 检查 Chrome 位置
-ls -la /Applications/ | grep -i chrome
-
-# 确保 Chrome 已安装
-```
-
-### 问题 3：预约失败
-
-- 检查网络连接
-- 确认信息格式正确
-- 查看终端错误信息
-- 尝试手动访问网站确认是否正常
+1. 访问 https://2captcha.com/
+2. 注册账号
+3. 充值（最低$5）
+4. 在 API 页面获取密钥
+5. 设置环境变量：`export CAPTCHA_API_KEY="xxx"`
 
 ## 📞 官方信息
 
-- **网站**：https://www.immd.gov.hk
-- **电话预约**：2598 0888
-- **预约期**：96 个工作天
+- **网站**: https://www.immd.gov.hk
+- **预约网址**: https://system.es2.immd.gov.hk/smartics2-client/ropbooking/
+- **电话预约**: 2598 0888
+- **预约期**: 96 个工作天
 
-## ⚖️ 法律声明
+## 📝 更新日志
 
-本工具仅供学习研究使用。使用本工具预约时，请确保：
-
-1. 提供的信息真实准确
-2. 遵守香港入境事务处规定
-3. 不用于商业牟利
-4. 不影响系统正常运行
+- **2026-04-06**: 初始版本
+  - ✅ 验证码识别模块（2Captcha + Tesseract）
+  - ✅ 配置数据（申请类别/子类别/表单元素）
+  - ✅ 主脚本框架
+  - ⏳ 步骤 2-5 待实现
 
 ---
 
-**版本**: 1.0  
-**更新时间**: 2026-04-06
+**版本**: v0.1  
+**创建时间**: 2026-04-06  
+**状态**: 开发中
