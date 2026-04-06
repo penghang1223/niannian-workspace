@@ -1,11 +1,24 @@
 # 太一（taiyi）学习记录
 
-> 最后更新：2026-04-02
+> 最后更新：2026-04-05
 > 维护者：太一
 
 ---
 
 ## 📚 今日学习
+
+### 2026-04-05
+
+#### 🟢 Prompt 工程（图像/视频生成）— 已沉淀
+- **学习内容**：Midjourney V7/Stable Diffusion 3.5/AI 视频生成（Sora/Runway/Pika）Prompt 技巧
+- **核心收获**：
+  - Midjourney 角色一致性：`--cref` + `--seed` 组合拳，`--cw` 控制权重
+  - Midjourney 风格一致性：`--sref` 锁定视觉风格
+  - Stable Diffusion 负面提示词：`bad hands, deformed face, low quality` 等
+  - AI 视频 4C 模型：Concept/Composition/Color/Continuity
+- **产出文档**：`agents/taiyi/prompt-engineering.md`（8000+ 字，10 个高质量示例）
+- **应用场景**：AI 漫剧角色设计、分镜生成、视频 prompt 优化
+- **预期改善**：角色一致性提升 80%，视频生成成功率提升 50%
 
 ### 2026-04-02
 

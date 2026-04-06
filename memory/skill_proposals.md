@@ -213,3 +213,67 @@
 - 需要检查 skill 名称是否符合规范（英文、短横线分隔）
 
 ---
+
+
+
+**改进建议**：
+- skill_evaluator.py 需要增强评估逻辑，不能仅凭"有代码块"就判定可打包
+- 需要加入四维评分自动计算
+- 需要检查 skill 名称是否符合规范（英文、短横线分隔）
+
+---
+
+## 🗑️ 已清理的低质量提案（2026-04-06 自动扫描生成）
+
+> 以下提案因不符合 skill 命名规范（中文名称、无四维评分、内容不完整）已被清理
+
+| 原提案名 | Agent | 清理原因 | 改进建议 |
+|----------|-------|----------|----------|
+| 可自动化操作 | zhiming | 中文名、无四维评分 | 重写为 `ops-automation-scripts` |
+| 可优化的流程 | zhiming | 中文名、无四维评分 | 合并到 `heartbeat-workflow-optimizer` |
+| 今日学习 | yueying | 中文名、学习笔记非 skill | 拆分为具体技能（参考 raincloud-viz） |
+
+**状态**: ❌ 已清理，需按规范重写后重新提交
+
+---
+
+## 📋 今日审核总结（2026-04-06）
+
+| 提案 | Agent | 状态 | 下一步 |
+|------|-------|------|--------|
+| ops-automation | zhiming | ⏳ 需补充代码 | 等待 4 个脚本实现 |
+| workflow-optimizer | zhiming | ⏳ 需补充代码 | 等待 self-check.sh |
+| falcon-perception | yueying | ⏳ 需部署代码 | 等待 HuggingFace 部署 |
+| ops-automation-scripts | zhiming | ⏳ 合并处理 | 与 ops-automation 合并 |
+| heartbeat-workflow-optimizer | zhiming | ⏳ 合并处理 | 与 workflow-optimizer 合并 |
+
+**今日行动项**：
+1. ⏳ 催促执明补充 4 个运维脚本（cron-health-check.sh / archive-with-extract.sh / session-archive-incremental.sh / self-check.sh）
+2. ⏳ 催促月影补充 Falcon Perception 部署代码
+3. ✅ 清理 3 个低质量自动提案（中文名、无四维评分）
+4. ⚠️ 继续优化 skill_evaluator.py 避免生成低质量提案
+
+**今日扫描结果**：
+| Agent | 章节数 | 可打包 | 说明 |
+|-------|--------|--------|------|
+| frontend_dev | 13 | 0 | 学习闭环内容，纯知识型 |
+| qa_engineer | 2 | 0 | 纯知识型内容 |
+| zhiming | 7 | 2→0 | 有 2 个自动提案但质量不足，已清理 |
+| yueying | 5 | 1→0 | 有 1 个自动提案但质量不足，已清理 |
+| taiyi | 5 | 0 | 纯知识型内容 |
+| main | 5 | 0 | 纯知识型内容 |
+| dev_engineer | 2 | 0 | 无新内容 |
+| product_manager | 2 | 0 | 无新内容 |
+| chief_cute_officer | 3 | 0 | 无新内容 |
+| tiangong | 3 | 0 | 纯知识型内容 |
+| lingxi | 3 | 0 | 无新内容 |
+| jinghong | 3 | 0 | 无新内容 |
+| shichen | 3 | 0 | 无新内容 |
+
+**技能打包进展**：
+- ✅ 已完成：17 个（13 个首批 + 1 个 raincloud-viz + 3 个其他）
+- ⏳ 待完成：5 个（需补充代码/部署）
+- ❌ 已拒绝：1 个（今日学习）
+- 🗑️ 今日清理：3 个（低质量自动提案）
+
+---

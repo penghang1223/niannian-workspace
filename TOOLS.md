@@ -102,6 +102,47 @@ python3 scripts/tool_defer.py --search "飞书"
 
 ---
 
+## 📚 飞书知识库目录配置（2026-04-06）
+
+**知识库空间**: 云梦泽 AIGC  
+**Space ID**: `7617488727301524409`
+
+### Agent 专属目录结构
+
+| Agent | 目录名称 | wiki_node token |
+|-------|----------|-----------------|
+| `main` (年年) | 🎀 年年 - 大总管 | `HaI4wW97widyeZkj72Rc0qMpnme` |
+| `product_manager` (望舒) | 🌙 望舒 - 产品经理 | `ZKivwJ9z0ilelgkNm0PcaVcKndb` |
+| `dev_engineer` (玄机) | 🔧 玄机 - 开发工程师 | `JjpywNhKYiibxhkguMdcm0IonbA` |
+| `frontend_dev` (霓裳) | 🎨 霓裳 - 前端开发 | `VGBywIJj2i4vXnkCaNvcpe0tnuh` |
+| `qa_engineer` (鉴微) | 🛡️ 鉴微 - 测试工程师 | `ZH3bw3FTei8cUekBTfgcVKF5n6f` |
+| `chief_cute_officer` (岁岁) | 🥰 岁岁 - 首席可爱官 | `PVZcwex0Iiti5xkUxplc3DV0nkg` |
+| `lingxi` (灵犀) | 💡 灵犀 - 创意总监 | `LInbwDfuRipilzkrZL1cPYv7nsf` |
+| `taiyi` (太一) | 👑 太一 - 战略决策官 | `P3wewxKs0iA5kikd5FFcyxaZnXc` |
+| `tiangong` (天工) | 🏗️ 天工 - 技术架构师 | `K6kXwIJ6vizd8ukXkUrc9xXfnGe` |
+| `jinghong` (惊鸿) | 🎬 惊鸿 - 内容执行官 | `Gd7mwfCdyiM6PukbvBgc452yn9d` |
+| `shichen` (司辰) | 🕐 司辰 - 时间管理官 | `GgvLwas5Oir556kClYecpnCyn3c` |
+| `yueying` (月影) | 📊 月影 - 视觉官 | `DZvyw1isZimO4Gk3e46cZzb8nwc` |
+| `zhiming` (执明) | 🛡️ 执明 - 安全审查官 | `DIVBwQdhCiI5MXknzyrcfiyXnUg` |
+
+### 创建文档时的规则
+
+1. **必须指定 `wiki_node`** — 不要创建在根目录或个人空间
+2. **从 TOOLS.md 查找自己的目录** — 每个 Agent 查上表找到自己的 `wiki_node`
+3. **不确定时先问年年** — 不要瞎猜或创建在错误位置
+
+### 示例
+
+```json
+{
+  "title": "PRD-XXX 功能需求",
+  "wiki_node": "wikcn_pm_xxx",  // 望舒用自己的节点
+  "markdown": "# 功能需求..."
+}
+```
+
+---
+
 ## 🏗️ Harness Engineering 配置（2026-03-30）
 
 ### ✅ Verification Checklist（验证清单）
@@ -173,6 +214,59 @@ python3 scripts/tool_defer.py --search "飞书"
 - `session_status` → Token 使用情况
 
 **应用**：任务规划时考虑未提交文件、时间敏感度、成本预算。
+
+---
+
+## 🖥️ 端侧 AI 与录屏工具（2026-04-06 太一新增）
+
+### 录屏工具
+| 工具 | Stars | 用途 | 状态 |
+|------|-------|------|------|
+| **openscreen** | 22,356⭐+ | 开源 Screen Studio 替代 | 📋 待测试 |
+| **Screen Studio** | - | 专业录屏（付费） | 已有 |
+
+**爆发趋势**: openscreen 两日 +5,000+⭐，开源替代成熟
+
+### 本地 VLM 部署
+| 工具 | 平台 | 用途 | 状态 |
+|------|------|------|------|
+| **mlx-vlm** | macOS | Mac 本地 VLM 推理/微调 | 📋 待安装 |
+| **LM Studio Headless CLI** | 跨平台 | 本地 LLM 推理 | 📋 待测试 |
+
+**应用场景**:
+- 君上 AI 视频制作工具链升级
+- 本地多模态分析（降低成本）
+- 隐私敏感数据处理
+
+---
+
+## 💬 提示词优化技巧（2026-04-06 太一新增）
+
+### caveman 提示词模式
+- **核心**: 简化表达，节省 30-50% token
+- **用法**: 用关键词代替完整句子
+- **示例**:
+  ```
+  ❌ 冗长：请帮我分析一下这个数据并生成可视化图表
+  ✅ caveman: 分析数据，生成图表
+  ```
+- **适用**: OpenClaw 输出策略优化、API 调用成本敏感场景
+
+---
+
+## 🧠 AI 代理风险防控（2026-04-06 太一新增）
+
+### "漂移"风险自检机制
+- **问题**: AI 代理长期运行后可能偏离原始意图
+- **解决方案**:
+  1. 定期自检（每轮心跳）
+  2. 与君上意图对齐
+  3. 记录偏离日志
+- **适用**: 臣（Agent）保持准确理解君上意图
+
+### "8 年想法 3 月实现"理念
+- **核心**: AI 加速时代，长期想法可短期实现
+- **行动**: 与君上确认"8 年想法"清单，优先实现高价值项
 
 ---
 

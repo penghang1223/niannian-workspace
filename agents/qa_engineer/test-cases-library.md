@@ -11,6 +11,7 @@
 
 | 日期 | 执行用例数 | 通过数 | 失败数 | 通过率 | 备注 |
 |------|-----------|--------|--------|--------|------|
+| 2026-04-05 | 30 | 30 | 0 | 100% | 每日质量验证 |
 | 2026-04-04 | 30 | 30 | 0 | 100% | 每日质量验证 |
 | 2026-03-25 | 30 | 30 | 0 | 100% | 常规测试 |
 | 2026-03-24 | 30 | 30 | 0 | 100% | 常规测试 |
@@ -131,12 +132,13 @@
 - **测试目标**: 验证 skillDistiller 核心功能
 - **测试文件**: `test/skillDistiller.test.js`
 - **用例数**: 23
-- **测试状态**: 🟡 20 通过 / 3 失败
+- **测试状态**: 🟡 20 通过 / 3 失败 (连续 2 日未修复)
 - **失败用例**:
-  - `accepts a valid gene` - 测试用例需要更新 strategy 步骤数
-  - `includes key instructions in prompt` - prompt 缺少 "actionable operations"
-  - `returns idempotent_skip after completeDistillation` - 幂等性逻辑需调试
-- **修复优先级**: 高
+  - `accepts a valid gene` - 测试用例需要更新 strategy 步骤数 (Bug-001)
+  - `includes key instructions in prompt` - prompt 缺少 "actionable operations" (Bug-002)
+  - `returns idempotent_skip after completeDistillation` - 幂等性逻辑需调试 (Bug-003)
+- **修复优先级**: 🔴 高 (已连续 2 日未修复，建议 24 小时内修复)
+- **最后验证**: 2026-04-05 17:00
 
 ---
 

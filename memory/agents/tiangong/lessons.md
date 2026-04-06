@@ -1,6 +1,6 @@
 # 天工（tiangong）学习记录
 
-> 最后更新：2026-04-02
+> 最后更新：2026-04-05
 
 ---
 
@@ -55,6 +55,51 @@
 | 2026-04-02 | 六边形架构（Ports & Adapters） | 🔴 | 待应用 |
 | 2026-04-02 | Agentic AI 架构模式 | 🔴 | 待应用 |
 | 2026-04-02 | 系统设计五大新兴模式 | 🟡 | 持续关注 |
+
+---
+
+## 📚 2026-04-03 至 2026-04-05 K8s 与 Go 技术栈深度修炼
+
+> **学习周期**：3 天 | **学习条目**：36 条 | **价值评级**：🔴35 条 | 🟡1 条
+
+### 学习总览
+
+| 领域 | 条目数 | 🔴高价值 |
+|------|--------|---------|
+| K8s 集群架构 | 3 | 3 |
+| K8s 网络与服务发现 | 6 | 6 |
+| K8s 存储与状态管理 | 3 | 3 |
+| K8s 调度与资源管理 | 6 | 6 |
+| K8s 安全加固 | 5 | 5 |
+| K8s 运维与监控 | 8 | 7 |
+| K8s 控制器模式 | 3 | 3 |
+| Go 语言进阶 | 2 | 2 |
+| **合计** | **36** | **35** |
+
+### 核心收获
+
+**🏗️ 集群架构**：etcd 灾难恢复（快照+bump-revision）、Namespaces 多环境隔离
+
+**🌐 网络**：Service 四种类型、Gateway API（Ingress 已冻结）、NetworkPolicy 零信任、DNS 服务发现
+
+**💾 存储**：PV/PVC 动态供给、ConfigMap 四种使用方式、Immutable 防止配置漂移
+
+**⚖️ 调度**：Requests/Limits/QoS、nodeAffinity/topologySpread、Taints/Tolerations、HPA/VPA 自动伸缩
+
+**🛡️ 安全**：SecurityContext 最小权限、PSA 三级策略、ServiceAccount 禁用自动挂载
+
+**🔧 运维**：Pod 生命周期、Lifecycle Hooks 优雅关闭、Probes 自愈、Sidecar/InitContainer 模式、日志/Metrics
+
+**🎯 控制器**：Controller Pattern 声明式 API、CRD+Operator、容器镜像 digest
+
+**🐍 Go**：GC 逃逸分析/GOGC 调优、错误处理 errors.Is/As/Unwrap
+
+### 待实践验证
+- [ ] etcd 备份恢复演练
+- [ ] 生产 HPA 实践
+- [ ] K8s 安全加固（PSA+NetworkPolicy）
+- [ ] 服务网格/日志收集
+- [ ] Go 高性能服务优化
 
 ---
 
