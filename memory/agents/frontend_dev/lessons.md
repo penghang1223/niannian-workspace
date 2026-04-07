@@ -403,3 +403,28 @@
 
 ### 实际效果
 - （待回填）
+
+---
+
+## [2026-04-07] 学习闭环
+
+### 学了什么
+- 领域：CSS Subgrid（嵌套网格继承父网格轨道）
+- 来源：https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Subgrid
+- 核心知识点：
+  - `grid-template-columns: subgrid` — 子网格继承父网格的列轨道
+  - `grid-template-rows: subgrid` — 子网格继承父网格的行轨道
+  - 解决嵌套网格对齐问题：卡片内容跨卡片对齐
+  - Gap 默认继承，可覆盖
+  - 浏览器支持：Chrome 117+、Safari 16+、Firefox 71+
+
+### 有用吗？
+- 价值评级：🟡
+- 理由：解决卡片布局中内容对齐的经典问题。nannan-dashboard 的卡片网格中，标题/内容/按钮可跨卡片对齐，无需 JS 测量或固定高度。
+
+### 用在哪？
+- 具体场景：卡片网格、产品列表、仪表盘组件
+- 预期改善：视觉对齐更精确，响应式更优雅，减少 hack
+
+### 实际效果
+- （待回填）

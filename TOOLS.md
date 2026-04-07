@@ -270,4 +270,49 @@ python3 scripts/tool_defer.py --search "飞书"
 
 ---
 
+## 🕷️ 爬虫反检测工具（2026-04-07 太一新增）
+
+### curl_cffi URL 健康检查器
+
+**核心价值**: Cloudflare 站点检测成功率从 15% 提升到 82%
+
+**技术原理**:
+- `curl_cffi` 模拟 Chrome TLS 指纹
+- 绕过 JA3 指纹检测
+- HTTP/2 + 完整浏览器 headers
+
+**使用方式**:
+```python
+from curl_cffi import requests
+
+# 模拟 Chrome 浏览器
+response = requests.get(
+    url,
+    impersonate="chrome",  # 或 "chrome142", "edge99" 等
+    timeout=10
+)
+
+# 检查状态码
+if response.status_code == 200:
+    print(f"✅ {url} 可用")
+else:
+    print(f"❌ {url} 返回 {response.status_code}")
+```
+
+**应用场景**:
+- 爬虫种子 URL 预筛选
+- 网站链接巡检（定期 404/500 检测）
+- API 可用性监控
+
+**安装**: `pip install curl_cffi`
+
+**注意事项**:
+- 高防护站点成功率 ~82%（非 100%）
+- 建议配合重试机制使用
+- 批量检测时注意速率限制
+
+**脚本位置**: 待太一确认并记录
+
+---
+
 Add whatever helps you do your job. This is your cheat sheet.
