@@ -1117,6 +1117,72 @@ dev_session_2026-04-07_14:00:
     - "🟡 待主人：太一代码实战/太一 Prompt 工程 timeout 增加"
     - "🟢 本周：推送 Git 到远程（触发远程 CI/CD 验证）"
 
+# 指标分析记录 (09:00 Slot) — 2026-04-08 (今日)
+metrics_analysis_2026-04-08_09:00:
+  executed_at: 2026-04-08T09:00:00+08:00
+  owner: main (年年)
+  key_metrics:
+    active_agents: 13
+    total_tasks: 20
+    completed: 15
+    in_progress: 0
+    todo: 3
+    cancelled: 2
+    success_rate: 100%
+    completion_rate: 75%
+    git_commits: 14
+    git_uncommitted_files: "22 (🟡 新增：19 modified + 3 untracked，evolver 技能升级)"
+    dashboard_status: "🔴 Dashboard v4 未运行（端口 5175 无监听，连续 15 天）"
+    cron_jobs_total: 26
+    cron_jobs_disabled: 4  # 岁岁学习 (8 超时已禁用) + 惊鸿小说 + 惊鸿学习 + 10:00 内容创意 (6 连续失败)
+    cron_jobs_errors: 5  # 09 指标×4timeout + 20 复盘×1timeout + 11Skill×4 编辑失败 + 太一代码×3timeout + 太一 Prompt×4timeout + 太一知识×3timeout + 06 隔夜×1timeout + 太一深度×1timeout
+    stale_tasks_days: 19  # TASK-008/013 自 03-20 起无进展（连续 11 天指标分析建议取消）
+    disk_usage: "12Gi"
+  trend_vs_previous:
+    git_uncommitted: "0 → 22 (🟡 新增，evolver 技能大幅升级：crypto.js/directoryClient.js/localStateAwareness.js/privacyClient.js + 测试文件)"
+    git_commits: "14 → 14 (无新提交，连续 1 天)"
+    dashboard: "未运行 → 未运行 (🔴 连续 15 天缺失)"
+    stale_tasks: "18 天 → 19 天 (🔴 持续恶化)"
+    cron_errors: "5 → 5 (持平，timeout 问题未修复)"
+    cron_disabled: "4 → 4 (持平)"
+  operational_progress:
+    - "隔夜 Agent 活动：⚠️ 06:00 隔夜成果汇总超时（consecutiveErrors: 1）"
+    - "AI 热点推送：✅ 早间版正常投递（593s 完成，10 条中文新闻）"
+    - "晨会总结：⚠️ 正常执行但投递失败（not-delivered，连续 1 次）"
+    - "执明会话归档：✅ 正常运行（78s 完成，已投递）"
+    - "灵犀自学习 v2: ✅ 正常运行（74s 完成，已投递）"
+    - "太一学习体系：⚠️ 4/7 异常（代码实战×3timeout + Prompt 工程×4timeout + 知识沉淀×3timeout + 深度学习×1timeout）"
+    - "太一爬虫实战：✅ 正常运行（247s 完成）"
+    - "太一 AI 工具探索：✅ 正常运行（24s 完成）"
+    - "太一进度汇报：⚠️ 编辑失败 1 次（consecutiveErrors: 1）"
+    - "Skill 自查：⚠️ 编辑失败 4 次（consecutiveErrors: 4）"
+    - "Git: 🟡 22 个文件未提交（evolver 技能升级：4 个新 JS 文件 + 2 个测试文件 + _meta.json 等）"
+  risks_identified:
+    - "🔴 P0: Dashboard v4 连续 15 天未运行 — 需主人最终决策下线"
+    - "🔴 P0: TASK-008/013 闲置 19 天 — 连续 11 天指标分析建议取消，需主人拍板"
+    - "🟡 P1: Git 22 文件未提交 — evolver 技能升级（localStateAwareness/privacyClient/directoryClient/crypto + 测试）"
+    - "🟡 P1: 09:00 指标分析 cron timeout — 连续 4 次超时（consecutiveErrors: 4），需增加 timeout 300→600s"
+    - "🟡 P1: 20:00 每日复盘 cron — 连续 1 次超时（consecutiveErrors: 1），需增加 timeout 300→600s"
+    - "🟡 P1: 06:00 隔夜成果汇总 — 连续 1 次超时（consecutiveErrors: 1）"
+    - "🟡 P1: 11:00 Skill 自查 — 连续 4 次编辑失败（consecutiveErrors: 4）"
+    - "🟡 P1: 太一代码实战 — 连续 3 次超时（consecutiveErrors: 3），需增加 timeout 180→300s"
+    - "🟡 P1: 太一 Prompt 工程 — 连续 4 次超时（consecutiveErrors: 4），需增加 timeout 180→300s"
+    - "🟡 P1: 太一知识沉淀 — 连续 3 次超时（consecutiveErrors: 3），需增加 timeout 180→300s"
+    - "🟡 P1: 太一深度学习 — 连续 1 次超时（consecutiveErrors: 1）"
+    - "🟡 P1: 太一进度汇报 — 编辑失败 1 次（consecutiveErrors: 1）"
+    - "🟡 P1: 08:00 晨会总结 — 投递失败 1 次（not-delivered）"
+    - "🟢 P2: 灵犀自学习/执明归档/太一爬虫/太一 AI 工具正常"
+    - "🟢 P2: 岁岁 AI 热点推送 3 个时段全部正常"
+  action_items:
+    - "🟡 今日：Git 提交 22 个变更文件（evolver 技能升级）"
+    - "🔴 紧急：主人需拍板 TASK-008/013 取消（闲置 19 天，连续 11 天建议）"
+    - "🔴 紧急：主人需拍板 Dashboard v4 永久下线（连续 15 天未运行）"
+    - "🟡 今日：增加 09:00 指标 +20:00 复盘 +06:00 隔夜 timeout 到 600s"
+    - "🟡 今日：增加太一代码/Prompt/知识/深度学习 timeout 到 300s"
+    - "🟡 今日：修复 11:00 Skill 自查编辑失败问题"
+    - "🟡 今日：修复 08:00 晨会总结投递配置"
+    - "🟢 本周：推送 Git 到远程（触发远程 CI/CD）"
+
 # 最后更新信息
-last_updated_by: main (年年 - 14:00 代码开发时段)
-last_updated_at: 2026-04-07T14:00:00+08:00
+last_updated_by: main (年年 - 09:00 指标分析时段)
+last_updated_at: 2026-04-08T09:00:00+08:00

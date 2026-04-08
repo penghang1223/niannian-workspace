@@ -428,3 +428,29 @@
 
 ### 实际效果
 - （待回填）
+
+---
+
+## [2026-04-08] 学习闭环
+
+### 学了什么
+- 领域：CSS View Transitions API（页面状态过渡动画）
+- 来源：https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API
+- 核心知识点：
+  - `document.startViewTransition(() => updateDOM())` — 一行代码实现页面过渡
+  - 浏览器自动捕获旧/新状态截图，生成伪元素动画
+  - `::view-transition-old/new/group()` 自定义动画
+  - `view-transition-name: <name>` 实现元素级 morph 动画
+  - 跨文档过渡（MPA）支持
+  - 浏览器支持：Chrome 111+、Safari 18+、Firefox 133+
+
+### 有用吗？
+- 价值评级：🔴
+- 理由：替代 Framer Motion 等动画库的路由过渡功能。nannan-dashboard 的路由切换、Tab 面板切换、卡片展开都能用纯 CSS 实现平滑过渡。
+
+### 用在哪？
+- 具体场景：路由过渡、Tab 切换、列表→详情 morph、手风琴展开
+- 预期改善：减少动画库依赖，性能更好，代码更简洁
+
+### 实际效果
+- （待回填）

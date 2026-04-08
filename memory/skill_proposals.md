@@ -262,3 +262,74 @@
 4. 内容截断检测（提案内容必须完整）
 
 ---
+
+---
+
+## 🗑️ 已清理的低质量提案（2026-04-08 自动扫描生成）
+
+> 以下提案因不符合 skill 命名规范（中文名称、无四维评分、内容不完整）已被清理
+
+| 原提案名 | Agent | 清理原因 | 改进建议 |
+|----------|-------|----------|----------|
+| 今日学习 | yueying | 中文名、学习笔记非 skill、内容截断 | 拆分为具体技能（参考 raincloud-viz），补充实际代码 |
+| 可自动化操作 | zhiming | 中文名、无四维评分、内容截断 | 重写为 `ops-automation-scripts`，补充完整脚本代码（workspace-health.sh 实际不存在） |
+| 可优化的流程 | zhiming | 中文名、无四维评分、内容截断 | 合并到 `heartbeat-workflow-optimizer`，补充 self-check.sh |
+
+**状态**: ❌ 已清理，需按规范重写后重新提交
+
+---
+
+## 📋 今日审核总结（2026-04-08）
+
+| 提案 | Agent | 状态 | 下一步 |
+|------|-------|------|--------|
+| ops-automation | zhiming | ⏳ 需补充代码 | 等待 4 个脚本实现（workspace-health.sh 不存在，需从头写） |
+| workflow-optimizer | zhiming | ⏳ 需补充代码 | 等待 self-check.sh |
+| falcon-perception | yueying | ⏳ 需部署代码 | 等待 HuggingFace 部署 |
+| ops-automation-scripts | zhiming | ⏳ 合并处理 | 与 ops-automation 合并 |
+| heartbeat-workflow-optimizer | zhiming | ⏳ 合并处理 | 与 workflow-optimizer 合并 |
+
+**今日行动项**：
+1. ⏳ 催促执明补充 4 个运维脚本（cron-health-check.sh / archive-with-extract.sh / session-archive-incremental.sh / self-check.sh）— **注意：workspace-health.sh 实际不存在，需从头创建**
+2. ⏳ 催促月影补充 Falcon Perception 部署代码
+3. ✅ 清理 3 个低质量自动提案（中文名、无四维评分、内容截断）
+4. ⚠️ **紧急**：skill_evaluator.py 连续 3 天生成相同低质量提案，需立即修复评估逻辑
+
+**今日扫描结果**：
+| Agent | 章节数 | 可打包 | 说明 |
+|-------|--------|--------|------|
+| frontend_dev | 17 | 0 | 学习闭环内容，纯知识型 |
+| qa_engineer | 2 | 0 | 纯知识型内容 |
+| zhiming | 7 | 2→0 | 有 2 个自动提案但质量不足，已清理 |
+| yueying | 5 | 1→0 | 有 1 个自动提案但质量不足，已清理 |
+| taiyi | 5 | 0 | 纯知识型内容 |
+| main | 5 | 0 | 纯知识型内容 |
+| dev_engineer | 2 | 0 | 无新内容 |
+| product_manager | 2 | 0 | 无新内容 |
+| chief_cute_officer | 3 | 0 | 无新内容 |
+| tiangong | 3 | 0 | 纯知识型内容 |
+| lingxi | 3 | 0 | 无新内容 |
+| jinghong | 3 | 0 | 无新内容 |
+| shichen | 3 | 0 | 无新内容 |
+
+**技能打包进展**：
+- ✅ 已完成：17 个（13 个首批 + 1 个 raincloud-viz + 3 个其他）
+- ⏳ 待完成：5 个（需补充代码/部署）
+- ❌ 已拒绝：1 个（今日学习）
+- 🗑️ 累计清理：9 个（2026-04-06 清理 3 个 + 2026-04-07 清理 3 个 + 2026-04-08 清理 3 个）
+
+**核心问题**：
+- skill_evaluator.py 评估逻辑过弱，仅凭"有代码块"就判定可打包
+- 生成的提案直接用章节标题（中文），不符合 skill 命名规范（英文、短横线分隔）
+- 缺少四维评分自动计算
+- 缺少去重检查（与已有提案重复）
+- **新问题**：连续 3 天生成相同低质量提案，说明清理后没有阻止重复生成
+
+**改进建议**：
+1. 增强 skill_evaluator.py 评估逻辑，加入四维评分自动计算
+2. 强制 skill 名称为英文（a-z、0-9、短横线）
+3. 加入去重检查（对比已有 skill 清单和待审核提案）
+4. 内容截断检测（提案内容必须完整）
+5. **新增**：已清理提案标记机制，避免重复生成
+
+---
