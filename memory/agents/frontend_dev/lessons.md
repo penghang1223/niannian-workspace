@@ -454,3 +454,78 @@
 
 ### 实际效果
 - （待回填）
+
+---
+
+## [2026-04-09] 学习闭环
+
+### 学了什么
+- 领域：CSS `text-box-trim`（精准文本垂直间距控制）
+- 来源：https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-box-trim
+- 核心知识点：
+  - `text-box-trim: trim-both` — 裁剪文本框上下多余空间
+  - `text-box-trim: trim-start / trim-end` — 单侧裁剪
+  - 配合 `text-box-edge: cap alphabetic` 精确控制裁剪边界
+  - 解决不同字体 line-height 不一致导致的间距问题
+  - 浏览器支持：Chrome 128+、Safari 17.4+、Firefox 131+
+
+### 有用吗？
+- 价值评级：🟡
+- 理由：排版品质的最后 1%。nannan-dashboard 的按钮文字、标题、标签等需要精确垂直对齐的场景可用。替代负的 margin hack。
+
+### 用在哪？
+- 具体场景：按钮文字垂直居中、标题与图标对齐、表单标签对齐
+- 预期改善：排版更精确，减少 hack，提升视觉一致性
+
+### 实际效果
+- （待回填）
+
+---
+
+## [2026-04-09] 学习闭环
+
+### 学了什么
+- 领域：CSS Container Style Queries（容器样式查询）
+- 来源：https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_size_and_style_queries
+- 核心知识点：
+  - `@container style(--theme: dark) { ... }` — 查询容器的自定义属性值
+  - 子组件根据容器的 CSS 变量自动切换样式，无需 JS
+  - 支持逻辑运算符：`and` / `or` / `not`
+  - 配合 `container-type: style` 声明查询上下文
+  - 浏览器支持：Chrome 111+（Style Queries），Firefox/Safari 开发中
+
+### 有用吗？
+- 价值评级：🟡
+- 理由：主题感知组件的终极方案。容器设置 `--theme: dark`，子组件自动适配深色样式。但 Safari/Firefox 支持不足，渐进增强可用。
+
+### 用在哪？
+- 具体场景：主题感知卡片、模式切换组件、设计系统变体
+- 预期改善：消除 JS 主题切换逻辑，组件更独立
+
+### 实际效果
+- （待回填）
+
+---
+
+## [2026-04-09] 学习闭环
+
+### 学了什么
+- 领域：CSS Native Nesting（原生 CSS 嵌套）
+- 来源：https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Nesting/Using
+- 核心知识点：
+  - `.parent { .child { } }` — 原生嵌套，无需 Sass
+  - `&` 嵌套选择器用于复合选择器和伪类
+  - `&:hover { }` / `& + & { }` / `& > .child { }` 全部支持
+  - 媒体查询嵌套：`@media (min-width: 768px) { & { } }`
+  - 浏览器支持：Chrome 120+、Safari 17.2+、Firefox 117+
+
+### 有用吗？
+- 价值评级：🟡
+- 理由：消除 Sass 依赖，纯 CSS 实现嵌套。nannan-dashboard 可逐步移除 Sass 预处理器，简化构建流程。
+
+### 用在哪？
+- 具体场景：组件样式、主题切换、响应式设计
+- 预期改善：减少构建依赖，样式更直观
+
+### 实际效果
+- （待回填）

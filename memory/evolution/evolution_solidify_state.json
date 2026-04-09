@@ -1,44 +1,51 @@
 {
   "last_run": {
-    "run_id": "run_1775628003711",
-    "created_at": "2026-04-08T06:00:03.789Z",
+    "run_id": "run_1775714417596",
+    "created_at": "2026-04-09T06:00:17.685Z",
     "parent_event_id": "evt_1773665576530",
     "selected_gene_id": "gene_gep_innovate_from_opportunity",
-    "selected_capsule_id": "capsule_1773665576530",
+    "selected_capsule_id": "capsule_1770477654236",
     "selector": {
       "selected": "gene_gep_innovate_from_opportunity",
       "reason": [
         "signals match gene.signals_match",
         "capsule trigger matches signals",
-        "signals: protocol_drift, user_improvement_suggestion:- 预期：回归bug减少50%+，重构信心提升，代码设计更模块化, high_tool_usage:exec, repeated_tool_usage:exec",
-        "memory_graph: memory_prefer:gene_gep_innovate_from_opportunity | memory_ban:gene_gep_repair_from_errors,gene_gep_optimize_prompt_and_assets | gene_prior:0.410",
+        "signals: log_error, errsig:- ✅ 统一错误格式落地 — error-handler.js改为{error:{code,message,details}}格式，新增7个错误码，语法+测试双验证, protocol_drift, user_feature_request:add the proper daily summary: [TOOL, perf_bottleneck, high_tool_usage:exec, repeated_tool_usage:exec",
+        "memory_graph: memory_prefer:gene_gep_innovate_from_opportunity | memory_ban:gene_gep_optimize_prompt_and_assets | gene_prior:0.405",
         "drift_intensity: 0.577"
       ],
       "alternatives": [
+        "gene_gep_repair_from_errors",
         "gene_gep_optimize_prompt_and_assets"
       ]
     },
     "signals": [
+      "log_error",
+      "errsig:- ✅ 统一错误格式落地 — error-handler.js改为{error:{code,message,details}}格式，新增7个错误码，语法+测试双验证",
       "protocol_drift",
-      "user_improvement_suggestion:- 预期：回归bug减少50%+，重构信心提升，代码设计更模块化",
+      "user_feature_request:add the proper daily summary: [TOOL",
+      "perf_bottleneck",
       "high_tool_usage:exec",
       "repeated_tool_usage:exec"
     ],
     "mutation": {
       "type": "Mutation",
-      "id": "mut_1775628003709",
-      "category": "innovate",
+      "id": "mut_1775714417592",
+      "category": "repair",
       "trigger_signals": [
+        "log_error",
+        "errsig:- ✅ 统一错误格式落地 — error-handler.js改为{error:{code,message,details}}格式，新增7个错误码，语法+测试双验证",
         "protocol_drift",
-        "user_improvement_suggestion:- 预期：回归bug减少50%+，重构信心提升，代码设计更模块化",
+        "user_feature_request:add the proper daily summary: [TOOL",
+        "perf_bottleneck",
         "high_tool_usage:exec",
         "repeated_tool_usage:exec"
       ],
       "target": "gene:gene_gep_innovate_from_opportunity",
-      "expected_effect": "explore new strategy combinations to escape local optimum",
-      "risk_level": "medium"
+      "expected_effect": "reduce runtime errors, increase stability, and lower failure rate",
+      "risk_level": "low"
     },
-    "mutation_id": "mut_1775628003709",
+    "mutation_id": "mut_1775714417592",
     "personality_state": {
       "type": "PersonalityState",
       "rigor": 0.7,
