@@ -159,15 +159,12 @@ function scoreGeneLearning(gene, signals, envFingerprint) {
 // Formula: intensity = 1 / sqrt(Ne) where Ne = effective population size.
 // This replaces the binary driftEnabled flag with a continuous spectrum.
 function computeDriftIntensity(opts) {
-  // If explicitly enabled/disabled, use that as the baseline
   const driftEnabled = !!(opts && opts.driftEnabled);
 
-  // Effective population size: active gene count in the pool
   const effectivePopulationSize = opts && Number.isFinite(Number(opts.effectivePopulationSize))
     ? Number(opts.effectivePopulationSize)
     : null;
 
-  // If no Ne provided, fall back to gene pool size
   const genePoolSize = opts && Number.isFinite(Number(opts.genePoolSize))
     ? Number(opts.genePoolSize)
     : null;
@@ -175,17 +172,12 @@ function computeDriftIntensity(opts) {
   const ne = effectivePopulationSize || genePoolSize || null;
 
   if (driftEnabled) {
-    // Explicit drift: use moderate-to-high intensity
     return ne && ne > 1 ? Math.min(1, 1 / Math.sqrt(ne) + 0.3) : 0.7;
   }
 
-  if (ne != null && ne > 0) {
-    // Population-dependent drift: small population = more drift
-    // Ne=1: intensity=1.0 (pure drift), Ne=25: intensity=0.2, Ne=100: intensity=0.1
-    return Math.min(1, 1 / Math.sqrt(ne));
-  }
-
-  return 0; // No drift info available, pure selection
+  // When drift is not explicitly enabled, return 0 -- pure selection.
+  // Population-dependent drift should only activate when the caller opts in.
+  return 0;
 }
 
 function selectGene(genes, signals, opts) {
@@ -194,16 +186,25 @@ function selectGene(genes, signals, opts) {
   const driftEnabled = !!(opts && opts.driftEnabled);
   const preferredGeneId = opts && typeof opts.preferredGeneId === 'string' ? opts.preferredGeneId : null;
 
+  // Plateau override: when active, bypass memory preferences and force high drift
+  const plateauOverride = opts && opts.plateauOverride ? opts.plateauOverride : null;
+
   // Diversity-directed drift: capability_gaps from Hub heartbeat
   const capabilityGaps = opts && Array.isArray(opts.capabilityGaps) ? opts.capabilityGaps : [];
   const noveltyScore = opts && Number.isFinite(Number(opts.noveltyScore)) ? Number(opts.noveltyScore) : null;
 
   // Compute continuous drift intensity based on effective population size
-  const driftIntensity = computeDriftIntensity({
+  let driftIntensity = computeDriftIntensity({
     driftEnabled: driftEnabled,
     effectivePopulationSize: opts && opts.effectivePopulationSize,
     genePoolSize: genesList.length,
   });
+
+  // Plateau override: force maximum drift when plateau is detected
+  if (plateauOverride && plateauOverride.active) {
+    driftIntensity = Math.max(driftIntensity, plateauOverride.severity === 'required' ? 1.0 : 0.7);
+  }
+
   const useDrift = driftEnabled || driftIntensity > 0.15;
 
   const DISTILLED_PREFIX = 'gene_distilled_';
@@ -222,18 +223,19 @@ function selectGene(genes, signals, opts) {
 
   if (scored.length === 0) return { selected: null, alternatives: [], driftIntensity: driftIntensity, driftMode: 'none' };
 
-  // Memory graph preference: only override when the preferred gene is already a match candidate.
-  if (preferredGeneId) {
-    const preferred = scored.find(x => x.gene && x.gene.id === preferredGeneId);
-    if (preferred && (useDrift || !bannedGeneIds.has(preferredGeneId))) {
-      const rest = scored.filter(x => x.gene && x.gene.id !== preferredGeneId);
-      const filteredRest = useDrift ? rest : rest.filter(x => x.gene && !bannedGeneIds.has(x.gene.id));
-      return {
-        selected: preferred.gene,
-        alternatives: filteredRest.slice(0, 4).map(x => x.gene),
-        driftIntensity: driftIntensity,
-        driftMode: 'memory_preferred',
-      };
+  // Memory graph preference: apply as a score multiplier instead of a hard
+  // override.  The old behavior (`return preferred` unconditionally) caused a
+  // negative-feedback loop: a globally popular gene would be forced onto every
+  // scenario regardless of its pattern score, accumulate mixed outcomes, and
+  // stay preferred indefinitely.  A 1.5x multiplier lets the memory graph
+  // break ties and boost borderline candidates, but never overpower a gene
+  // that genuinely matches the current signals much better.
+  const MEMORY_PREFERENCE_MULTIPLIER = 1.5;
+  if (preferredGeneId && !(plateauOverride && plateauOverride.active)) {
+    const idx = scored.findIndex(x => x.gene && x.gene.id === preferredGeneId);
+    if (idx >= 0 && (useDrift || !bannedGeneIds.has(preferredGeneId))) {
+      scored[idx] = { ...scored[idx], score: scored[idx].score * MEMORY_PREFERENCE_MULTIPLIER };
+      scored.sort((a, b) => b.score - a.score);
     }
   }
 
@@ -344,7 +346,7 @@ function banGenesFromFailedCapsules(failedCapsules, signals, existingBans) {
   return bans;
 }
 
-function selectGeneAndCapsule({ genes, capsules, signals, memoryAdvice, driftEnabled, failedCapsules, capabilityGaps, noveltyScore }) {
+function selectGeneAndCapsule({ genes, capsules, signals, memoryAdvice, driftEnabled, failedCapsules, capabilityGaps, noveltyScore, plateauOverride }) {
   const bannedGeneIds =
     memoryAdvice && memoryAdvice.bannedGeneIds instanceof Set ? memoryAdvice.bannedGeneIds : new Set();
   const preferredGeneId = memoryAdvice && memoryAdvice.preferredGeneId ? memoryAdvice.preferredGeneId : null;
@@ -361,6 +363,7 @@ function selectGeneAndCapsule({ genes, capsules, signals, memoryAdvice, driftEna
     driftEnabled: !!driftEnabled,
     capabilityGaps: Array.isArray(capabilityGaps) ? capabilityGaps : [],
     noveltyScore: Number.isFinite(Number(noveltyScore)) ? Number(noveltyScore) : null,
+    plateauOverride: plateauOverride || null,
   });
   const capsule = selectCapsule(capsules, signals);
   const selector = buildSelectorDecision({

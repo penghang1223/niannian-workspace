@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-09T09:00:27.704Z",
+  "entries": {
+    "memory:memory/2026-04-08.md:369:386": {
+      "key": "memory:memory/2026-04-08.md:369:386",
+      "path": "memory/2026-04-08.md",
+      "startLine": 369,
+      "endLine": 386,
+      "source": "memory",
+      "snippet": "- 监控≠评估（质量指标/评估驱动告警） - 应用：TOOLS.md 添加工具对比，店小秘 AI 功能生产监控 - 预期：静默失败早发现，故障排查更快，成本失控预警 --- ## [13:01] 会话归档 - 执明心跳学习闭环 - 会话：agent:zhiming:main:heartbeat - 关键内容：新日开工检查（load 1.88 | disk 41% | uptime 26 天），隔夜亮点：AI 漫剧第 2 阶段完成 (94 分)、灵犀人名生成 Skill v2.0、Playwright 92% Cloudflare 绕过率、Anthropic 封锁第三方 Agent 框架 (135K 实例) - 决策/行动：安全警报 Flowise/BentoML 高危漏洞需关注，ERRORS.md/LEARNINGS.md/FEATURE_REQUESTS.md 检查无新增 ## [13:30] 会话归档 - 鉴微修仙小说大纲审查重试 - 会话：agent:qa_engineer:subagent:fb8a73cc-190d-4eac-97a9-5923585a5d38 - 关键内容：《修仙界送外卖》大纲 + 角色卡审查完成，综合 74.5/100 分（中等偏上），结论\"修改后通过\" - 决策/行动：P0 修复 5 项（补充 12 章详细场景/修复逻辑漏洞/女主前史弱点/新增女二苏清歌/新增反派血煞老祖），截止 24 小时 ## [14:00] 会话归档 - 代码开发时段技术债务清零 - 会话：agent:main:cron:a65d8101-906c-4610-a46",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "totalScore": 0.37903817296028136,
+      "maxScore": 0.37903817296028136,
+      "firstRecalledAt": "2026-04-09T09:00:27.704Z",
+      "lastRecalledAt": "2026-04-09T09:00:27.704Z",
+      "queryHashes": [
+        "51ebc0d239bc"
+      ],
+      "recallDays": [
+        "2026-04-09"
+      ],
+      "conceptTags": [
+        "质量指标/评估驱动告警",
+        "tools.md",
+        "1.88",
+        "v2.0",
+        "决策/行动",
+        "flowise/bentoml",
+        "qa-engineer",
+        "74.5/100"
+      ]
+    },
+    "memory:memory/2026-04-07.md:154:184": {
+      "key": "memory:memory/2026-04-07.md:154:184",
+      "path": "memory/2026-04-07.md",
+      "startLine": 154,
+      "endLine": 184,
+      "source": "memory",
+      "snippet": "- ✅ BOLA 测试框架完成 — security/bola-test-script.py + owasp-bola-test-report.md - 下一步：执行实际测试（需要测试 Token） ## 11:40 - 执行进度 - ✅ OTel 插件完成 — tests/conftest.py + docs/test-observability-setup.md - 知识应用率：3/13 (23%) - 今日 P0 全部完成，开始 P1 ## 11:43 - 学习汇报 - 🔴 AI Agent 记忆架构 — OS 类比（Hot/Warm/Cold），长期记忆三分法（Episodic/Semantic/Procedural），记忆管理（异步巩固/智能遗忘/冲突解决） - 应用：TOOLS.md 添加记忆架构，OPC 记忆系统优化 - 预期：token 成本↓，上下文漂移↓，检索精度↑ ## 12:13 - 学习汇报 - 🔴 AI Agent 人机协作模式（HITL）— 监督式自主（AI 90%/人工 10%），六层升级触发（风险/置信度/复杂度/法规/情绪/边界），五种子模式（中断恢复/人作为工具/批准门控/抽样/仅异常） - 应用：TOOLS.md 添加 HITL 框架，店小秘 AI 审批流设计 - 预期：AI 处理 70-90% 常规 case，上下文完整移交，审批时效↑ ## 12:43 - 执行进度 - ✅ 视觉回归测试 POC 完成 — 12 个测试用例覆盖订单/商品/财务 - 知识应用率：4/13 (30.8%) - 开始契约测试 POC (#4)",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "totalScore": 0.3679744392633438,
+      "maxScore": 0.3679744392633438,
+      "firstRecalledAt": "2026-04-09T09:00:27.704Z",
+      "lastRecalledAt": "2026-04-09T09:00:27.704Z",
+      "queryHashes": [
+        "51ebc0d239bc"
+      ],
+      "recallDays": [
+        "2026-04-09"
+      ],
+      "conceptTags": [
+        "security/bola-test-script.py",
+        "owasp-bola-test-report.md",
+        "tests/conftest.py",
+        "docs/test-observability-setup.md",
+        "3/13",
+        "hot/warm/cold",
+        "episodic/semantic/procedural",
+        "异步巩固/智能遗忘/冲突解决"
+      ]
+    }
+  }
+}

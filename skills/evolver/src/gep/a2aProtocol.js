@@ -448,6 +448,10 @@ let _latestNoveltyHint = null;
 let _latestCapabilityGaps = [];
 let _pendingCommitmentUpdates = [];
 let _latestHubEvents = [];
+let _latestHeartbeatActions = null;
+let _latestSharedKnowledgeDelta = null;
+let _sharedKnowledgeVersion = 0;
+let _forceUpdatePending = null;
 let _pollInflight = false;
 let _cachedHubNodeSecret = null;
 let _cachedHubNodeSecretAt = 0;
@@ -601,6 +605,10 @@ function sendHeartbeat() {
     }
   }
 
+  if (_sharedKnowledgeVersion > 0) {
+    meta.shared_knowledge_version = _sharedKnowledgeVersion;
+  }
+
   if (Object.keys(meta).length > 0) {
     bodyObj.meta = meta;
   }
@@ -662,6 +670,42 @@ function sendHeartbeat() {
       }
       if (data.circle_experience && typeof data.circle_experience === 'object') {
         console.log('[EvolutionCircle] Active circle: ' + (data.circle_experience.circle_id || '?') + ' (' + (data.circle_experience.member_count || 0) + ' members)');
+      }
+      if (data.heartbeat_actions && typeof data.heartbeat_actions === 'object') {
+        var newActions = Array.isArray(data.heartbeat_actions.actions) ? data.heartbeat_actions.actions : [];
+        if (_latestHeartbeatActions && Array.isArray(_latestHeartbeatActions.actions)) {
+          _latestHeartbeatActions.actions = _latestHeartbeatActions.actions.concat(newActions);
+        } else {
+          _latestHeartbeatActions = { actions: newActions };
+        }
+        if (data.heartbeat_actions.metrics_snapshot) {
+          _latestHeartbeatActions.metrics_snapshot = data.heartbeat_actions.metrics_snapshot;
+        }
+        var actionTypes = newActions.length > 0
+          ? newActions.map(function (a) { return a.type; }).join(', ')
+          : 'none';
+        console.log('[HeartbeatAction] Received actions: ' + actionTypes);
+      }
+      if (data.shared_knowledge_delta && typeof data.shared_knowledge_delta === 'object') {
+        var newEntries = Array.isArray(data.shared_knowledge_delta.entries) ? data.shared_knowledge_delta.entries : [];
+        if (_latestSharedKnowledgeDelta && Array.isArray(_latestSharedKnowledgeDelta.entries)) {
+          _latestSharedKnowledgeDelta.entries = _latestSharedKnowledgeDelta.entries.concat(newEntries);
+        } else {
+          _latestSharedKnowledgeDelta = { entries: newEntries };
+        }
+        if (Number.isFinite(Number(data.shared_knowledge_delta.version))) {
+          _sharedKnowledgeVersion = data.shared_knowledge_delta.version;
+        }
+        var deltaCount = newEntries.length;
+        if (deltaCount > 0) {
+          console.log('[SharedKnowledge] Received ' + deltaCount + ' delta entries (version: ' + _sharedKnowledgeVersion + ')');
+        }
+      }
+      if (data.force_update && typeof data.force_update === 'object') {
+        _forceUpdatePending = data.force_update;
+        console.log('[ForceUpdate] Hub requires update to ' +
+          (data.force_update.required_version || '?') +
+          ' -- reason: ' + (data.force_update.reason || 'unspecified'));
       }
       if (data.has_pending_events) {
         _fetchHubEvents().catch(function (err) {
@@ -737,6 +781,40 @@ function getNoveltyHint() {
 
 function getCapabilityGaps() {
   return _latestCapabilityGaps;
+}
+
+/**
+ * Returns and clears pending heartbeat actions from Hub.
+ * Actions include reflect, consolidate, pivot_check.
+ */
+function consumeHeartbeatActions() {
+  var actions = _latestHeartbeatActions;
+  _latestHeartbeatActions = null;
+  return actions;
+}
+
+function getHeartbeatActions() {
+  return _latestHeartbeatActions;
+}
+
+function consumeSharedKnowledgeDelta() {
+  var delta = _latestSharedKnowledgeDelta;
+  _latestSharedKnowledgeDelta = null;
+  return delta;
+}
+
+function getSharedKnowledgeVersion() {
+  return _sharedKnowledgeVersion;
+}
+
+function consumeForceUpdate() {
+  var pending = _forceUpdatePending;
+  _forceUpdatePending = null;
+  return pending;
+}
+
+function getForceUpdate() {
+  return _forceUpdatePending;
 }
 
 /**
@@ -1103,7 +1181,7 @@ function hubOpenEventStream(opts) {
 
 // ---------------------------------------------------------------------------
 // Managed SSE stream -- starts/stops alongside the heartbeat loop.
-// Events are buffered into _hubEvents for consumption by evolve.js.
+// Events are buffered into _latestHubEvents for consumption by evolve.js.
 // Falls back gracefully to poll-based events if SSE is unavailable.
 // ---------------------------------------------------------------------------
 
@@ -1130,8 +1208,7 @@ function startEventStream() {
     try {
       var parsed = JSON.parse(ev.data);
       if (parsed && parsed.type) {
-        if (!_hubEvents) _hubEvents = [];
-        _hubEvents.push(parsed);
+        _latestHubEvents.push(parsed);
       }
     } catch (e) {}
   };
@@ -1201,6 +1278,12 @@ module.exports = {
   buildHubHeaders,
   getNoveltyHint,
   getCapabilityGaps,
+  consumeHeartbeatActions,
+  getHeartbeatActions,
+  consumeSharedKnowledgeDelta,
+  getSharedKnowledgeVersion,
+  consumeForceUpdate,
+  getForceUpdate,
   getHubEvents,
   consumeHubEvents,
   hubSelfProvision,

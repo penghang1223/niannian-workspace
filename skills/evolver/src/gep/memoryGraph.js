@@ -272,7 +272,10 @@ function getMemoryAdvice({ signals, genes, driftEnabled }) {
       if (!g || g.type !== 'Gene' || !g.id) continue;
       const k = `${ck.key}::${g.id}`;
       const edge = edges.get(k);
-      const cur = byGene.get(g.id) || { geneId: g.id, best: 0, attempts: 0, prior: 0, prior_attempts: 0 };
+      const cur = byGene.get(g.id) || {
+        geneId: g.id, best: 0, attempts: 0, prior: 0, prior_attempts: 0,
+        rawSuccess: 0, rawFail: 0,
+      };
 
       // Signal->Gene edge score (if available)
       if (edge) {
@@ -280,6 +283,8 @@ function getMemoryAdvice({ signals, genes, driftEnabled }) {
         const weighted = ex.value * ck.sim;
         if (weighted > cur.best) cur.best = weighted;
         cur.attempts = Math.max(cur.attempts, ex.total);
+        cur.rawSuccess += (Number(edge.success) || 0);
+        cur.rawFail += (Number(edge.fail) || 0);
       }
 
       // Gene->Outcome prior (independent of signal): stabilizer when signal edges are sparse.
@@ -296,19 +301,36 @@ function getMemoryAdvice({ signals, genes, driftEnabled }) {
 
   for (const [geneId, info] of byGene.entries()) {
     const combined = info.best > 0 ? info.best + info.prior * 0.12 : info.prior * 0.4;
-    scoredGeneIds.push({ geneId, score: combined, attempts: info.attempts, prior: info.prior });
-    // Low-efficiency path suppression (unless drift is explicit).
-    if (!driftEnabled && info.attempts >= 2 && info.best < 0.18) {
+    // A gene is preference-eligible only when it has at least one real success
+    // on a signal-matched edge.  Laplace smoothing gives a non-zero `best` even
+    // when rawSuccess=0, which previously allowed all-failure genes to become
+    // preferred. Also require more successes than failures (net positive record).
+    const hasPositiveEvidence = info.rawSuccess > 0 && info.rawSuccess > info.rawFail;
+    scoredGeneIds.push({
+      geneId,
+      score: combined,
+      attempts: info.attempts,
+      prior: info.prior,
+      hasPositiveEvidence,
+    });
+    // Low-efficiency path suppression: require sufficient evidence before banning.
+    if (!driftEnabled && info.attempts >= 4 && info.best < 0.15) {
       bannedGeneIds.add(geneId);
     }
-    // Also suppress genes with consistently poor global outcomes when signal edges are sparse.
-    if (!driftEnabled && info.attempts < 2 && info.prior_attempts >= 3 && info.prior < 0.12) {
+    if (!driftEnabled && info.attempts < 2 && info.prior_attempts >= 5 && info.prior < 0.10) {
       bannedGeneIds.add(geneId);
     }
   }
 
   scoredGeneIds.sort((a, b) => b.score - a.score);
-  const preferredGeneId = scoredGeneIds.length ? scoredGeneIds[0].geneId : null;
+  // Only emit a preference when the top gene has genuine positive evidence:
+  // at least one real success on a signal-matched edge, with more successes
+  // than failures.  This prevents Laplace-smoothing artifacts and cross-signal
+  // Jaccard bleed from promoting genes that have never actually succeeded.
+  const topScored = scoredGeneIds.length ? scoredGeneIds[0] : null;
+  const preferredGeneId = (topScored && topScored.score > 0 && topScored.attempts > 0 && topScored.hasPositiveEvidence)
+    ? topScored.geneId
+    : null;
 
   const explanation = [];
   if (preferredGeneId) explanation.push(`memory_prefer:${preferredGeneId}`);
@@ -418,7 +440,16 @@ function recordHypothesis({
 
 function hasErrorSignal(signals) {
   const list = Array.isArray(signals) ? signals : [];
-  return list.includes('log_error');
+  // Check for any signal that indicates an active error state.
+  // The original implementation only checked for 'log_error', missing common
+  // error indicators like 'error', 'exception', 'failed', and errsig: entries.
+  const ERROR_INDICATORS = ['log_error', 'error', 'exception', 'failed', 'unstable'];
+  for (const sig of list) {
+    const s = String(sig).toLowerCase();
+    if (ERROR_INDICATORS.some(ind => s === ind)) return true;
+    if (s.startsWith('errsig:')) return true;
+  }
+  return false;
 }
 
 function recordAttempt({
@@ -510,7 +541,10 @@ function inferOutcomeFromSignals({ prevHadError, currentHasError }) {
   if (prevHadError && !currentHasError) return { status: 'success', score: 0.85, note: 'error_cleared' };
   if (prevHadError && currentHasError) return { status: 'failed', score: 0.2, note: 'error_persisted' };
   if (!prevHadError && currentHasError) return { status: 'failed', score: 0.15, note: 'new_error_appeared' };
-  return { status: 'success', score: 0.6, note: 'stable_no_error' };
+  // No error before, no error now: we cannot confirm the gene actually helped.
+  // Record as neutral (score 0.5) to avoid inflating success counts for genes
+  // that were merely harmless rather than beneficial.
+  return { status: 'neutral', score: 0.5, note: 'stable_no_error' };
 }
 
 function clamp01(x) {

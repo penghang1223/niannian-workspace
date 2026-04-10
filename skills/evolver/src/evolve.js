@@ -90,7 +90,7 @@ try {
 const ARGS = process.argv.slice(2);
 const IS_REVIEW_MODE = ARGS.includes('--review');
 const IS_DRY_RUN = ARGS.includes('--dry-run');
-const IS_RANDOM_DRIFT = ARGS.includes('--drift') || String(process.env.RANDOM_DRIFT || '').toLowerCase() === 'true';
+let IS_RANDOM_DRIFT = ARGS.includes('--drift') || String(process.env.RANDOM_DRIFT || '').toLowerCase() === 'true';
 
 // Default Configuration
 const MEMORY_DIR = getMemoryDir();
@@ -901,6 +901,92 @@ function checkAndAutoUpdate() {
   }
 }
 
+// --- Force Update: triggered by Hub when version is critically outdated ---
+function executeForceUpdate(forceUpdate) {
+  const requiredVersion = String(forceUpdate.required_version || '').replace(/^>=/, '');
+  console.log('[ForceUpdate] Starting multi-channel update (target: >=' + requiredVersion + ')');
+
+  function parseVer(v) {
+    var m = String(v || '').match(/(\d+)\.(\d+)\.(\d+)/);
+    return m ? [Number(m[1]), Number(m[2]), Number(m[3])] : [0, 0, 0];
+  }
+  function isAtLeast(current, required) {
+    var c = parseVer(current), r = parseVer(required);
+    for (var i = 0; i < 3; i++) {
+      if (c[i] > r[i]) return true;
+      if (c[i] < r[i]) return false;
+    }
+    return true;
+  }
+  function getCurrentVersion() {
+    try {
+      var pkg = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'package.json'), 'utf8'));
+      return pkg.version || '0.0.0';
+    } catch (_) { return '0.0.0'; }
+  }
+
+  // Channel 1: ClawHub
+  try {
+    var clawhubBin = null;
+    var candidates = ['clawhub', path.join(os.homedir(), '.npm-global/bin/clawhub'), '/usr/local/bin/clawhub'];
+    for (var ci = 0; ci < candidates.length; ci++) {
+      try {
+        if (candidates[ci] === 'clawhub') {
+          execSync(process.platform === 'win32' ? 'where clawhub' : 'which clawhub',
+            { stdio: 'ignore', timeout: 3000, windowsHide: true });
+          clawhubBin = 'clawhub';
+          break;
+        }
+        if (fs.existsSync(candidates[ci])) { clawhubBin = candidates[ci]; break; }
+      } catch (_) {}
+    }
+    if (clawhubBin) {
+      console.log('[ForceUpdate] Channel 1: ClawHub update...');
+      var out = execSync(clawhubBin + ' update evolver --force', {
+        encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
+        timeout: 60000, cwd: path.resolve(REPO_ROOT, '..'), windowsHide: true,
+      });
+      console.log('[ForceUpdate] ClawHub: ' + (out || '').trim().split('\n').pop());
+      var newVer = getCurrentVersion();
+      if (isAtLeast(newVer, requiredVersion)) {
+        console.log('[ForceUpdate] ClawHub update successful: ' + newVer);
+        return true;
+      }
+    }
+  } catch (e) {
+    console.warn('[ForceUpdate] ClawHub failed:', e && e.message || e);
+  }
+
+  // Channel 2: npm
+  try {
+    console.log('[ForceUpdate] Channel 2: npm install...');
+    var npmCmd = 'npm install -g @evomap/evolver@latest';
+    execSync(npmCmd, {
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
+      timeout: 120000, windowsHide: true,
+    });
+    var newVerNpm = getCurrentVersion();
+    if (isAtLeast(newVerNpm, requiredVersion)) {
+      console.log('[ForceUpdate] npm update successful: ' + newVerNpm);
+      return true;
+    }
+  } catch (e) {
+    console.warn('[ForceUpdate] npm failed:', e && e.message || e);
+  }
+
+  // Channel 3: GitHub release download
+  try {
+    var releaseUrl = forceUpdate.release_url;
+    if (releaseUrl) {
+      console.log('[ForceUpdate] Channel 3: GitHub release -- manual download required');
+      console.log('[ForceUpdate] Visit: ' + releaseUrl);
+    }
+  } catch (_) {}
+
+  console.warn('[ForceUpdate] All automatic channels exhausted. Current version: ' + getCurrentVersion());
+  return false;
+}
+
 function sleepMs(ms) {
   const t = Number(ms);
   const n = Number.isFinite(t) ? Math.max(0, t) : 0;
@@ -1538,6 +1624,13 @@ async function run() {
 
         // ── 系统 ──────────────────────────────────────────────────────
         task_overdue:                  ['overdue_task', 'urgent'],
+
+        // ── 方案嫁接 ─────────────────────────────────────────────────
+        breakthrough_available:        ['swarm', 'breakthrough', 'graft_available'],
+
+        // ── 涌现协作 ─────────────────────────────────────────────────
+        emergent_exploration_started:  ['swarm', 'emergent', 'exploration'],
+        emergent_convergence_detected: ['swarm', 'emergent', 'convergence'],
       };
       for (const ev of hubEvents) {
         const evSignals = HUB_EVENT_SIGNALS[ev.type] || ['hub_event'];
@@ -1734,6 +1827,140 @@ async function run() {
     heartbeatCapGaps = getCapGaps() || [];
   } catch (e) {}
 
+  // --- Shared Knowledge: consume peer knowledge deltas ---
+  let sharedKnowledgeContext = '';
+  try {
+    const { consumeSharedKnowledgeDelta } = require('./gep/a2aProtocol');
+    const skDelta = consumeSharedKnowledgeDelta();
+    if (skDelta && Array.isArray(skDelta.entries) && skDelta.entries.length > 0) {
+      const peerEntries = skDelta.entries
+        .filter(function (e) { return e.node_id !== require('./gep/a2aProtocol').getNodeId(); })
+        .slice(0, 10);
+      if (peerEntries.length > 0) {
+        const lines = peerEntries.map(function (e) {
+          if (e.type === 'attempt') return '[Attempt by ' + (e.node_id || '?').slice(0, 8) + '] score=' + (e.score || '?') + ' strategy: ' + (e.strategy || '?');
+          if (e.type === 'note') return '[Note by ' + (e.node_id || '?').slice(0, 8) + '] ' + (e.content || '').slice(0, 300);
+          if (e.type === 'insight') return '[Insight by ' + (e.node_id || '?').slice(0, 8) + '] ' + (e.content || '').slice(0, 300);
+          return '[' + (e.type || 'unknown') + '] ' + JSON.stringify(e).slice(0, 200);
+        });
+        sharedKnowledgeContext = '\n\n--- Peer Knowledge (shared by collaborating nodes) ---\n' + lines.join('\n') + '\n--- End Peer Knowledge ---\n';
+        console.log('[SharedKnowledge] Injecting ' + peerEntries.length + ' peer knowledge entries into context');
+      }
+    }
+  } catch (e) {
+    console.warn('[SharedKnowledge] Consumption failed (non-fatal):', e && e.message || e);
+  }
+
+  // --- Force Update Check ---
+  try {
+    const { consumeForceUpdate } = require('./gep/a2aProtocol');
+    const forceUpdate = consumeForceUpdate();
+    if (forceUpdate) {
+      console.log('[ForceUpdate] Hub requires update to ' + (forceUpdate.required_version || 'latest'));
+      console.log('[ForceUpdate] Reason: ' + (forceUpdate.reason || 'unspecified'));
+      const updated = executeForceUpdate(forceUpdate);
+      if (updated) {
+        console.log('[ForceUpdate] Update complete. Exiting for restart...');
+        process.exit(78);
+      } else {
+        console.warn('[ForceUpdate] Update failed. Will retry next cycle.');
+      }
+    }
+  } catch (e) {
+    console.warn('[ForceUpdate] Check failed (non-fatal):', e && e.message || e);
+  }
+
+  // --- Heartbeat Actions: proactive knowledge externalization ---
+  let heartbeatActionContext = '';
+  let plateauOverride = null;
+  try {
+    const { consumeHeartbeatActions } = require('./gep/a2aProtocol');
+    const hbActions = consumeHeartbeatActions();
+    if (hbActions && Array.isArray(hbActions.actions) && hbActions.actions.length > 0) {
+      const actionPrompts = hbActions.actions.map(function (a) {
+        return '[HeartbeatAction:' + a.type + '] ' + (a.prompt || '');
+      });
+      heartbeatActionContext = '\n\n--- Hub Heartbeat Directives ---\n' + actionPrompts.join('\n\n') + '\n--- End Heartbeat Directives ---\n';
+      const pivotActions = hbActions.actions.filter(function (a) { return a.type === 'pivot_check'; });
+      if (pivotActions.length > 0) {
+        var hasRequired = pivotActions.some(function (a) { return a.severity === 'required'; });
+        var pivotSeverity = hasRequired ? 'required' : 'suggested';
+        var rawPivotEvals = Math.max.apply(null, pivotActions.map(function (a) { return a.evals_since_improvement || 0; }));
+        var pivotEvals = Number.isFinite(rawPivotEvals) ? rawPivotEvals : 0;
+        if (pivotSeverity === 'required') {
+          if (!signals.includes('plateau_pivot_required')) signals.unshift('plateau_pivot_required');
+          IS_RANDOM_DRIFT = true;
+          if (!plateauOverride || plateauOverride.severity !== 'required') {
+            plateauOverride = { active: true, severity: 'required', evalsSinceImprovement: pivotEvals, source: 'hub' };
+          }
+          try {
+            var _fp = require('./gep/personality');
+            _fp.forcePivot({ severity: 'required', evalsSinceImprovement: pivotEvals });
+          } catch (_fpErr) {
+            console.warn('[HeartbeatAction] forcePivot failed (non-fatal):', _fpErr && _fpErr.message || _fpErr);
+          }
+          console.log('[HeartbeatAction] Forced pivot: injecting plateau_pivot_required signal and enabling drift');
+        } else {
+          if (!signals.includes('plateau_pivot_suggested')) signals.unshift('plateau_pivot_suggested');
+          if (!plateauOverride) {
+            plateauOverride = { active: true, severity: 'suggested', evalsSinceImprovement: pivotEvals, source: 'hub' };
+          }
+          try {
+            var _fp2 = require('./gep/personality');
+            _fp2.forcePivot({ severity: 'suggested', evalsSinceImprovement: pivotEvals });
+          } catch (_fpErr2) {
+            console.warn('[HeartbeatAction] forcePivot failed (non-fatal):', _fpErr2 && _fpErr2.message || _fpErr2);
+          }
+          console.log('[HeartbeatAction] Pivot suggested: injecting plateau_pivot_suggested signal');
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('[HeartbeatAction] Processing failed (non-fatal):', e && e.message || e);
+  }
+
+  // --- Local Plateau Detection ---
+  // Track consecutive non-improving evals using the evolution event history.
+  // Complements Hub-side tracking (which uses Redis) for offline resilience.
+  try {
+    const PLATEAU_SUGGEST = 5;
+    const PLATEAU_FORCE = 10;
+    let localEvalsSinceImprovement = 0;
+    const recentOutcomes = recentEvents.slice(-PLATEAU_FORCE).filter(function (e) {
+      return e && e.outcome && e.outcome.status;
+    });
+    for (let pi = recentOutcomes.length - 1; pi >= 0; pi--) {
+      if (recentOutcomes[pi].outcome.status === 'success') break;
+      localEvalsSinceImprovement++;
+    }
+    if (localEvalsSinceImprovement >= PLATEAU_FORCE) {
+      IS_RANDOM_DRIFT = true;
+      if (!plateauOverride || plateauOverride.severity !== 'required') {
+        plateauOverride = { active: true, severity: 'required', evalsSinceImprovement: localEvalsSinceImprovement, source: 'local' };
+        try {
+          var _lpf = require('./gep/personality');
+          _lpf.forcePivot({ severity: 'required', evalsSinceImprovement: localEvalsSinceImprovement });
+        } catch (e) {
+          console.warn('[Plateau] forcePivot failed (non-fatal):', e && e.message || e);
+        }
+      }
+      if (!signals.includes('plateau_pivot_required')) signals.unshift('plateau_pivot_required');
+      console.log('[Plateau] Local detection: ' + localEvalsSinceImprovement + ' consecutive non-improving evals -> FORCED PIVOT (drift enabled)');
+    } else if (localEvalsSinceImprovement >= PLATEAU_SUGGEST && !plateauOverride) {
+      plateauOverride = { active: true, severity: 'suggested', evalsSinceImprovement: localEvalsSinceImprovement, source: 'local' };
+      if (!signals.includes('plateau_pivot_suggested')) signals.unshift('plateau_pivot_suggested');
+      console.log('[Plateau] Local detection: ' + localEvalsSinceImprovement + ' consecutive non-improving evals -> pivot suggested');
+      try {
+        var _lpf2 = require('./gep/personality');
+        _lpf2.forcePivot({ severity: 'suggested', evalsSinceImprovement: localEvalsSinceImprovement });
+      } catch (e) {
+        console.warn('[Plateau] forcePivot failed (non-fatal):', e && e.message || e);
+      }
+    }
+  } catch (e) {
+    console.warn('[Plateau] Detection failed (non-fatal):', e && e.message || e);
+  }
+
   const { selectedGene, capsuleCandidates, selector } = selectGeneAndCapsule({
     genes,
     capsules,
@@ -1743,6 +1970,7 @@ async function run() {
     failedCapsules: recentFailedCapsules,
     capabilityGaps: heartbeatCapGaps,
     noveltyScore: heartbeatNovelty && Number.isFinite(heartbeatNovelty.score) ? heartbeatNovelty.score : null,
+    plateauOverride,
   });
 
   const selectedBy = memoryAdvice && memoryAdvice.preferredGeneId ? 'memory_graph+selector' : 'selector';
@@ -2054,6 +2282,8 @@ ${recentMasterLog}
 
 Mutation directive:
 ${mutationDirective}
+${heartbeatActionContext}
+${sharedKnowledgeContext}
 `.trim();
 
   // Build the prompt: in direct-reuse mode, use a minimal reuse prompt.

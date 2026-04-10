@@ -1,0 +1,1 @@
+{"type":"memory.recall.recorded","timestamp":"2026-04-09T09:00:27.704Z","query":"2026-04-09 开发 测试 鉴微 qa 质量验证","resultCount":2,"results":[{"path":"memory/2026-04-08.md","startLine":369,"endLine":386,"score":0.37903817296028136},{"path":"memory/2026-04-07.md","startLine":154,"endLine":184,"score":0.3679744392633438}]}
