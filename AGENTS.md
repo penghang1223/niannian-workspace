@@ -261,6 +261,17 @@ Think of it like a human reviewing their journal and updating their mental model
 
 The goal: Be helpful without being annoying. Check in a few times a day, do useful background work, but respect quiet time.
 
+## 🚫 飞书输出规则（2026-04-10 主人命令）
+
+**所有 Agent 必须遵守：**
+- ❌ **禁止在飞书聊天中输出思考过程**
+- ❌ 不要输出 `<thinking>` 标签、推理链、或任何 deliberation 文本
+- ✅ 只输出最终答案，用户不需要看到你如何得出结论
+- ✅ 如果需要推理，在内部完成后再组织回复
+- 写入位置：SOUL.md → 底线
+
+---
+
 ## 🤝 Multi-Agent Collaboration (New!)
 
 > 团队协作规则，让每个Agent都能自主学习、高效协作

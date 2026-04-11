@@ -1,21 +1,11 @@
 {
-  "items": [
-    {
-      "id": "test-001",
-      "description": "测试催促功能",
-      "created": "2026-04-02T20:25:21.063084",
-      "state": "pending",
-      "remind_count": 0,
-      "last_reminded": null,
-      "assignee": "主人"
-    }
-  ],
+  "items": [],
   "config": {
     "reminder_delay_hours": 24,
     "urge_delay_hours": 48,
     "escalate_delay_hours": 72,
     "max_reminders": 3
   },
-  "last_scan": null,
+  "last_scan": "2026-04-11T11:10:00+08:00",
   "version": "1.0"
 }
