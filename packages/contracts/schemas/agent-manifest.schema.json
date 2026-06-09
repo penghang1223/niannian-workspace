@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://niannian.local/schemas/agent-manifest.schema.json",
+  "title": "AgentManifest",
+  "type": "object",
+  "required": [
+    "id",
+    "display_name",
+    "role",
+    "mission",
+    "capabilities",
+    "primary_tools",
+    "model_policy",
+    "memory",
+    "permissions",
+    "playbook_paths",
+    "output_contracts"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "display_name": { "type": "string", "minLength": 1 },
+    "role": { "type": "string", "minLength": 1 },
+    "mission": { "type": "string", "minLength": 1 },
+    "status": {
+      "type": "string",
+      "enum": ["online", "busy", "idle", "offline", "error"]
+    },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "primary_tools": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "model_policy": {
+      "type": "object",
+      "required": ["preferred"],
+      "additionalProperties": false,
+      "properties": {
+        "preferred": { "type": "string", "minLength": 1 },
+        "fallback": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "budget": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "max_tokens_per_turn": { "type": "integer", "minimum": 1 },
+            "max_cost_per_day_usd": { "type": "number", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "memory": {
+      "type": "object",
+      "required": ["private_paths", "shared_paths", "write_policy"],
+      "additionalProperties": false,
+      "properties": {
+        "private_paths": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "shared_paths": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "write_policy": {
+          "type": "string",
+          "enum": ["agent-owned", "coordinator-reviewed", "append-only"]
+        }
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "filesystem:read",
+          "filesystem:write",
+          "git:read",
+          "git:write",
+          "network:read",
+          "network:write",
+          "browser:use",
+          "secrets:read",
+          "external:publish"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "playbook_paths": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "output_contracts": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}

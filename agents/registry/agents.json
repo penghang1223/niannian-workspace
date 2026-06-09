@@ -1,0 +1,107 @@
+[
+  {
+    "id": "main",
+    "display_name": "Niannian",
+    "role": "Coordinator",
+    "mission": "Coordinate multi-agent work, maintain shared memory, review outputs, and keep the workspace coherent.",
+    "status": "online",
+    "capabilities": ["coordination", "task-decomposition", "memory-curation", "architecture-review"],
+    "primary_tools": ["git", "filesystem", "dashboard", "web-search"],
+    "model_policy": {
+      "preferred": "general-reasoning",
+      "fallback": ["coder", "fast-general"]
+    },
+    "memory": {
+      "private_paths": ["MEMORY.md", "agents/main/"],
+      "shared_paths": ["SHARED_KNOWLEDGE.md", "memory/daily/", "memory/agents/"],
+      "write_policy": "coordinator-reviewed"
+    },
+    "permissions": ["filesystem:read", "filesystem:write", "git:read", "git:write", "network:read"],
+    "playbook_paths": ["AGENTS.md", "WORKFLOW.md", "agents/main/"],
+    "output_contracts": ["task-plan", "review-report", "memory-update", "architecture-decision"]
+  },
+  {
+    "id": "product_manager",
+    "display_name": "Product Manager",
+    "role": "Product and requirements owner",
+    "mission": "Clarify user goals, produce PRDs, define acceptance criteria, and prioritize roadmap decisions.",
+    "status": "idle",
+    "capabilities": ["requirements-analysis", "prd-writing", "roadmap-planning", "acceptance-criteria"],
+    "primary_tools": ["filesystem", "knowledge-base", "dashboard"],
+    "model_policy": {
+      "preferred": "general-reasoning",
+      "fallback": ["fast-general"]
+    },
+    "memory": {
+      "private_paths": ["agents/product_manager/", "memory/agents/product_manager/"],
+      "shared_paths": ["SHARED_KNOWLEDGE.md", "docs/product/"],
+      "write_policy": "agent-owned"
+    },
+    "permissions": ["filesystem:read", "filesystem:write", "network:read"],
+    "playbook_paths": ["agents/product_manager/", "docs/product/"],
+    "output_contracts": ["prd", "acceptance-criteria", "roadmap-note"]
+  },
+  {
+    "id": "dev_engineer",
+    "display_name": "Development Engineer",
+    "role": "Backend and platform engineer",
+    "mission": "Implement backend services, shared packages, automation scripts, and integration code.",
+    "status": "idle",
+    "capabilities": ["backend-development", "typescript", "python", "api-design", "integration"],
+    "primary_tools": ["filesystem", "git", "shell", "test-runner"],
+    "model_policy": {
+      "preferred": "coder",
+      "fallback": ["general-reasoning"]
+    },
+    "memory": {
+      "private_paths": ["agents/dev_engineer/", "memory/agents/dev_engineer/"],
+      "shared_paths": ["docs/architecture/", "SHARED_KNOWLEDGE.md"],
+      "write_policy": "agent-owned"
+    },
+    "permissions": ["filesystem:read", "filesystem:write", "git:read", "git:write", "network:read"],
+    "playbook_paths": ["agents/dev_engineer/", "lib/README-api-schema.md", "lib/README-batch-dispatcher.md"],
+    "output_contracts": ["implementation-summary", "test-result", "api-contract"]
+  },
+  {
+    "id": "frontend_dev",
+    "display_name": "Frontend Developer",
+    "role": "Dashboard and UI engineer",
+    "mission": "Design and implement dashboard views, frontend state, reusable UI components, and user workflows.",
+    "status": "idle",
+    "capabilities": ["react", "dashboard-ui", "frontend-state", "accessibility", "visual-design"],
+    "primary_tools": ["filesystem", "git", "browser", "test-runner"],
+    "model_policy": {
+      "preferred": "coder",
+      "fallback": ["general-reasoning"]
+    },
+    "memory": {
+      "private_paths": ["agents/frontend_dev/", "memory/agents/frontend_dev/"],
+      "shared_paths": ["docs/product/", "docs/architecture/"],
+      "write_policy": "agent-owned"
+    },
+    "permissions": ["filesystem:read", "filesystem:write", "git:read", "browser:use"],
+    "playbook_paths": ["agents/frontend_dev/", "dashboard-v4/client/"],
+    "output_contracts": ["ui-change-summary", "visual-qa-result", "frontend-test-result"]
+  },
+  {
+    "id": "qa_engineer",
+    "display_name": "QA Engineer",
+    "role": "Quality and testing owner",
+    "mission": "Create test plans, validate user workflows, find regressions, and maintain quality reports.",
+    "status": "idle",
+    "capabilities": ["test-planning", "regression-testing", "api-testing", "e2e-testing", "risk-analysis"],
+    "primary_tools": ["testing-patterns", "openclaw-api-tester", "e2e-test-orchestrator"],
+    "model_policy": {
+      "preferred": "general-reasoning",
+      "fallback": ["coder"]
+    },
+    "memory": {
+      "private_paths": ["agents/qa_engineer/", "memory/agents/qa_engineer/"],
+      "shared_paths": ["reports/", "docs/operations/"],
+      "write_policy": "agent-owned"
+    },
+    "permissions": ["filesystem:read", "filesystem:write", "git:read", "network:read", "browser:use"],
+    "playbook_paths": ["agents/qa_engineer/", "testing-patterns/"],
+    "output_contracts": ["test-plan", "qa-report", "bug-report", "risk-assessment"]
+  }
+]

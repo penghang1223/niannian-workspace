@@ -20,6 +20,7 @@ The current repository grew organically and mixes runtime state, documentation, 
 - [Documentation Index](docs/README.md)
 - [Repository Map](docs/repository-map.md)
 - [Workspace Boundaries](docs/architecture/workspace-boundaries.md)
+- [GitHub Agent Project Benchmark](docs/architecture/github-agent-benchmark.md)
 - [Cleanup Report](docs/operations/cleanup-report.md)
 
 Target direction:
@@ -73,11 +74,11 @@ This repository contains valuable personal and agent history, so cleanup is cons
 
 ## Recommended Next Steps
 
-1. Create `packages/contracts` and move shared API/event types there.
+1. Expand `agents/registry/agents.json` until every active agent has a validated manifest.
 2. Split `dashboard-v4/server/src/routes.ts` into routes, services, repositories, and event modules.
-3. Move dashboard client/server into `apps/dashboard` and `services/api`.
-4. Move live state into `workspace/`.
-5. Add CI checks for Windows-safe paths and generated artifacts.
+3. Add runtime event append/read APIs based on `packages/contracts/src/index.ts`.
+4. Move dashboard client/server into `apps/dashboard` and `services/api`.
+5. Add CI checks for Windows-safe paths, JSON schema validation, and generated artifact drift.
 
 ## Screenshots
 

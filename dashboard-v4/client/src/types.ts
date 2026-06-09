@@ -64,6 +64,12 @@ export interface WorkspaceSummary {
   agents: {
     total: number
     ids: string[]
+    registry_total: number
+    registry: Array<{
+      id: string
+      display_name: string
+      role: string
+    }>
   }
   skills: {
     total: number

@@ -215,6 +215,9 @@ export default function DashboardPage() {
             </Col>
           </Row>
           <Space wrap style={{ marginTop: 16 }}>
+            <Tag color="lime">
+              registry {workspaceSummary.agents.registry_total}/{workspaceSummary.agents.total}
+            </Tag>
             <Tag color="blue">daily notes {workspaceSummary.memory.daily_notes}</Tag>
             <Tag color="cyan">latest {workspaceSummary.memory.latest_daily_note ?? 'none'}</Tag>
             <Tag color="purple">docs {workspaceSummary.docs.files}</Tag>

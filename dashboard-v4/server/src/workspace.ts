@@ -11,12 +11,20 @@ type QueueSummary = {
   done: number;
 };
 
+type AgentRegistryEntry = {
+  id: string;
+  display_name: string;
+  role: string;
+};
+
 export type WorkspaceSummary = {
   root: string;
   generated_at: string;
   agents: {
     total: number;
     ids: string[];
+    registry_total: number;
+    registry: AgentRegistryEntry[];
   };
   skills: {
     total: number;
@@ -92,11 +100,30 @@ function countSkillManifests(relativePath: string): number {
   }).length;
 }
 
+function readAgentRegistry(): AgentRegistryEntry[] {
+  const registryPath = path.join(WORKSPACE_ROOT, 'agents', 'registry', 'agents.json');
+  try {
+    const parsed = JSON.parse(fs.readFileSync(registryPath, 'utf8')) as AgentRegistryEntry[];
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((agent) => agent && typeof agent.id === 'string')
+      .map((agent) => ({
+        id: agent.id,
+        display_name: agent.display_name || agent.id,
+        role: agent.role || 'Agent',
+      }))
+      .sort((a, b) => a.id.localeCompare(b.id));
+  } catch {
+    return [];
+  }
+}
+
 export function getWorkspaceSummary(): WorkspaceSummary {
   const agentIds = safeReadDir('agents')
-    .filter((entry) => entry.isDirectory())
+    .filter((entry) => entry.isDirectory() && entry.name !== 'registry')
     .map((entry) => entry.name)
     .sort();
+  const agentRegistry = readAgentRegistry();
 
   const dailyNotes = safeReadDir('memory')
     .filter((entry) => entry.isFile() && /^\d{4}-\d{2}-\d{2}.*\.md$/.test(entry.name))
@@ -115,6 +142,8 @@ export function getWorkspaceSummary(): WorkspaceSummary {
     agents: {
       total: agentIds.length,
       ids: agentIds,
+      registry_total: agentRegistry.length,
+      registry: agentRegistry,
     },
     skills: {
       total: rootSkillDirs + catalogSkillDirs,

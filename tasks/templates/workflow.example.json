@@ -1,0 +1,58 @@
+{
+  "id": "workflow-dashboard-inventory",
+  "title": "Surface Workspace Inventory In Dashboard",
+  "goal": "Connect the dashboard to real workspace structure while preserving current task and agent views.",
+  "created_at": "2026-06-09T00:00:00.000Z",
+  "nodes": [
+    {
+      "id": "discover-current-state",
+      "title": "Discover current workspace state",
+      "description": "Scan agents, skills, memory, knowledge, docs, and queues.",
+      "owner": "dev_engineer",
+      "status": "done",
+      "priority": "P1",
+      "required_capabilities": ["filesystem", "api-design"],
+      "outputs": ["workspace-summary-contract"]
+    },
+    {
+      "id": "define-contracts",
+      "title": "Define shared contracts",
+      "description": "Create framework-neutral contracts for agents, workflows, and runtime events.",
+      "owner": "dev_engineer",
+      "status": "todo",
+      "priority": "P1",
+      "required_capabilities": ["typescript", "architecture"],
+      "inputs": ["workspace-summary-contract"],
+      "outputs": ["packages/contracts"]
+    },
+    {
+      "id": "dashboard-view",
+      "title": "Add dashboard inventory view",
+      "description": "Show real workspace inventory, queue state, and app status.",
+      "owner": "frontend_dev",
+      "status": "todo",
+      "priority": "P2",
+      "required_capabilities": ["react", "dashboard-ui"],
+      "inputs": ["workspace-summary-contract"],
+      "outputs": ["dashboard-overview"]
+    },
+    {
+      "id": "qa-pass",
+      "title": "Validate dashboard and contracts",
+      "description": "Run build checks and inspect the dashboard manually.",
+      "owner": "qa_engineer",
+      "status": "todo",
+      "priority": "P2",
+      "required_capabilities": ["regression-testing", "visual-qa"],
+      "inputs": ["packages/contracts", "dashboard-overview"],
+      "outputs": ["qa-report"]
+    }
+  ],
+  "edges": [
+    { "from": "discover-current-state", "to": "define-contracts", "type": "blocks" },
+    { "from": "discover-current-state", "to": "dashboard-view", "type": "blocks" },
+    { "from": "define-contracts", "to": "qa-pass", "type": "blocks" },
+    { "from": "dashboard-view", "to": "qa-pass", "type": "blocks" }
+  ],
+  "approval_gates": ["qa-pass"]
+}
