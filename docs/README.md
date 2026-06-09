@@ -14,6 +14,7 @@ This directory is the home for long-form design notes, operating guides, product
 - `architecture/`: system design, agent communication, scheduling, workflow, permission, model routing, and dashboard architecture.
 - `operations/`: setup guides, cleanup notes, integration guides, OpenRouter notes, and maintenance documents.
 - `product/`: product plans, content plans, dashboard PRDs, novel workflows, and project proposals.
+- `reports/`: generated or curated reports that should stay in Git.
 - `workspace/`: historical personal/team notes that are useful context but are not root-level runtime contracts.
 - `archive/`: temporary or superseded notes kept for traceability.
 

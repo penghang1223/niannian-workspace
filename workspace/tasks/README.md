@@ -1,8 +1,6 @@
-# Tasks - 任务状态跟踪
+# Workspace Tasks
 
-每个任务一个 JSON 文件，包含完整的任务生命周期信息。
-与 inbox/ 配合使用，提供更详细的任务状态。
-## Workflow Templates
+This directory stores live task and workflow state for the local multi-agent workspace.
 
 Use `templates/workflow.example.json` as the graph-shaped task format for new multi-agent work. It separates:
 

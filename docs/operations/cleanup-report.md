@@ -33,6 +33,14 @@ This cleanup is intentionally conservative. The repository contains many memory,
   - `skills/github-actions-workflows`
   - `skills/microsoft-api-guidelines`
 
+## Moved To Reduce Root Directory Noise
+
+- `inbox/`, `outbox/`, and `tasks/` moved under `workspace/`.
+- `content/` moved to `docs/product/content/`.
+- `novel/` moved to `docs/product/novel/`.
+- `reports/` moved to `docs/reports/`.
+- empty root `archive/` was removed; use `docs/archive/` for retained historical notes.
+
 ## Keep For Now
 
 - `memory/**`, `knowledge-base/**`, and root agent documentation stay in place for now. They should be reorganized later, not deleted blindly.

@@ -10,6 +10,7 @@ Niannian Workspace is a personal multi-agent workspace. It combines agent profil
 - `skills/`: local skill catalog and experimental skill implementations.
 - `memory/`: dated memory, per-agent memory, and evolution logs.
 - `knowledge-base/`: raw notes, curated knowledge, and generated reports.
+- `workspace/`: live coordination queues and workflow/task state.
 - `docs/`: architecture, product, operations, workspace notes, and archive.
 
 ## Architecture Redesign
@@ -78,7 +79,7 @@ This repository contains valuable personal and agent history, so cleanup is cons
 2. Split `dashboard-v4/server/src/routes.ts` into routes, services, repositories, and event modules.
 3. Add runtime event append/read APIs based on `packages/contracts/src/index.ts`.
 4. Move dashboard client/server into `apps/dashboard` and `services/api`.
-5. Add CI checks for Windows-safe paths, JSON schema validation, and generated artifact drift.
+5. Continue folding root-level experiments into `docs/`, `workspace/`, `apps/`, or `services/`.
 
 ## Screenshots
 

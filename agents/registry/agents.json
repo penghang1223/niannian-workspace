@@ -97,7 +97,7 @@
     },
     "memory": {
       "private_paths": ["agents/qa_engineer/", "memory/agents/qa_engineer/"],
-      "shared_paths": ["reports/", "docs/operations/"],
+      "shared_paths": ["docs/reports/", "docs/operations/"],
       "write_policy": "agent-owned"
     },
     "permissions": ["filesystem:read", "filesystem:write", "git:read", "network:read", "browser:use"],

@@ -240,7 +240,7 @@ python3 /Users/narain/.openclaw/workspace/site-experience/scripts/save-experienc
 
 ### 4. 知识库维护
 - [ ] 标记超过30天未被引用的知识为 `💤 可能过期`
-- [ ] 超过90天未被引用的知识移入 `archive/`
+- [ ] 超过90天未被引用的知识移入 `docs/archive/`
 - [ ] 检查知识冲突，以 main agent 决定为准
 
 ---
@@ -472,14 +472,14 @@ python3 /Users/narain/.openclaw/workspace/site-experience/scripts/save-experienc
 ---
 
 ## 📬 消息队列检查（新增 v5.0）
-- [ ] 检查 inbox/pending/ 中的消息（ls -la inbox/pending/*.json）
+- [ ] 检查 workspace/inbox/pending/ 中的消息（ls -la workspace/inbox/pending/*.json）
 - [ ] 对pending消息逐个处理：读取 → 执行 → 移到 done/
-- [ ] 检查 tasks/ 中超过预期时间的任务（标记stale/failed）
-- [ ] 检查 outbox/pending/ 中是否有待分发给子Agent的指令
-- [ ] 清理 inbox/done/ 中超过7天的消息（归档到 archive/）
+- [ ] 检查 workspace/tasks/ 中超过预期时间的任务（标记stale/failed）
+- [ ] 检查 workspace/outbox/pending/ 中是否有待分发给子Agent的指令
+- [ ] 清理 workspace/inbox/done/ 中超过7天的消息（归档到 docs/archive/）
 
 ## 🔍 超时任务检查（新增 v5.0）
-- [ ] 读取 tasks/ 目录中的所有 .json 文件
+- [ ] 读取 workspace/tasks/ 目录中的所有 .json 文件
 - [ ] 检查 last_updated 是否超过预期完成时间
 - [ ] 超过预期时间50% → 发送催促
 - [ ] 超过预期时间100% → 标记stale，通知主人
@@ -491,9 +491,9 @@ python3 /Users/narain/.openclaw/workspace/site-experience/scripts/save-experienc
 - `STATE.yaml` - 任务状态和进度
 - `DECISIONS.md` - 关键决策日志
 - `PROJECT_STATUS.md` - 项目整体状态
-- `inbox/` - Agent消息队列
-- `outbox/` - 年年指令队列  
-- `tasks/` - 任务状态跟踪
+- `workspace/inbox/` - Agent消息队列
+- `workspace/outbox/` - 年年指令队列
+- `workspace/tasks/` - 任务状态跟踪
 
 ### 各 Agent 私有
 - `agents/main/` - 年年的私人笔记

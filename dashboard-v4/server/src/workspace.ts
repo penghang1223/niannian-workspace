@@ -159,9 +159,9 @@ export function getWorkspaceSummary(): WorkspaceSummary {
       files: countFiles('knowledge-base'),
     },
     queues: {
-      inbox: countQueue('inbox'),
-      outbox: countQueue('outbox'),
-      tasks_files: countFiles('tasks'),
+      inbox: countQueue(path.join('workspace', 'inbox')),
+      outbox: countQueue(path.join('workspace', 'outbox')),
+      tasks_files: countFiles(path.join('workspace', 'tasks')),
     },
     docs: {
       files: countFiles('docs'),
