@@ -42,7 +42,7 @@
 ## 📁 已创建的文件
 
 ### 1. 设计文档
-- `AGENT_COMM_V2_DESIGN.md` - 详细架构设计
+- `docs/architecture/agent-comm-v2-design.md` - 详细架构设计
 - `AGENT_COMM_V2_SUMMARY.md` - 本总结文档
 - `COMM_RULES_UPDATE.md` - 需要合并到各文件的规则更新
 

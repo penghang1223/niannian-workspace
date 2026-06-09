@@ -10,15 +10,17 @@ Niannian Workspace is a personal multi-agent workspace. It combines agent profil
 - `skills/`: local skill catalog and experimental skill implementations.
 - `memory/`: dated memory, per-agent memory, and evolution logs.
 - `knowledge-base/`: raw notes, curated knowledge, and generated reports.
-- `docs/`: architecture, product, setup, and redesign documentation.
+- `docs/`: architecture, product, operations, workspace notes, and archive.
 
 ## Architecture Redesign
 
 The current repository grew organically and mixes runtime state, documentation, application code, skills, and generated artifacts. The proposed target structure is documented here:
 
-- [Architecture Redesign](docs/architecture-redesign.md)
-- [Workspace Boundaries](docs/workspace-boundaries.md)
-- [Cleanup Report](docs/cleanup-report.md)
+- [Architecture Redesign](docs/architecture/architecture-redesign.md)
+- [Documentation Index](docs/README.md)
+- [Repository Map](docs/repository-map.md)
+- [Workspace Boundaries](docs/architecture/workspace-boundaries.md)
+- [Cleanup Report](docs/operations/cleanup-report.md)
 
 Target direction:
 

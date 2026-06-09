@@ -6,7 +6,7 @@
 - `done/` - 已完成消息
 
 ## 消息格式
-每个消息是一个 JSON 文件，格式见 `AGENT_COMM_V2_DESIGN.md`
+每个消息是一个 JSON 文件，格式见 `docs/architecture/agent-comm-v2-design.md`
 
 ## 处理流程
 1. Agent 完成任务 → 写入 `pending/{task_id}.json`

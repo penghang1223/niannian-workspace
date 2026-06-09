@@ -24,7 +24,7 @@ This cleanup is intentionally conservative. The repository contains many memory,
 ## Next Cleanup Candidates
 
 - Move root documentation into `docs/` by topic.
-- Archive older architecture drafts after `docs/architecture-redesign.md` is accepted.
+- Archive older architecture drafts after `docs/architecture/architecture-redesign.md` is accepted.
 - Move live state into `workspace/`.
 - Convert copied third-party references into submodules or documented external links.
 - Add CI checks for Windows-safe paths and generated artifact drift.
