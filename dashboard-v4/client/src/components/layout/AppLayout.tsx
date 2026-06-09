@@ -16,11 +16,11 @@ import type { ReactNode } from 'react'
 const { Header, Sider, Content, Footer } = Layout
 
 const menuItems = [
-  { key: '/', icon: <DashboardOutlined />, label: '总览面板' },
-  { key: '/tasks', icon: <ProjectOutlined />, label: '任务看板' },
-  { key: '/agents', icon: <TeamOutlined />, label: 'Agent 管理', disabled: true },
-  { key: '/analytics', icon: <BarChartOutlined />, label: '效能分析', disabled: true },
-  { key: '/settings', icon: <SettingOutlined />, label: '系统设置', disabled: true },
+  { key: '/', icon: <DashboardOutlined />, label: 'Overview' },
+  { key: '/tasks', icon: <ProjectOutlined />, label: 'Tasks' },
+  { key: '/agents', icon: <TeamOutlined />, label: 'Agents', disabled: true },
+  { key: '/analytics', icon: <BarChartOutlined />, label: 'Analytics', disabled: true },
+  { key: '/settings', icon: <SettingOutlined />, label: 'Settings', disabled: true },
 ]
 
 interface Props {
@@ -30,14 +30,16 @@ interface Props {
 export default function AppLayout({ children }: Props) {
   const navigate = useNavigate()
   const location = useLocation()
-  const { wsConnected, alerts, agents } = useDashboardStore()
+  const { wsConnected, alerts, agents, workspaceSummary } = useDashboardStore()
 
-  const onlineCount = agents.filter((a) => a.status !== 'offline').length
-  const alertCount = alerts.filter((a) => !a.acknowledged).length
+  const onlineCount = agents.filter((agent) => agent.status !== 'offline').length
+  const alertCount = alerts.filter((alert) => !alert.acknowledged).length
+  const lastSync = workspaceSummary
+    ? new Date(workspaceSummary.generated_at).toLocaleTimeString()
+    : new Date().toLocaleTimeString()
 
   return (
     <Layout style={{ height: '100vh' }}>
-      {/* 侧边栏 */}
       <Sider
         width={220}
         theme="dark"
@@ -46,7 +48,6 @@ export default function AppLayout({ children }: Props) {
           borderRight: '1px solid var(--color-border)',
         }}
       >
-        {/* Logo */}
         <div
           style={{
             height: 64,
@@ -60,17 +61,14 @@ export default function AppLayout({ children }: Props) {
             style={{
               fontSize: 18,
               fontWeight: 700,
-              background: 'linear-gradient(135deg, #6366f1, #a78bfa)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              letterSpacing: '0.5px',
+              color: 'var(--color-text-primary)',
+              letterSpacing: 0,
             }}
           >
-            🎀 Dashboard v4
+            Niannian OS
           </span>
         </div>
 
-        {/* 导航菜单 */}
         <Menu
           mode="inline"
           selectedKeys={[location.pathname]}
@@ -83,7 +81,6 @@ export default function AppLayout({ children }: Props) {
           }}
         />
 
-        {/* 底部状态 */}
         <div
           style={{
             position: 'absolute',
@@ -101,29 +98,31 @@ export default function AppLayout({ children }: Props) {
               <DisconnectOutlined style={{ color: 'var(--status-offline)', fontSize: 14 }} />
             )}
             <span style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
-              {wsConnected ? '实时连接' : '离线模式'}
+              {wsConnected ? 'Live connection' : 'Offline mode'}
             </span>
           </div>
           <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
-            {onlineCount}/{agents.length} Agent 在线
+            {onlineCount}/{agents.length} agents online
           </div>
         </div>
       </Sider>
 
       <Layout>
-        {/* 顶栏 */}
         <Header
           style={{
             background: 'var(--color-bg-secondary)',
             borderBottom: '1px solid var(--color-border)',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             padding: '0 24px',
             height: 56,
           }}
         >
-          <Tooltip title={`${alertCount} 条未读告警`}>
+          <span style={{ color: 'var(--color-text-secondary)', fontSize: 13 }}>
+            Workspace control plane
+          </span>
+          <Tooltip title={`${alertCount} unread alerts`}>
             <Badge count={alertCount} size="small" offset={[-2, 2]}>
               <BellOutlined
                 style={{ fontSize: 18, color: 'var(--color-text-secondary)', cursor: 'pointer' }}
@@ -132,7 +131,6 @@ export default function AppLayout({ children }: Props) {
           </Tooltip>
         </Header>
 
-        {/* 主内容区 */}
         <Content
           style={{
             overflow: 'auto',
@@ -143,7 +141,6 @@ export default function AppLayout({ children }: Props) {
           {children}
         </Content>
 
-        {/* 底栏 */}
         <Footer
           style={{
             background: 'var(--color-bg-secondary)',
@@ -157,10 +154,8 @@ export default function AppLayout({ children }: Props) {
             lineHeight: '20px',
           }}
         >
-          <span>Dashboard v4.0 · {agents.length} Agent · 最后同步 {new Date().toLocaleTimeString('zh-CN')}</span>
-          <span>
-            {wsConnected ? '🟢 已连接 ws://localhost:3456' : '🔴 后端未连接 · 使用本地数据'}
-          </span>
+          <span>Dashboard v4.0 · {agents.length} agents · synced {lastSync}</span>
+          <span>{wsConnected ? 'Connected to ws://localhost:3456' : 'Backend not connected'}</span>
         </Footer>
       </Layout>
     </Layout>

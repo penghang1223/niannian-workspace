@@ -1,22 +1,16 @@
-import { useState, useMemo } from 'react'
-import { Card, Tag, Tooltip, Select, Input, Empty, Button } from 'antd'
-import {
-  PlusOutlined,
-  UserOutlined,
-} from '@ant-design/icons'
-import { DragDropContext, Droppable, Draggable, type DropResult } from '@hello-pangea/dnd'
+import { useMemo, useState } from 'react'
+import { Card, Tag, Select, Input, Empty, Row, Col } from 'antd'
+import { UserOutlined } from '@ant-design/icons'
 import { useDashboardStore } from '../stores/dashboardStore'
-import type { Task, TaskStatus, TaskPriority } from '../types'
+import type { Task, TaskPriority, TaskStatus } from '../types'
 
-// 看板列配置
-const COLUMNS: { key: TaskStatus; title: string; color: string; icon: string }[] = [
-  { key: 'todo', title: '待办 TODO', color: '#6b7280', icon: '📋' },
-  { key: 'in_progress', title: '进行中 DOING', color: '#6366f1', icon: '⚡' },
-  { key: 'review', title: '审查 REVIEW', color: '#f59e0b', icon: '🔍' },
-  { key: 'done', title: '已完成 DONE', color: '#10b981', icon: '✅' },
+const COLUMNS: { key: TaskStatus; title: string; color: string }[] = [
+  { key: 'todo', title: 'Todo', color: '#6b7280' },
+  { key: 'in_progress', title: 'In Progress', color: '#6366f1' },
+  { key: 'review', title: 'Review', color: '#f59e0b' },
+  { key: 'done', title: 'Done', color: '#10b981' },
 ]
 
-// 优先级颜色
 const PRIORITY_COLORS: Record<TaskPriority, string> = {
   P0: '#ef4444',
   P1: '#f59e0b',
@@ -24,296 +18,158 @@ const PRIORITY_COLORS: Record<TaskPriority, string> = {
   P3: '#6b7280',
 }
 
-// 任务卡片组件
-function TaskCard({ task, index }: { task: Task; index: number }) {
-  const agents = useDashboardStore((s) => s.agents)
-  const ownerAgent = agents.find((a) => a.id === task.assignee_id)
+function TaskCard({ task }: { task: Task }) {
+  const agents = useDashboardStore((state) => state.agents)
+  const ownerAgent = agents.find((agent) => agent.id === task.assignee_id)
 
   return (
-    <Draggable draggableId={task.id} index={index}>
-      {(provided, snapshot) => (
+    <Card
+      size="small"
+      style={{ marginBottom: 8 }}
+      styles={{ body: { padding: '12px 14px' } }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+        <Tag
+          color={PRIORITY_COLORS[task.priority]}
+          style={{ margin: 0, borderRadius: 4, fontSize: 11, fontWeight: 600, border: 'none' }}
+        >
+          {task.priority}
+        </Tag>
+        <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>{task.id}</span>
+      </div>
+
+      <div
+        style={{
+          fontSize: 13,
+          fontWeight: 500,
+          color: 'var(--color-text-primary)',
+          marginBottom: 8,
+          lineHeight: 1.4,
+        }}
+      >
+        {task.title}
+      </div>
+
+      {task.description && (
         <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
           style={{
-            ...provided.draggableProps.style,
-            marginBottom: 8,
+            fontSize: 12,
+            color: 'var(--color-text-secondary)',
+            marginBottom: 10,
+            lineHeight: 1.4,
           }}
         >
-          <Card
-            size="small"
-            style={{
-              background: snapshot.isDragging ? '#2a2a40' : 'var(--color-bg-card)',
-              border: snapshot.isDragging
-                ? '1px solid var(--color-primary)'
-                : '1px solid var(--color-border)',
-              boxShadow: snapshot.isDragging
-                ? '0 8px 24px rgba(0,0,0,0.4)'
-                : 'none',
-              transition: 'box-shadow 0.2s',
-            }}
-            styles={{ body: { padding: '12px 14px' } }}
-          >
-            {/* 优先级 + ID */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-              <Tag
-                color={PRIORITY_COLORS[task.priority]}
-                style={{ margin: 0, borderRadius: 4, fontSize: 11, fontWeight: 600, border: 'none' }}
-              >
-                {task.priority}
-              </Tag>
-              <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>{task.id}</span>
-            </div>
-
-            {/* 标题 */}
-            <div
-              style={{
-                fontSize: 13,
-                fontWeight: 500,
-                color: 'var(--color-text-primary)',
-                marginBottom: 8,
-                lineHeight: 1.4,
-              }}
-            >
-              {task.title}
-            </div>
-
-            {/* 底部信息 */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                fontSize: 11,
-                color: 'var(--color-text-muted)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                {ownerAgent && (
-                  <Tooltip title={ownerAgent.name}>
-                    <Tag
-                      style={{
-                        margin: 0,
-                        borderRadius: 4,
-                        fontSize: 10,
-                        background: '#1e1e30',
-                        border: 'none',
-                        color: 'var(--color-text-secondary)',
-                      }}
-                    >
-                      <UserOutlined style={{ marginRight: 2 }} />
-                      {ownerAgent.name}
-                    </Tag>
-                  </Tooltip>
-                )}
-              </div>
-            </div>
-
-            {/* Wave 标记 */}
-            {task.wave > 0 && (
-              <div style={{ marginTop: 6, fontSize: 10, color: 'var(--color-text-muted)' }}>
-                🌊 Wave {task.wave}
-              </div>
-            )}
-          </Card>
+          {task.description}
         </div>
       )}
-    </Draggable>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+          <UserOutlined style={{ marginRight: 4 }} />
+          {ownerAgent?.name || task.assignee_name || 'Unassigned'}
+        </span>
+        <Tag color="default" style={{ margin: 0, borderRadius: 4, fontSize: 11 }}>
+          wave {task.wave}
+        </Tag>
+      </div>
+    </Card>
   )
 }
 
-// ===== 任务看板页 =====
 export default function TasksPage() {
-  const { tasks, updateTask } = useDashboardStore()
-  const [filterPriority, setFilterPriority] = useState<string>('all')
-  const [searchText, setSearchText] = useState('')
+  const { tasks, agents } = useDashboardStore()
+  const [statusFilter, setStatusFilter] = useState<TaskStatus | 'all'>('all')
+  const [agentFilter, setAgentFilter] = useState<string>('all')
+  const [query, setQuery] = useState('')
 
-  // 按状态分组任务
-  const columns = useMemo(() => {
-    let filtered = tasks
-    if (filterPriority !== 'all') {
-      filtered = filtered.filter((t) => t.priority === filterPriority)
-    }
-    if (searchText) {
-      const lower = searchText.toLowerCase()
-      filtered = filtered.filter(
-        (t) =>
-          t.title.toLowerCase().includes(lower) ||
-          t.id.toLowerCase().includes(lower) ||
-          (t.description ?? '').toLowerCase().includes(lower)
-      )
-    }
-
-    return COLUMNS.map((col) => ({
-      ...col,
-      tasks: filtered
-        .filter((t) => t.status === col.key)
-        .sort((a, b) => {
-          // P0 > P1 > P2 > P3 排序
-          const pa = parseInt(a.priority.replace('P', ''))
-          const pb = parseInt(b.priority.replace('P', ''))
-          return pa - pb
-        }),
-    }))
-  }, [tasks, filterPriority, searchText])
-
-  // 拖拽结束
-  const onDragEnd = (result: DropResult) => {
-    if (!result.destination) return
-
-    const { draggableId, destination } = result
-    const newStatus = destination.droppableId as TaskStatus
-
-    updateTask({
-      ...tasks.find((t) => t.id === draggableId)!,
-      status: newStatus,
-      ...(newStatus === 'in_progress' ? { started_at: new Date().toISOString() } : {}),
-      ...(newStatus === 'done' ? { completed_at: new Date().toISOString() } : {}),
+  const filteredTasks = useMemo(() => {
+    return tasks.filter((task) => {
+      if (statusFilter !== 'all' && task.status !== statusFilter) return false
+      if (agentFilter !== 'all' && task.assignee_id !== agentFilter) return false
+      const haystack = `${task.title} ${task.description ?? ''} ${task.id}`.toLowerCase()
+      return haystack.includes(query.trim().toLowerCase())
     })
-  }
+  }, [tasks, statusFilter, agentFilter, query])
+
+  const groupedTasks = useMemo(() => {
+    return COLUMNS.reduce<Record<TaskStatus, Task[]>>((acc, column) => {
+      acc[column.key] = filteredTasks.filter((task) => task.status === column.key)
+      return acc
+    }, {
+      todo: [],
+      in_progress: [],
+      review: [],
+      done: [],
+      cancelled: [],
+    })
+  }, [filteredTasks])
 
   return (
     <div>
-      {/* 工具栏 */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 20,
-          flexWrap: 'wrap',
-          gap: 12,
-        }}
-      >
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <h2 style={{ margin: 0, fontSize: 20, fontWeight: 600 }}>📋 任务看板</h2>
-          <Tag
-            style={{
-              borderRadius: 12,
-              background: '#6366f120',
-              color: '#a78bfa',
-              border: 'none',
-            }}
-          >
-            {tasks.length} 个任务
-          </Tag>
-        </div>
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <Input.Search
-            placeholder="搜索任务..."
-            allowClear
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            style={{ width: 200 }}
-            size="middle"
-          />
-          <Select
-            value={filterPriority}
-            onChange={setFilterPriority}
-            size="middle"
-            style={{ width: 100 }}
-            options={[
-              { label: '全部', value: 'all' },
-              { label: 'P0', value: 'P0' },
-              { label: 'P1', value: 'P1' },
-              { label: 'P2', value: 'P2' },
-              { label: 'P3', value: 'P3' },
-            ]}
-          />
-          <Button type="primary" icon={<PlusOutlined />} size="middle">
-            新建任务
-          </Button>
-        </div>
-      </div>
+      <Card size="small" style={{ marginBottom: 16 }} styles={{ body: { padding: 16 } }}>
+        <Row gutter={[12, 12]} align="middle">
+          <Col xs={24} md={10}>
+            <Input.Search
+              placeholder="Search tasks"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              allowClear
+            />
+          </Col>
+          <Col xs={12} md={5}>
+            <Select
+              value={statusFilter}
+              onChange={setStatusFilter}
+              style={{ width: '100%' }}
+              options={[
+                { label: 'All status', value: 'all' },
+                ...COLUMNS.map((column) => ({ label: column.title, value: column.key })),
+              ]}
+            />
+          </Col>
+          <Col xs={12} md={5}>
+            <Select
+              value={agentFilter}
+              onChange={setAgentFilter}
+              style={{ width: '100%' }}
+              options={[
+                { label: 'All agents', value: 'all' },
+                ...agents.map((agent) => ({ label: agent.name, value: agent.id })),
+              ]}
+            />
+          </Col>
+          <Col xs={24} md={4}>
+            <span style={{ color: 'var(--color-text-secondary)', fontSize: 13 }}>
+              {filteredTasks.length} of {tasks.length} tasks
+            </span>
+          </Col>
+        </Row>
+      </Card>
 
-      {/* 看板 */}
-      <DragDropContext onDragEnd={onDragEnd}>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: 16,
-            minHeight: 'calc(100vh - 220px)',
-          }}
-        >
-          {columns.map((col) => (
-            <div key={col.key}>
-              {/* 列头 */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  marginBottom: 12,
-                  padding: '10px 14px',
-                  background: 'var(--color-bg-secondary)',
-                  borderRadius: 'var(--radius-lg)',
-                  border: '1px solid var(--color-border)',
-                }}
-              >
-                <span style={{ fontSize: 16 }}>{col.icon}</span>
-                <span style={{ fontWeight: 600, fontSize: 14, color: 'var(--color-text-primary)' }}>
-                  {col.title}
+      <Row gutter={[12, 12]}>
+        {COLUMNS.map((column) => (
+          <Col key={column.key} xs={24} lg={6}>
+            <Card
+              size="small"
+              title={
+                <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>{column.title}</span>
+                  <Tag color={column.color} style={{ margin: 0 }}>
+                    {groupedTasks[column.key].length}
+                  </Tag>
                 </span>
-                <Tag
-                  style={{
-                    marginLeft: 'auto',
-                    borderRadius: 10,
-                    background: col.color + '20',
-                    color: col.color,
-                    border: 'none',
-                    fontSize: 12,
-                    fontWeight: 600,
-                  }}
-                >
-                  {col.tasks.length}
-                </Tag>
-              </div>
-
-              {/* 可拖拽区域 */}
-              <Droppable droppableId={col.key}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    style={{
-                      minHeight: 200,
-                      padding: '8px',
-                      borderRadius: 'var(--radius-lg)',
-                      background: snapshot.isDraggingOver
-                        ? 'rgba(99, 102, 241, 0.05)'
-                        : 'transparent',
-                      border: snapshot.isDraggingOver
-                        ? '2px dashed rgba(99, 102, 241, 0.3)'
-                        : '2px dashed transparent',
-                      transition: 'all 0.2s ease',
-                    }}
-                  >
-                    {col.tasks.length === 0 ? (
-                      <div
-                        style={{
-                          textAlign: 'center',
-                          padding: '40px 16px',
-                          color: 'var(--color-text-muted)',
-                          fontSize: 13,
-                        }}
-                      >
-                        {snapshot.isDraggingOver ? '释放以移动到此处' : '暂无任务'}
-                      </div>
-                    ) : (
-                      col.tasks.map((task, idx) => (
-                        <TaskCard key={task.id} task={task} index={idx} />
-                      ))
-                    )}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </div>
-          ))}
-        </div>
-      </DragDropContext>
+              }
+              styles={{ body: { padding: 12, minHeight: 360 } }}
+            >
+              {groupedTasks[column.key].length === 0 ? (
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No tasks" />
+              ) : (
+                groupedTasks[column.key].map((task) => <TaskCard key={task.id} task={task} />)
+              )}
+            </Card>
+          </Col>
+        ))}
+      </Row>
     </div>
   )
 }

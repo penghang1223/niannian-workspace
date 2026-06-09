@@ -38,6 +38,8 @@ scripts/       development and maintenance scripts
 
 ## Dashboard v4
 
+Dashboard v4 now combines seeded task/agent data with a live workspace inventory from `/api/workspace/summary`. The inventory scans the repository for agent profiles, skill manifests, memory files, knowledge files, queue state, docs, and dashboard app status.
+
 Backend:
 
 ```bash
@@ -56,6 +58,8 @@ npm run dev
 ```
 
 Default API port: `3456`.
+
+Note: `dashboard-v4/server` uses `better-sqlite3`. On Windows with very new Node versions, install may require Visual Studio C++ Build Tools or an LTS Node version with a matching prebuilt binary.
 
 ## Current Cleanup Policy
 

@@ -1,6 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import type { DB } from './db.js';
 import { broadcast } from './ws.js';
+import { getWorkspaceSummary } from './workspace.js';
 
 export async function registerRoutes(app: FastifyInstance, db: DB) {
   const agentsStmt = {
@@ -209,6 +210,14 @@ export async function registerRoutes(app: FastifyInstance, db: DB) {
     const body = req.body as any;
     eventsStmt.create.run(body.type, body.source || null, body.target || null, JSON.stringify(body.data || {}));
     return { success: true };
+  });
+
+  // ============================================
+  // Workspace API
+  // ============================================
+
+  app.get('/api/workspace/summary', async () => {
+    return { data: getWorkspaceSummary() };
   });
 
   // ============================================

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { Agent, Task, TaskStats, OverviewMetrics, Alert, WSMessage } from '../types'
+import type { Agent, Task, TaskStats, OverviewMetrics, WorkspaceSummary, Alert, WSMessage } from '../types'
 
 interface DashboardStore {
   // Agents
@@ -19,6 +19,8 @@ interface DashboardStore {
   setTaskStats: (stats: TaskStats) => void
   overview: OverviewMetrics | null
   setOverview: (overview: OverviewMetrics) => void
+  workspaceSummary: WorkspaceSummary | null
+  setWorkspaceSummary: (summary: WorkspaceSummary | null) => void
 
   // Alerts
   alerts: Alert[]
@@ -55,6 +57,8 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
   setTaskStats: (taskStats) => set({ taskStats }),
   overview: null,
   setOverview: (overview) => set({ overview }),
+  workspaceSummary: null,
+  setWorkspaceSummary: (workspaceSummary) => set({ workspaceSummary }),
 
   alerts: [],
   addAlert: (alert) => set((s) => ({ alerts: [alert, ...s.alerts].slice(0, 50) })),
@@ -69,7 +73,8 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
   setWsConnected: (wsConnected) => set({ wsConnected }),
 
   handleWSMessage: (msg) => {
-    const { type, payload } = msg
+    const { type } = msg
+    const payload = msg.payload ?? msg.data ?? {}
     switch (type) {
       case 'agent:status-change':
       case 'agent:heartbeat': {

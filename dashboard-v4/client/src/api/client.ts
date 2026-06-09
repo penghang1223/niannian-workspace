@@ -1,4 +1,4 @@
-import type { Agent, Task, TaskStats, OverviewMetrics } from '../types'
+import type { Agent, Task, TaskStats, OverviewMetrics, WorkspaceSummary } from '../types'
 
 const API_BASE = '/api'
 
@@ -8,7 +8,8 @@ async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
     ...init,
   })
   if (!res.ok) throw new Error(`API Error: ${res.status} ${res.statusText}`)
-  return res.json()
+  const json = await res.json()
+  return (json && typeof json === 'object' && 'data' in json ? json.data : json) as T
 }
 
 export const api = {
@@ -31,6 +32,9 @@ export const api = {
 
   // Metrics
   getOverview: () => fetchJson<OverviewMetrics>('/metrics/overview'),
+
+  // Workspace
+  getWorkspaceSummary: () => fetchJson<WorkspaceSummary>('/workspace/summary'),
 
   // Health
   health: () => fetchJson<{ status: string; timestamp: string }>('/health'),

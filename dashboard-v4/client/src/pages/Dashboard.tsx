@@ -1,50 +1,49 @@
-import { Card, Row, Col, Statistic, Tag, Tooltip, Progress, Empty, Spin } from 'antd'
+import { Card, Row, Col, Statistic, Tag, Tooltip, Progress, Empty, Spin, Space } from 'antd'
 import {
   TeamOutlined,
   CheckCircleOutlined,
-  ClockCircleOutlined,
   WarningOutlined,
   ThunderboltOutlined,
+  DatabaseOutlined,
+  BookOutlined,
+  ToolOutlined,
+  InboxOutlined,
 } from '@ant-design/icons'
 import { useDashboardStore } from '../stores/dashboardStore'
-import type { Agent, AgentStatus } from '../types'
+import type { Agent } from '../types'
 
-// Agent 状态 → 颜色映射
 const STATUS_CONFIG: Record<string, { color: string; label: string; glow: string }> = {
-  online: { color: '#10b981', label: '在线', glow: '0 0 12px rgba(16,185,129,0.3)' },
-  busy: { color: '#f59e0b', label: '忙碌', glow: '0 0 12px rgba(245,158,11,0.3)' },
-  idle: { color: '#6b7280', label: '空闲', glow: 'none' },
-  offline: { color: '#ef4444', label: '离线', glow: '0 0 12px rgba(239,68,68,0.2)' },
-  error: { color: '#dc2626', label: '异常', glow: '0 0 12px rgba(220,38,38,0.4)' },
+  online: { color: '#10b981', label: 'Online', glow: '0 0 12px rgba(16,185,129,0.3)' },
+  busy: { color: '#f59e0b', label: 'Busy', glow: '0 0 12px rgba(245,158,11,0.3)' },
+  idle: { color: '#6b7280', label: 'Idle', glow: 'none' },
+  offline: { color: '#ef4444', label: 'Offline', glow: '0 0 12px rgba(239,68,68,0.2)' },
+  error: { color: '#dc2626', label: 'Error', glow: '0 0 12px rgba(220,38,38,0.4)' },
 }
 
-// Agent 状态卡片
+function formatLastActive(value: string | null) {
+  if (!value) return 'unknown'
+  const diff = Date.now() - new Date(value).getTime()
+  if (Number.isNaN(diff)) return 'unknown'
+  if (diff < 60_000) return 'just now'
+  if (diff < 3_600_000) return `${Math.floor(diff / 60_000)} min ago`
+  return `${Math.floor(diff / 3_600_000)} hr ago`
+}
+
 function AgentCard({ agent }: { agent: Agent }) {
   const cfg = STATUS_CONFIG[agent.status] ?? STATUS_CONFIG.idle
   const isOnline = agent.status !== 'offline'
-
-  // 计算最后活跃时间
-  let lastActive = '未知'
-  if (agent.last_active) {
-    const diff = Date.now() - new Date(agent.last_active).getTime()
-    if (diff < 60000) lastActive = '刚刚'
-    else if (diff < 3600000) lastActive = `${Math.floor(diff / 60000)} 分钟前`
-    else lastActive = `${Math.floor(diff / 3600000)} 小时前`
-  }
 
   return (
     <Card
       size="small"
       className="animate-in"
       style={{
-        borderColor: isOnline ? cfg.color + '40' : undefined,
+        borderColor: isOnline ? `${cfg.color}40` : undefined,
         boxShadow: cfg.glow,
-        cursor: 'pointer',
         transition: 'all 0.2s ease',
       }}
       styles={{ body: { padding: '16px' } }}
     >
-      {/* 头部：头像 + 状态 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
         <div
           style={{
@@ -59,7 +58,7 @@ function AgentCard({ agent }: { agent: Agent }) {
             fontSize: 18,
           }}
         >
-          {agent.emoji || '🤖'}
+          {agent.emoji || 'AI'}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--color-text-primary)' }}>
@@ -79,25 +78,17 @@ function AgentCard({ agent }: { agent: Agent }) {
         />
       </div>
 
-      {/* 状态标签 */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>
-        <Tag
-          color={cfg.color}
-          style={{ margin: 0, borderRadius: 4, fontSize: 11, border: 'none' }}
-        >
+        <Tag color={cfg.color} style={{ margin: 0, borderRadius: 4, fontSize: 11, border: 'none' }}>
           {cfg.label}
         </Tag>
         {agent.tasks_in_progress > 0 && (
-          <Tag
-            color="purple"
-            style={{ margin: 0, borderRadius: 4, fontSize: 11, border: 'none' }}
-          >
-            🔧 {agent.tasks_in_progress} 个任务进行中
+          <Tag color="purple" style={{ margin: 0, borderRadius: 4, fontSize: 11, border: 'none' }}>
+            {agent.tasks_in_progress} active
           </Tag>
         )}
       </div>
 
-      {/* 底部信息 */}
       <div
         style={{
           display: 'flex',
@@ -106,65 +97,56 @@ function AgentCard({ agent }: { agent: Agent }) {
           color: 'var(--color-text-muted)',
         }}
       >
-        <Tooltip title={`完成 ${agent.tasks_completed} 个任务，成功率 ${agent.success_rate}%`}>
-          <span>✅ {agent.tasks_completed} 完成</span>
+        <Tooltip title={`${agent.tasks_completed} tasks completed, ${agent.success_rate}% success`}>
+          <span>{agent.tasks_completed} done</span>
         </Tooltip>
-        <span>🕐 {lastActive}</span>
+        <span>{formatLastActive(agent.last_active)}</span>
       </div>
     </Card>
   )
 }
 
-// ===== 总览页 =====
 export default function DashboardPage() {
-  const { agents, tasks, taskStats, overview } = useDashboardStore()
+  const { agents, tasks, taskStats, overview, workspaceSummary } = useDashboardStore()
 
-  // 计算统计数据
   const rawStats = taskStats ?? {
     total: tasks.length,
-    todo: tasks.filter((t) => t.status === 'todo').length,
-    in_progress: tasks.filter((t) => t.status === 'in_progress').length,
-    review: tasks.filter((t) => t.status === 'review').length,
-    done: tasks.filter((t) => t.status === 'done').length,
+    todo: tasks.filter((task) => task.status === 'todo').length,
+    in_progress: tasks.filter((task) => task.status === 'in_progress').length,
+    review: tasks.filter((task) => task.status === 'review').length,
+    done: tasks.filter((task) => task.status === 'done').length,
     cancelled: 0,
   }
-  const completionRate = rawStats.total
-    ? Math.round((rawStats.done / rawStats.total) * 100)
-    : 0
+  const completionRate = rawStats.total ? Math.round((rawStats.done / rawStats.total) * 100) : 0
   const stats = { ...rawStats, completion_rate: completionRate }
 
   const overviewData = overview ?? {
-    agents_online: agents.filter((a) => a.status !== 'offline').length,
+    agents_online: agents.filter((agent) => agent.status !== 'offline').length,
     agents_total: agents.length,
     tasks_today: tasks.length,
     tasks_completed_today: stats.done,
     completion_rate: stats.completion_rate,
-    avg_response_time_ms: 1250,
-    alerts_count: agents.filter((a) => a.status === 'offline' || a.status === 'error').length,
+    avg_response_time_ms: 0,
+    alerts_count: agents.filter((agent) => agent.status === 'offline' || agent.status === 'error').length,
   }
 
-  if (agents.length === 0) {
+  if (agents.length === 0 && !workspaceSummary) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 400 }}>
-        <Spin size="large" tip="加载中..." />
+        <Spin size="large" tip="Loading dashboard..." />
       </div>
     )
   }
 
   return (
     <div>
-      {/* 关键指标卡片 */}
       <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
         <Col xs={12} sm={6}>
           <Card size="small" styles={{ body: { padding: '20px' } }}>
             <Statistic
-              title={<span style={{ color: 'var(--color-text-secondary)', fontSize: 13 }}>Agent 在线</span>}
+              title="Agents Online"
               value={overviewData.agents_online}
-              suffix={
-                <span style={{ fontSize: 14, color: 'var(--color-text-muted)' }}>
-                  /{overviewData.agents_total}
-                </span>
-              }
+              suffix={<span style={{ fontSize: 14, color: 'var(--color-text-muted)' }}>/{overviewData.agents_total}</span>}
               valueStyle={{ color: '#10b981', fontSize: 28, fontWeight: 700 }}
               prefix={<TeamOutlined />}
             />
@@ -173,7 +155,7 @@ export default function DashboardPage() {
         <Col xs={12} sm={6}>
           <Card size="small" styles={{ body: { padding: '20px' } }}>
             <Statistic
-              title={<span style={{ color: 'var(--color-text-secondary)', fontSize: 13 }}>今日任务</span>}
+              title="Tasks"
               value={overviewData.tasks_today}
               valueStyle={{ color: '#6366f1', fontSize: 28, fontWeight: 700 }}
               prefix={<ThunderboltOutlined />}
@@ -183,7 +165,7 @@ export default function DashboardPage() {
         <Col xs={12} sm={6}>
           <Card size="small" styles={{ body: { padding: '20px' } }}>
             <Statistic
-              title={<span style={{ color: 'var(--color-text-secondary)', fontSize: 13 }}>完成率</span>}
+              title="Completion"
               value={overviewData.completion_rate}
               suffix="%"
               valueStyle={{
@@ -198,7 +180,7 @@ export default function DashboardPage() {
         <Col xs={12} sm={6}>
           <Card size="small" styles={{ body: { padding: '20px' } }}>
             <Statistic
-              title={<span style={{ color: 'var(--color-text-secondary)', fontSize: 13 }}>告警</span>}
+              title="Alerts"
               value={overviewData.alerts_count}
               valueStyle={{
                 color: overviewData.alerts_count > 0 ? '#ef4444' : '#10b981',
@@ -211,18 +193,55 @@ export default function DashboardPage() {
         </Col>
       </Row>
 
-      {/* 任务分布 */}
+      {workspaceSummary && (
+        <Card
+          title="Workspace Inventory"
+          size="small"
+          style={{ marginBottom: 24 }}
+          styles={{ body: { padding: '16px 20px' } }}
+        >
+          <Row gutter={[16, 16]}>
+            <Col xs={12} md={6}>
+              <Statistic title="Agent Profiles" value={workspaceSummary.agents.total} prefix={<TeamOutlined />} />
+            </Col>
+            <Col xs={12} md={6}>
+              <Statistic title="Skills" value={workspaceSummary.skills.total} prefix={<ToolOutlined />} />
+            </Col>
+            <Col xs={12} md={6}>
+              <Statistic title="Memory Files" value={workspaceSummary.memory.files} prefix={<DatabaseOutlined />} />
+            </Col>
+            <Col xs={12} md={6}>
+              <Statistic title="Knowledge Files" value={workspaceSummary.knowledge.files} prefix={<BookOutlined />} />
+            </Col>
+          </Row>
+          <Space wrap style={{ marginTop: 16 }}>
+            <Tag color="blue">daily notes {workspaceSummary.memory.daily_notes}</Tag>
+            <Tag color="cyan">latest {workspaceSummary.memory.latest_daily_note ?? 'none'}</Tag>
+            <Tag color="purple">docs {workspaceSummary.docs.files}</Tag>
+            <Tag color="gold">
+              inbox {workspaceSummary.queues.inbox.pending}/{workspaceSummary.queues.inbox.processing}/{workspaceSummary.queues.inbox.done}
+            </Tag>
+            <Tag color="green">
+              outbox {workspaceSummary.queues.outbox.pending}/{workspaceSummary.queues.outbox.done}
+            </Tag>
+            <Tag color={workspaceSummary.apps.legacy_dashboard ? 'orange' : 'default'}>
+              legacy dashboard {workspaceSummary.apps.legacy_dashboard ? 'present' : 'absent'}
+            </Tag>
+          </Space>
+        </Card>
+      )}
+
       <Card
-        title="📊 任务分布"
+        title="Task Distribution"
         size="small"
         style={{ marginBottom: 24 }}
         styles={{ body: { padding: '16px 20px' } }}
       >
-        <Row gutter={24}>
-          <Col span={12}>
+        <Row gutter={[24, 16]}>
+          <Col xs={24} md={12}>
             <div style={{ marginBottom: 12 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                <span style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>整体完成度</span>
+                <span style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>Overall progress</span>
                 <span style={{ fontSize: 13, color: 'var(--color-text-primary)', fontWeight: 600 }}>
                   {stats.completion_rate}%
                 </span>
@@ -232,52 +251,23 @@ export default function DashboardPage() {
                 strokeColor={{ '0%': '#6366f1', '100%': '#10b981' }}
                 trailColor="#2a2a3e"
                 showInfo={false}
-                size="default"
               />
             </div>
           </Col>
-          <Col span={12}>
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-              <div>
-                <Tag color="default" style={{ borderRadius: 4 }}>
-                  待办 {stats.todo}
-                </Tag>
-              </div>
-              <div>
-                <Tag color="processing" style={{ borderRadius: 4 }}>
-                  进行中 {stats.in_progress}
-                </Tag>
-              </div>
-              <div>
-                <Tag color="success" style={{ borderRadius: 4 }}>
-                  完成 {stats.done}
-                </Tag>
-              </div>
-              <div>
-                <Tag color="error" style={{ borderRadius: 4 }}>
-                  审查 {stats.review}
-                </Tag>
-              </div>
+          <Col xs={24} md={12}>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <Tag color="default">todo {stats.todo}</Tag>
+              <Tag color="processing">active {stats.in_progress}</Tag>
+              <Tag color="warning">review {stats.review}</Tag>
+              <Tag color="success">done {stats.done}</Tag>
             </div>
           </Col>
         </Row>
       </Card>
 
-      {/* Agent 状态矩阵 */}
-      <Card
-        title={
-          <span>
-            🤖 Agent 状态矩阵
-            <span style={{ fontSize: 12, color: 'var(--color-text-muted)', marginLeft: 12 }}>
-              {agents.filter((a) => a.status !== 'offline').length}/{agents.length} 在线
-            </span>
-          </span>
-        }
-        size="small"
-        styles={{ body: { padding: '16px' } }}
-      >
+      <Card title="Agent Matrix" size="small" styles={{ body: { padding: '16px' } }}>
         {agents.length === 0 ? (
-          <Empty description="暂无 Agent 数据" />
+          <Empty description="No agent data" />
         ) : (
           <Row gutter={[12, 12]}>
             {agents.map((agent) => (

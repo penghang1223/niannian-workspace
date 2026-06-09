@@ -1,8 +1,5 @@
-// ===== Dashboard v4.0 类型定义 =====
-
 export type AgentStatus = 'online' | 'busy' | 'idle' | 'offline' | 'error'
 
-// 后端实际返回的 Agent 字段
 export interface Agent {
   id: string
   name: string
@@ -20,7 +17,6 @@ export interface Agent {
 export type TaskStatus = 'todo' | 'in_progress' | 'review' | 'done' | 'cancelled'
 export type TaskPriority = 'P0' | 'P1' | 'P2' | 'P3'
 
-// 后端实际返回的 Task 字段
 export interface Task {
   id: string
   title: string
@@ -56,11 +52,51 @@ export interface OverviewMetrics {
   alerts_count: number
 }
 
-// WebSocket 事件
+export interface QueueSummary {
+  pending: number
+  processing: number
+  done: number
+}
+
+export interface WorkspaceSummary {
+  root: string
+  generated_at: string
+  agents: {
+    total: number
+    ids: string[]
+  }
+  skills: {
+    total: number
+    root_skills: number
+    catalog_skills: number
+  }
+  memory: {
+    files: number
+    daily_notes: number
+    latest_daily_note: string | null
+  }
+  knowledge: {
+    files: number
+  }
+  queues: {
+    inbox: QueueSummary
+    outbox: QueueSummary
+    tasks_files: number
+  }
+  docs: {
+    files: number
+  }
+  apps: {
+    dashboard_v4: boolean
+    legacy_dashboard: boolean
+  }
+}
+
 export interface WSMessage {
   type: string
-  payload: any
-  timestamp: string
+  payload?: any
+  data?: any
+  timestamp?: string
 }
 
 export interface Alert {
