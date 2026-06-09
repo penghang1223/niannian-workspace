@@ -27,6 +27,20 @@ Thumbs.db
 
 # Build artifacts
 .backup_*/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+dashboard-v4/client/dist/
+
+# Runtime databases
+*.db
+*.db-shm
+*.db-wal
+dashboard-v4/server/data/*.db*
+
+# Local export / checkout repair notes
+WINDOWS_CHECKOUT_EXCLUDED.json
 
 # Third party clones
 MediaCrawler/
@@ -75,7 +89,7 @@ openclaw_multi_role*.js
 openclaw-wrapper.js
 openclaw-nannan-integration.js
 load_user_context.js
-test_*.js
+/test_*.js
 permission_manager.js
 privacy_filter.js
 preload_multi_role.js
