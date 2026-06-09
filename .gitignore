@@ -66,6 +66,7 @@ nannan-dashboard/node_modules/
 memory-app/node_modules/
 
 # Cache
+.cache/
 .brv/
 .claude-code-router/
 .clawdbot/
@@ -98,6 +99,7 @@ user_context_injector.js
 invite_beta_user.js
 ai-learning-log.txt
 memory-app/
+config/usage_stats.json
 
 # Temp HTML exports (specific files)
 boss-job-*.html

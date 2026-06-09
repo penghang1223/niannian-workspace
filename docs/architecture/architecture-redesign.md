@@ -241,8 +241,7 @@ Keep it domain-neutral and test it heavily, because it becomes shared infrastruc
 Move:
 
 - `lib/feishu-hub.ts`
-- `feishu_*.js`
-- `group_chat_handler.js`
+- active Feishu integration code after dependencies are restored
 - external model routing clients
 
 Each integration should expose an interface and an implementation. The API and worker consume interfaces.
