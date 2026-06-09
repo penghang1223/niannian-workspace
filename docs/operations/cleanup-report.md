@@ -24,6 +24,10 @@ This cleanup is intentionally conservative. The repository contains many memory,
 - Obsolete temporary notes and test-case index:
   - `docs/archive/tmp-novel-doc-request.md`
   - `agents/qa_engineer/test-cases/README.md`
+- Duplicate or misleading testing skill directories:
+  - `test-runner`, after merging its useful framework command quick reference into `testing-patterns/`.
+  - `test-patterns`, because it duplicated the broader `testing-patterns/` guidance.
+  - `test-generator`, because its metadata described test generation but its implementation was a generic logging CLI; keep `sovereign-test-generator/` for actual test-generation guidance.
 - Gitlink entries without `.gitmodules`:
   - `lobster-manager`
   - `skills/github-actions-workflows`
@@ -33,13 +37,13 @@ This cleanup is intentionally conservative. The repository contains many memory,
 
 - `memory/**`, `knowledge-base/**`, and root agent documentation stay in place for now. They should be reorganized later, not deleted blindly.
 - old dashboard files under `dashboard/` stay until `dashboard-v4` is confirmed as the only active UI.
-- skill directories stay until each skill has an owner, manifest status, and usage signal.
+- remaining skill directories stay until each skill has an owner, manifest status, and usage signal.
 - historical QA reports stay as records even if they mention removed experiments.
 
 ## Next Cleanup Candidates
 
 - Confirm whether old dashboard files under `dashboard/` are superseded by `dashboard-v4/`.
-- Audit test-* experiment directories and merge active ones into one testing workspace.
+- Continue auditing specialized testing directories (`test-master`, `test-specialist`, `test-sentinel`, E2E/API QA skills) before any further merge.
 - Move live state into `workspace/`.
 - Convert copied third-party references into submodules or documented external links.
 - Add CI checks for Windows-safe paths and generated artifact drift.

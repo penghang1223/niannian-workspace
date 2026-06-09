@@ -267,6 +267,18 @@ const service = new OrderService(
 | **PHPUnit** | PHP | Unit/Integration | Built-in | `$this->assert*()` |
 | **xUnit** | C# | Unit/Integration | Built-in | `Assert.Equal()` |
 
+### Framework Command Quick Reference
+
+Use these commands as the default starting point before adding project-specific flags.
+
+| Framework | Install | Common Commands |
+|-----------|---------|-----------------|
+| **Vitest** | `npm install -D vitest @testing-library/react @testing-library/jest-dom` | `npx vitest`, `npx vitest run`, `npx vitest --coverage` |
+| **Jest** | `npm install -D jest @types/jest ts-jest` | `npx jest`, `npx jest --watch`, `npx jest --coverage`, `npx jest path/to/test` |
+| **pytest** | `uv pip install pytest pytest-cov pytest-asyncio httpx` | `pytest`, `pytest -v`, `pytest -x`, `pytest --cov=app`, `pytest tests/test_api.py -k "test_login"` |
+| **XCTest** | Built into SwiftPM/Xcode | `swift test`, `swift test --filter MyTests`, `swift test --parallel` |
+| **Playwright** | `npm install -D @playwright/test && npx playwright install` | `npx playwright test`, `npx playwright test --headed`, `npx playwright test --debug`, `npx playwright show-report` |
+
 ---
 
 ## Test Quality Checklist
